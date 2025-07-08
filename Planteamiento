@@ -1,12 +1,14 @@
-##📋 Planteamiento
+🚀 Proyecto: Sistema de Gestión Personalizado
+
+📋 Planteamiento
 Eres parte de un equipo de desarrollo en una consultora tecnológica especializada en soluciones para pequeñas y medianas empresas. Tu equipo ha sido contactado por un emprendedor local que necesita digitalizar y optimizar la gestión de su negocio.
 
 El cliente puede tener cualquier tipo de negocio: una escuela, una tienda en línea, un gimnasio, un restaurante, etc. El desafío es crear una solución personalizada que se adapte a las necesidades específicas del negocio elegido.
 
-##🎯 Objetivo
+🎯 Objetivo
 Desarrollar una API REST y una base de datos SQL que permitan al cliente gestionar eficientemente su negocio, reemplazando los métodos manuales actuales y preparando el negocio para un crecimiento futuro.
 
-##🛠️ Requisitos Técnicos
+🛠️ Requisitos Técnicos
 Base de datos SQL (PostgreSQL, MySQL, etc.)
 API REST (usando Flask, FastAPI, Django REST Framework, etc.)
 Sistema de autenticación y autorización
@@ -15,12 +17,12 @@ Tests unitarios y de integración
 Control de versiones con Git y GitHub
 Gestión del proyecto con metodologías ágiles (SCRUM)
 
-##📅 Plazos
+📅 Plazos
 Se estiman dos semanas para el desarrollo del prototipo funcional.
 
-#📦 Entregables
-#📊 Diagrama ER de la base de datos
-#💻 Repositorio en GitHub con código fuente
+📦 Entregables
+📊 Diagrama ER de la base de datos
+💻 Repositorio en GitHub con código fuente
 🔗 Documentación de la API (Swagger o similar)
 ✅ Suite de tests completa y pasando
 📝 Documento de retrospectiva del proyecto
