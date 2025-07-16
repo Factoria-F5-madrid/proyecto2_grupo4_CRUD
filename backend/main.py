@@ -2,7 +2,7 @@ from fastapi import FastAPI, Depends, HTTPException
 from sqlalchemy.ext.asyncio import AsyncSession
 from sqlalchemy.future import select
 
-from backend.routes import users_routes
+from backend.routes import users_routes, pet_route
 
 from db.database import AsyncSessionLocal
 from models.user_models import User
@@ -19,3 +19,4 @@ async def get_db():
 
 
 app.include_router(users_routes.router, prefix="/users", tags=["Users"])
+app.include_router(pet_route.router, prefix="/pets", tags=["Pets"])
