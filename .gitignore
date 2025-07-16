@@ -1,0 +1,61 @@
+# Bytecode de Python
+__pycache__/
+*.py[cod]
+*$py.class
+
+# Archivos del entorno virtual
+venv/
+.env/
+.venv/
+ENV/
+env.bak/
+venv.bak/
+
+# Archivos de configuración local o secretos
+*.env
+.env.*
+secrets.json
+config/local_settings.py
+
+# Archivos de logs y bases de datos locales
+*.log
+*.sqlite3
+
+# Archivos de cache
+*.pyc
+*.pyo
+*.pyd
+*.pdb
+*.egg
+*.egg-info/
+dist/
+build/
+.eggs/
+.cache/
+pip-wheel-metadata/
+
+# Archivos generados por herramientas de test
+htmlcov/
+.coverage
+.tox/
+.nox/
+pytest_cache/
+.pytest_cache/
+
+# IDEs y editores
+.vscode/
+.idea/
+*.sublime-project
+*.sublime-workspace
+
+# Archivos de sistema
+.DS_Store
+Thumbs.db
+
+# Archivos específicos de PostgreSQL (si usas dumps o backups locales)
+*.sql
+*.dump
+
+# Docker (si usas Docker)
+*.pid
+docker-compose.override.yml
