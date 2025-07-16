@@ -1,0 +1,17 @@
+from sqlalchemy import Column, Integer, Boolean, Text, Numeric, Time, TIMESTAMP, func
+from sqlalchemy.ext.declarative import declarative_base
+from .enums import ServiceTypeEnum 
+
+Base = declarative_base()
+
+class Service(Base):
+    __tablename__ = 'Service'
+
+    service_id = Column(Integer, primary_key=True, nullable=False)
+    lodging = Column(Boolean, nullable=False)
+    service_type = Column(ServiceTypeEnum, nullable=False)
+    other_service = Column(Text)
+    notes = Column(Text)
+    base_price = Column(Numeric(10, 2), nullable=False)
+    duration = Column(Time(precision=0))
+    created_at = Column(TIMESTAMP, nullable=False, server_default=func.now())
