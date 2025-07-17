@@ -18,10 +18,10 @@ class Invoice(Base):
     invoice_id = Column(Integer, primary_key=True, nullable=False)
     service_id = Column(Integer, ForeignKey('services.service_id'), nullable=False)
     payment_id = Column(Integer, ForeignKey('payments.payment_id'), nullable=False)
-    tax_identification_number = Column(String(255), nullable=False)
+    tax_identification_number = Column(String(20), nullable=False)
     discounts = Column(Boolean, nullable=False, default=False)
-    additional_price = Column(Numeric(10, 2), nullable=False, default=0.00)
-    VAT = Column(Numeric(8, 2), nullable=False, default=0.00)
+    additional_price = Column(Numeric(10, 2), nullable=False, default=0.00, server_default="0.00")
+    vat = Column(Numeric(8, 2), nullable=False, default=0.00, server_default="0.00")
     included_service = Column(
         String(255),
         nullable=False,
