@@ -29,8 +29,17 @@ class IncludedServiceEnum(enum.Enum):
     ADIESTRAMIENTO_AVANZADO = "Adiestramiento avanzado"
     NOCTURNO = "Cuidado nocturno"
     PSICOLOGIA = "Psicología animal"
-    EVENTOS = "Celebracion eventos"    
+    EVENTOS = "Celebracion eventos"   
 
+
+class MedicalHistoryTypeEnum(enum.Enum):
+    VACCINATION = "Vacunación"
+    SURGERY = "Cirugía"
+    ILLNESS = "Enfermedad"
+    CHECKUP = "Revisión"
+    OTHER = "Otro"
+
+SqlMedicalHistoryTypeEnum = Enum(MedicalHistoryTypeEnum, name="medical_history_type_enum")     
 SqlPaymentMethodEnum = Enum(PaymentMethodEnum, name="payment_method_enum")
 SqlPaymentStatusEnum = Enum(PaymentStatusEnum, name="payment_status_enum")  
 SqlIncludedServiceEnum = Enum(IncludedServiceEnum, name="included_service_enum")  
