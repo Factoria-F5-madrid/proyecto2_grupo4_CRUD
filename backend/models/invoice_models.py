@@ -1,16 +1,31 @@
-from sqlalchemy import Column, Integer, DECIMAL, Boolean, TIMESTAMP, func
+from sqlalchemy import (
+    Column,
+    Integer,
+    Boolean,
+    Numeric,
+    TIMESTAMP,
+    ForeignKey,
+    func
+)
+from sqlalchemy.orm import relationship
 from .base_models import Base
-from .enums import SqlPaymentMethodEnum, SqlPaymentStatusEnum
+from .enums import SqlIncludedServiceEnum
 
 
+class Invoice(Base):
+    __tablename__ = "Invoice"
 
-class Payment(Base):
-    __tablename__ = "Payment"
+    invoice_id = Column(Integer, primary_key=True, nullable=False)
+    service_id = Column(Integer, ForeignKey("Service.service_id"), nullable=False)
+    payment_id = Column(Integer, ForeignKey("Payment.payment_id"), nullable=False)
+    tax_identification_number = Column(Integer, nullable=False)  
+    discounts = Column(Boolean, nullable=False, server_default="false")
+    additional_price = Column(Numeric(10, 2), nullable=False, server_default="0.00")
+    vat = Column(Numeric(8, 2), nullable=False, server_default="0.00")
+    included_service = Column(SqlIncludedServiceEnum, nullable=False, server_default="Hospedaje")
+    completed = Column(Boolean, nullable=False, server_default="false")
+    created_at = Column(TIMESTAMP(timezone=False), nullable=False, server_default=func.now())
 
-    payment_id = Column(Integer, primary_key=True, nullable=False)
-    amount = Column(DECIMAL(10, 2), nullable=False)
-    method = Column(SqlPaymentMethodEnum, nullable=False, server_default="IoT_Devices")
-    payment_date = Column(TIMESTAMP(timezone=False), nullable=False, server_default=func.now())
-    payment_status = Column(SqlPaymentStatusEnum, nullable=False, server_default="Pending")
-    refund_return = Column(Boolean, nullable=False, server_default="false")
-
+    
+    service = relationship("Service", back_populates="invoices")
+    payment = relationship("Payment", back_populates="invoices")
