@@ -1,7 +1,9 @@
 from sqlalchemy import Column, Integer, BigInteger, String, Text, TIMESTAMP, func
 from sqlalchemy.ext.declarative import declarative_base
+from backend.models import Base  # usa el único Base común
 
-Base = declarative_base()
+
+# Base = declarative_base()
 
 class User(Base):
     __tablename__ = 'User'
