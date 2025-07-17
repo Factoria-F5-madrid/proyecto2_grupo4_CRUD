@@ -16,3 +16,4 @@ class User(Base):
     last_update = Column(TIMESTAMP(timezone=False), nullable=False, server_default=func.now())
     updated_by = Column(String(55), nullable=False)
     update_date = Column(TIMESTAMP(timezone=False), nullable=False)
+
