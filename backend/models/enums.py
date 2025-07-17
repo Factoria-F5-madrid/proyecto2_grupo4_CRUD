@@ -1,6 +1,10 @@
 from sqlalchemy import Enum
+import enum
 
-ServiceTypeEnum = Enum(
-    'Guarderia', 'Transporte', 'Comida', 'Otros',
-    name='service_type_enum'
-)
+class ServiceTypeEnum(enum.Enum):
+    GUARDERIA = "Guarderia"
+    TRANSPORTE = "Transporte"
+    COMIDA = "Comida"
+    OTROS = "Otros"
+
+SqlServiceTypeEnum = Enum(ServiceTypeEnum, name="service_type_enum")
