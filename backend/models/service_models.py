@@ -1,9 +1,8 @@
 from sqlalchemy import Column, Integer, Boolean, Text, Numeric, Time, TIMESTAMP, func
-from sqlalchemy.ext.declarative import declarative_base
 from sqlalchemy.orm import relationship
 from .enums import ServiceTypeEnum 
+from .base_models import Base
 
-Base = declarative_base()
 
 class Service(Base):
     __tablename__ = 'Service'
