@@ -4,8 +4,8 @@ from sqlalchemy.future import select
 
 from backend.routes import users_routes,  invoice_routes
 
-from backend.db.database import AsyncSessionLocal
-from backend.models.user_models import User
+from db.database import AsyncSessionLocal
+from models.user_models import User
 
 app = FastAPI()
 

@@ -6,6 +6,15 @@ from backend.db.database import engine
 from backend.models.user_models import Base
 from models.invoice_models import Base as InvoiceBase
 
+from db.database import engine
+from models.base_models import Base
+
+
+from models.user_models import User
+from models.payment_models import Payment
+from models.service_models import Service
+from models.assignment_models import Assignment
+
 async def init_db():
     async with engine.begin() as conn:
         await conn.run_sync(Base.metadata.create_all)
