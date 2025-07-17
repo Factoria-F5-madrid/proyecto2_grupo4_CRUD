@@ -44,8 +44,13 @@ SqlPaymentMethodEnum = Enum(PaymentMethodEnum, name="payment_method_enum")
 SqlPaymentStatusEnum = Enum(PaymentStatusEnum, name="payment_status_enum")  
 SqlIncludedServiceEnum = Enum(IncludedServiceEnum, name="included_service_enum")  
 
-PetTypeEnum = Enum(
-    'Canino', 'Felino', 'Reptil', 'Anfibio', 'Ave', 'Pez', 'Roedor', 'Otro',
-    name='pet_type_enum'
-)
+class PetTypeEnum(enum.Enum):
+    CANINO = "Canino"
+    FELINO = "Felino"
+    REPTIL = "Reptil"
+    ANFIBIO = "Anfibio"
+    AVE = "Ave"
+    PEZ = "Pez"
+    ROEDOR = "Roedor"
+    OTRO = "Otro"
 
