@@ -1,7 +1,5 @@
 from sqlalchemy import Column, Integer, BigInteger, String, Text, TIMESTAMP, func
-from sqlalchemy.ext.declarative import declarative_base
-
-Base = declarative_base()
+from .base_models import Base
 
 class User(Base):
     __tablename__ = 'User'

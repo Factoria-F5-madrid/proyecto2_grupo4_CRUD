@@ -3,9 +3,11 @@ from sqlalchemy.ext.asyncio import AsyncSession
 from sqlalchemy.future import select
 
 from backend.routes import users_routes
+from backend.routes import service_routes
+from backend.routes import reservation_routes
 
-from db.database import AsyncSessionLocal
-from models.user_models import User
+from backend.db.database import AsyncSessionLocal
+from backend.models.user_models import User
 
 app = FastAPI()
 
@@ -19,3 +21,5 @@ async def get_db():
 
 
 app.include_router(users_routes.router, prefix="/users", tags=["Users"])
+app.include_router(service_routes.router, prefix="/services", tags=["Services"])
+app.include_router(reservation_routes.router, prefix="/reservations", tags=["Reservations"])

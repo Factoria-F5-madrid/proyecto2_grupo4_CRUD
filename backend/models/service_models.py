@@ -13,9 +13,7 @@ class Service(Base):
     other_service = Column(Text)
     notes = Column(Text)
     base_price = Column(Numeric(10, 2), nullable=False)
-    duration = Column(Time(precision=0))
+    duration = Column(Time)
     created_at = Column(TIMESTAMP, nullable=False, server_default=func.now())
 
     reservations = relationship("Reservation", back_populates="service")
-    assignments = relationship("Assignment", back_populates="service")
-    invoices = relationship("Invoice", back_populates="service")
