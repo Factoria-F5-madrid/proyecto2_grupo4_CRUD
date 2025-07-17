@@ -2,7 +2,8 @@ from fastapi import FastAPI, Depends, HTTPException
 from sqlalchemy.ext.asyncio import AsyncSession
 from sqlalchemy.future import select
 
-from backend.routes import users_routes, medicalHistory_routes
+from backend.routes import users_routes
+from backend.routes import medicalHistory_routes
 
 from backend.db.database import AsyncSessionLocal
 from backend.models.user_models import User

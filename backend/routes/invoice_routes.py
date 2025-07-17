@@ -1,6 +1,6 @@
 from fastapi import APIRouter, Depends
 from sqlalchemy.ext.asyncio import AsyncSession
-from db.database import AsyncSessionLocal
+from backend.db.database import AsyncSessionLocal
 
 router = APIRouter()
 
@@ -9,5 +9,5 @@ async def get_db():
         yield session
 
 @router.get("/")
-async def get_users(db: AsyncSession = Depends(get_db)):
-    return {"message": "Ruta de usuarios funcionando"}
+async def get_invoices(db: AsyncSession = Depends(get_db)):
+    return {"message": "Ruta de facturas funcionando"}
