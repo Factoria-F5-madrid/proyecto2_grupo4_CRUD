@@ -1,8 +1,8 @@
 from sqlalchemy import Column, Integer, ForeignKey, TIMESTAMP, func
 from sqlalchemy.orm import relationship
-from sqlalchemy.ext.declarative import declarative_base
+from .base_models import Base
 
-Base = declarative_base()
+
 
 class Assignment(Base):
     __tablename__ = "assignment"

@@ -6,7 +6,7 @@ Base = declarative_base()
 class User(Base):
     __tablename__ = 'User'
 
-    client_id = Column(Integer, primary_key=True, nullable=False)
+    user_id = Column(Integer, primary_key=True, nullable=False)
     first_name = Column(String(100), nullable=False)
     last_name = Column(String(100), nullable=False)
     phone_number = Column(BigInteger, nullable=False, unique=True)
@@ -16,3 +16,4 @@ class User(Base):
     last_update = Column(TIMESTAMP(timezone=False), nullable=False, server_default=func.now())
     updated_by = Column(String(55), nullable=False)
     update_date = Column(TIMESTAMP(timezone=False), nullable=False)
+
