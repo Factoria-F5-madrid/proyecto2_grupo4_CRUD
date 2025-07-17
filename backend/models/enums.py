@@ -18,5 +18,19 @@ class PaymentStatusEnum(enum.Enum):
     REJECTED = "Rejected"
     CANCELLED = "Cancelled"
 
+class IncludedServiceEnum(enum.Enum):
+    CUIDADO = "Cuidado"
+    ADIESTRAMIENTO = "Adiestramiento"
+    PELUQUERIA = "Peluquería"
+    RECEPCION = "Recepción"
+    ALIMENTACION = "Alimentacion especial"
+    NUTRICION = "Nutrición estandar"
+    CRIAS = "Cuidado de crias"
+    ADIESTRAMIENTO_AVANZADO = "Adiestramiento avanzado"
+    NOCTURNO = "Cuidado nocturno"
+    PSICOLOGIA = "Psicología animal"
+    EVENTOS = "Celebracion eventos"    
+
 SqlPaymentMethodEnum = Enum(PaymentMethodEnum, name="payment_method_enum")
-SqlPaymentStatusEnum = Enum(PaymentStatusEnum, name="payment_status_enum")    
+SqlPaymentStatusEnum = Enum(PaymentStatusEnum, name="payment_status_enum")  
+SqlIncludedServiceEnum = Enum(IncludedServiceEnum, name="included_service_enum")  

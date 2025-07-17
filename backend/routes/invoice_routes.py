@@ -2,7 +2,7 @@ from fastapi import APIRouter, Depends
 from sqlalchemy.ext.asyncio import AsyncSession
 from backend.db.database import AsyncSessionLocal
 
-router = APIRouter(prefix="/invoices", tags=["Invoices"])
+router = APIRouter()
 
 async def get_db():
     async with AsyncSessionLocal() as session:
