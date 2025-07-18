@@ -1,8 +1,8 @@
 from fastapi import APIRouter, Depends
 from sqlalchemy.ext.asyncio import AsyncSession
 from db.database import AsyncSessionLocal
-from backend.controllers import pet_controller
-from backend.schema.pet_schema import PetSchema
+from controllers import pet_controller
+from schema.pet_schema import PetSchema
 
 router = APIRouter()
 

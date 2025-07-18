@@ -2,11 +2,10 @@ from fastapi import FastAPI, Depends, HTTPException
 from sqlalchemy.ext.asyncio import AsyncSession
 from sqlalchemy.future import select
 
-from backend.routes import users_routes, pet_route
-from backend.routes import medicalHistory_routes
+from routes import users_routes, pet_route
+from routes import medicalHistory_routes
 
-from backend.db.database import AsyncSessionLocal
-from backend.models.user_models import User
+from db.database import AsyncSessionLocal
 
 app = FastAPI()
 

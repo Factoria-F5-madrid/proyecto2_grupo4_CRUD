@@ -1,6 +1,6 @@
 from sqlalchemy import Column, Integer, String, Date, ForeignKey, CheckConstraint
 from sqlalchemy.ext.declarative import declarative_base
-from backend.models.base_models import Base
+from models.base_models import Base
 from .enums import PetTypeEnum
 
 class Pet(Base):
