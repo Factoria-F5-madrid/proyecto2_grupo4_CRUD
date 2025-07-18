@@ -48,4 +48,16 @@ async def update_service(service_id: int, updated_data: ServiceUpdate, db: Async
     await db.commit()
     await db.refresh(service)
 
-    return service
+
+@router.delete("/{service_id}")
+async def delete_service(service_id: int, db: AsyncSession = Depends(get_db)):
+    result = await db.execute(select(Service).where(Service.service_id == service_id))
+    service = result.scalar_one_or_none()
+
+    if service is None:
+        raise HTTPException(status_code=404, detail="Service not found")
+
+    await db.delete(service)
+    await db.commit()
+
+    return {"detail": f"Service with ID {service_id} deleted successfully"}
