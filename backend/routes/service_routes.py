@@ -25,3 +25,12 @@ async def get_all_services(db: AsyncSession = Depends(get_db)):
     result = await db.execute(select(Service))
     services = result.scalars().all()
     return services
+
+@router.get("/{service_id}", response_model=ServiceOut)
+async def get_service_by_id(service_id: int, db: AsyncSession = Depends(get_db)):
+    result = await db.execute(select(Service).where(Service.service_id == service_id))
+    service = result.scalar_one_or_none()
+    if service is None:
+        raise HTTPException(status_code=404, detail="Service not found")
+    return service
+
