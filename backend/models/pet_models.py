@@ -16,6 +16,6 @@ class Pet(Base):
     registration_date = Column(TIMESTAMP(timezone=False), nullable=False, server_default=func.now())
     notes = Column(Text)
 
-    owner = relationship("User", back_populates="pets")
-    medical_history = relationship("MedicalHistory", back_populates="pet")
-    reservations = relationship("Reservation", back_populates="pet") 
+    #owner = relationship("User", back_populates="pets")
+    #medical_history = relationship("MedicalHistory", back_populates="pet")
+    #reservations = relationship("Reservation", back_populates="pet") 

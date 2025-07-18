@@ -1,6 +1,6 @@
 from pydantic import BaseModel
 from typing import Optional
-from datetime import time
+from datetime import time,datetime
 from backend.models.enums import ServiceTypeEnum  
 
 class ServiceBase(BaseModel):
@@ -22,7 +22,7 @@ class ServiceUpdate(BaseModel):
     base_price: Optional[float]
     duration: Optional[time]
 
-from datetime import datetime
+
 
 class ServiceOut(ServiceBase):
     service_id: int

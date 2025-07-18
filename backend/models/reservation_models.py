@@ -14,5 +14,5 @@ class Reservation(Base):
     is_confirmed = Column(Boolean, nullable=False, server_default="false")
     created_at = Column(TIMESTAMP(timezone=False), nullable=False, server_default=func.now())
 
-    service = relationship("Service", back_populates="reservations")
-    pet = relationship("Pet", back_populates="reservations") 
+    #service = relationship("Service", back_populates="reservations")
+    #pet = relationship("Pet", back_populates="reservations") 
