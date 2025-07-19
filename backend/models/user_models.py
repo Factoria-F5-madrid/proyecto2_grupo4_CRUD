@@ -1,12 +1,12 @@
-from sqlalchemy import Column, Integer, BigInteger, String, Text, TIMESTAMP, func
-from sqlalchemy.ext.declarative import declarative_base
+from sqlalchemy import Column, Integer, String, BigInteger, Text, TIMESTAMP, func
+from sqlalchemy.orm import relationship
 
-Base = declarative_base()
+from .base_models import Base
 
 class User(Base):
     __tablename__ = 'User'
 
-    client_id = Column(Integer, primary_key=True, nullable=False)
+    user_id = Column(Integer, primary_key=True, nullable=False)
     first_name = Column(String(100), nullable=False)
     last_name = Column(String(100), nullable=False)
     phone_number = Column(BigInteger, nullable=False, unique=True)
@@ -14,5 +14,8 @@ class User(Base):
     address = Column(Text, nullable=False)
     registration_date = Column(TIMESTAMP(timezone=False), nullable=False, server_default=func.now())
     last_update = Column(TIMESTAMP(timezone=False), nullable=False, server_default=func.now())
-    updated_by = Column(String(55), nullable=False)
-    update_date = Column(TIMESTAMP(timezone=False), nullable=False)
+    updated_by = Column(String(55), nullable=False, default="system") 
+    update_date = Column(TIMESTAMP(timezone=False), nullable=False, server_default=func.now())
+
+   
+    # reservation = relationship("Reservation", back_populates="user")
