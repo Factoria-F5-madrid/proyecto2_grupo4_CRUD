@@ -2,9 +2,9 @@ from fastapi import FastAPI, Depends, HTTPException
 from sqlalchemy.ext.asyncio import AsyncSession
 from sqlalchemy.future import select
 
-from backend.routes import user_routes
-from backend.routes import service_routes
-from backend.routes import reservation_routes
+from backend.routes.user_routes import router as users_router
+from backend.routes.service_routes import router as service_router 
+from backend.routes.reservation_routes import router as reservations_router
 
 from backend.db.database import AsyncSessionLocal
 from backend.models.user_models import User
@@ -21,7 +21,8 @@ async def get_db():
     async with AsyncSessionLocal() as session:
         yield session
 
-app.include_router(user_routes.router, prefix="/users", tags=["Users"])
-app.include_router(service_routes.router, prefix="/services", tags=["Services"])
-app.include_router(reservation_routes.router, prefix="/reservations", tags=["Reservations"])
+
+app.include_router(users_router, prefix="/users", tags=["Users"])
+app.include_router(service_router, prefix="/services", tags=["Services"])
+app.include_router(reservations_router, prefix="/reservations", tags=["Reservations"])
 

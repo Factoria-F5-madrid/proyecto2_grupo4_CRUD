@@ -10,7 +10,7 @@ from backend.controllers.reservation_controller import (
     get_reservations_by_user_controller,
     get_reservations_by_service_controller,
     update_reservation_controller,
-    delete_reservation_controller
+    delete_reservation_controller,
 )
 from backend.db.database import get_db
 
@@ -26,7 +26,10 @@ async def get_all_reservations(db: AsyncSession = Depends(get_db)):
 
 @router.get("/{reservation_id}", response_model=ReservationOut)
 async def get_reservation_by_id(reservation_id: int, db: AsyncSession = Depends(get_db)):
-    return await get_reservation_by_id_controller(reservation_id, db)
+    reservation = await get_reservation_by_id_controller(reservation_id, db)
+    if reservation is None:
+        raise HTTPException(status_code=404, detail="Reservation not found")
+    return reservation
 
 @router.get("/user/{user_id}", response_model=List[ReservationOut])
 async def get_reservations_by_user(user_id: int, db: AsyncSession = Depends(get_db)):
@@ -38,8 +41,14 @@ async def get_reservations_by_service(service_id: int, db: AsyncSession = Depend
 
 @router.put("/{reservation_id}", response_model=ReservationOut)
 async def update_reservation(reservation_id: int, reservation_data: ReservationUpdate, db: AsyncSession = Depends(get_db)):
-    return await update_reservation_controller(reservation_id, reservation_data, db)
+    updated_reservation = await update_reservation_controller(reservation_id, reservation_data, db)
+    if updated_reservation is None:
+        raise HTTPException(status_code=404, detail="Reservation not found")
+    return updated_reservation
 
 @router.delete("/{reservation_id}")
 async def delete_reservation(reservation_id: int, db: AsyncSession = Depends(get_db)):
-    return await delete_reservation_controller(reservation_id, db) 
+    result = await delete_reservation_controller(reservation_id, db)
+    if not result:
+        raise HTTPException(status_code=404, detail="Reservation not found")
+    return {"detail": f"Reservation with ID {reservation_id} deleted successfully"}
