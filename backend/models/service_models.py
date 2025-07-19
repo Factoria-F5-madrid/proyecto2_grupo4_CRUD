@@ -16,3 +16,6 @@ class Service(Base):
     base_price = Column(Numeric(10, 2), nullable=False)
     duration = Column(Time)
     created_at = Column(TIMESTAMP, nullable=False, server_default=func.now())
+
+    # Relaciones
+    reservations = relationship("Reservation", back_populates="service")

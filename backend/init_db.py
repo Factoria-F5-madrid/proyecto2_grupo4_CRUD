@@ -9,11 +9,13 @@ from backend.db.database import engine
 from backend.models import Base
 from backend.models.service_models import Service
 from backend.models.user_models import User
+from backend.models.reservation_models import Reservation
 
 __all__ = [
     'Base',
     'Service',
-    'User'
+    'User',
+    'Reservation'
 ]
 
 
