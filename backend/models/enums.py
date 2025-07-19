@@ -13,5 +13,17 @@ class ReservationStatusEnum(enum.Enum):
     CANCELLED = "cancelled"
     COMPLETED = "completed"
 
+class PetTypeEnum(enum.Enum):
+    CANINO = "Canino"
+    FELINO = "Felino"
+    REPTIL = "Reptil"
+    ANFIBIO = "Anfibio"
+    AVE = "Ave"
+    PEZ = "Pez"
+    ROEDOR = "Roedor"
+    OTRO = "Otro"
+
+SqlPetTypeEnum = Enum(PetTypeEnum, name="pet_type_enum")    
+
 SqlServiceTypeEnum = Enum(ServiceTypeEnum, name="service_type_enum")
 SqlReservationStatusEnum = Enum(ReservationStatusEnum, name="reservation_status_enum")

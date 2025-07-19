@@ -10,12 +10,14 @@ from backend.models import Base
 from backend.models.service_models import Service
 from backend.models.user_models import User
 from backend.models.reservation_models import Reservation
+from backend.models.pet_models import Pet
 
 __all__ = [
     'Base',
     'Service',
     'User',
-    'Reservation'
+    'Reservation',
+    'Pet'
 ]
 
 
