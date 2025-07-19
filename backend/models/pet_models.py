@@ -18,4 +18,4 @@ class Pet(Base):
 
     #owner = relationship("User", back_populates="pets")
     #medical_history = relationship("MedicalHistory", back_populates="pet")
-    #reservations = relationship("Reservation", back_populates="pet") 
+    reservations = relationship("Reservation", back_populates="pet") 

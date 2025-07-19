@@ -7,7 +7,15 @@ sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), "..")))
 
 from backend.db.database import engine
 from backend.models import Base
+from backend.models.service_models import Service
+from backend.models.reservation_models import Reservation
 
+__all__ = [
+    'Base',
+    'Service',
+    'Reservation',
+    'Pet'
+]
 
 
 async def init_db():

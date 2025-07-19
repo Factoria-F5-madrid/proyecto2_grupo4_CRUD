@@ -1,5 +1,7 @@
 from sqlalchemy import Column, Integer, Boolean, Text, Numeric, Time, TIMESTAMP, func
 from sqlalchemy.orm import relationship
+
+from .reservation_models import Reservation
 from .enums import SqlServiceTypeEnum
 from .base_models import Base
 
@@ -16,4 +18,4 @@ class Service(Base):
     duration = Column(Time)
     created_at = Column(TIMESTAMP, nullable=False, server_default=func.now())
 
-    #reservations = relationship("Reservation", back_populates="service")
+    reservations = relationship("Reservation", back_populates="service")
