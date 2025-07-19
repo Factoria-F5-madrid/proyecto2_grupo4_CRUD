@@ -54,3 +54,4 @@ class PetTypeEnum(enum.Enum):
     ROEDOR = "Roedor"
     OTRO = "Otro"
 
+SqlPetTypeEnum = Enum(PetTypeEnum, name="pet_type_enum")
