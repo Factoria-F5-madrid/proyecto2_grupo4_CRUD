@@ -23,7 +23,15 @@ class PetTypeEnum(enum.Enum):
     ROEDOR = "Roedor"
     OTRO = "Otro"
 
-SqlPetTypeEnum = Enum(PetTypeEnum, name="pet_type_enum")    
+class EmployeeSpecialtyEnum(enum.Enum):
+    VETERINARIO = "Veterinario"
+    CUIDADOR = "Cuidador"
+    PELUQUERO = "Peluquero"
+    RECEPCIONISTA = "Recepcionista"
+    ADMINISTRATIVO = "Administrativo"
+    OTRO = "Otro"
 
+SqlPetTypeEnum = Enum(PetTypeEnum, name="pet_type_enum")    
 SqlServiceTypeEnum = Enum(ServiceTypeEnum, name="service_type_enum")
 SqlReservationStatusEnum = Enum(ReservationStatusEnum, name="reservation_status_enum")
+SqlEmployeeSpecialtyEnum = Enum(EmployeeSpecialtyEnum, name="employee_specialty_enum")
