@@ -1,6 +1,6 @@
 from sqlalchemy import Column, Integer, String, DateTime, Boolean, Enum
 from sqlalchemy.sql import func
-#from sqlalchemy.orm import relationship
+from sqlalchemy.orm import relationship
 from .base_models import Base
 from .enums import EmployeeSpecialtyEnum
 
@@ -15,3 +15,5 @@ class Employee(Base):
     is_active = Column(Boolean, default=True)
     created_at = Column(DateTime(timezone=True), server_default=func.now())
     updated_at = Column(DateTime(timezone=True), onupdate=func.now())
+
+    activity_log = relationship("ActivityLog", back_populates="employees")

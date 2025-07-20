@@ -11,13 +11,17 @@ from backend.models.service_models import Service
 from backend.models.user_models import User
 from backend.models.reservation_models import Reservation
 from backend.models.pet_models import Pet
+from backend.models.employee_models import Employee
+from backend.models.activity_log_models import ActivityLog
 
 __all__ = [
     'Base',
     'Service',
     'User',
     'Reservation',
-    'Pet'
+    'Pet',
+    'Employee',
+    'ActivityLog'
 ]
 
 

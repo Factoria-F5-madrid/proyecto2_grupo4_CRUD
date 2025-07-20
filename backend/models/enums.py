@@ -31,7 +31,18 @@ class EmployeeSpecialtyEnum(enum.Enum):
     ADMINISTRATIVO = "Administrativo"
     OTRO = "Otro"
 
+class ActivityTypeEnum(enum.Enum):
+    ALIMENTACION = "Alimentación"
+    PASEO = "Paseo"
+    MEDICACION = "Medicación"
+    PELUQUERIA = "Peluquería"
+    JUEGO = "Juego"
+    ENTRENAMIENTO = "Entrenamiento"
+    LIMPIEZA = "Limpieza"
+    OTRO = "Otro"    
+
 SqlPetTypeEnum = Enum(PetTypeEnum, name="pet_type_enum")    
 SqlServiceTypeEnum = Enum(ServiceTypeEnum, name="service_type_enum")
 SqlReservationStatusEnum = Enum(ReservationStatusEnum, name="reservation_status_enum")
 SqlEmployeeSpecialtyEnum = Enum(EmployeeSpecialtyEnum, name="employee_specialty_enum")
+SqlActivityTypeEnum = Enum(ActivityTypeEnum, name="activity_type_enum")

@@ -18,4 +18,5 @@ class Pet(Base):
     user_id = Column(Integer, ForeignKey('User.user_id'), nullable=False)
 
   
-    user = relationship("User", back_populates="pets") 
+    user = relationship("User", back_populates="pet") 
+    activity_log = relationship("ActivityLog", back_populates="pet")
