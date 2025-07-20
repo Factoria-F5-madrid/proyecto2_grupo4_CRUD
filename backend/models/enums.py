@@ -43,3 +43,15 @@ SqlMedicalHistoryTypeEnum = Enum(MedicalHistoryTypeEnum, name="medical_history_t
 SqlPaymentMethodEnum = Enum(PaymentMethodEnum, name="payment_method_enum")
 SqlPaymentStatusEnum = Enum(PaymentStatusEnum, name="payment_status_enum")  
 SqlIncludedServiceEnum = Enum(IncludedServiceEnum, name="included_service_enum")  
+
+class PetTypeEnum(enum.Enum):
+    CANINO = "Canino"
+    FELINO = "Felino"
+    REPTIL = "Reptil"
+    ANFIBIO = "Anfibio"
+    AVE = "Ave"
+    PEZ = "Pez"
+    ROEDOR = "Roedor"
+    OTRO = "Otro"
+
+SqlPetTypeEnum = Enum(PetTypeEnum, name="pet_type_enum")
