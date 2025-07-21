@@ -35,11 +35,11 @@ export const getReservationByID = async (id) => {
   }
 };
 
-// Crear un nuevo historial médico
-export const createMedicalHistory = async (formData) => {
+// Crear una nueva reserva
+export const createReservation = async (formData) => {
   try {
     const response = await axios.post(
-      "http://127.0.0.1:8000/medicalHistory/medical_history/",
+      "http://127.0.0.1:8000/reservation",
       formData,
       {
         headers: {
@@ -49,7 +49,7 @@ export const createMedicalHistory = async (formData) => {
     );
     return response.data; 
   } catch (error) {
-    console.error("Error al crear el Historial Médico:", error);
+    console.error("Error al crear la reserva:", error);
     throw error; 
   }
 };
