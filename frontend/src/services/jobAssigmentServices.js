@@ -71,8 +71,8 @@ export const deleteAssigment = async (id) => {
   }
 };
 
-// Actualizar una factura por ID
-export const updateInvoice = async (id, updatedData) => {
+// Actualizar una asignación de empleo por ID
+export const updateAssigment = async (id, updatedData) => {
   const token = localStorage.getItem("token"); 
 
   try {
@@ -83,7 +83,7 @@ export const updateInvoice = async (id, updatedData) => {
     });
     return response.data;
   } catch (error) {
-    console.error(`Error al actualizar la factura con ID ${id}:`, error);
+    console.error(`Error al actualizar la asignación de empleo con ID ${id}:`, error);
     throw error;
   }
 };
