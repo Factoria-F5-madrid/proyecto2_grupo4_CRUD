@@ -20,3 +20,4 @@ class Pet(Base):
   
     user = relationship("User", back_populates="pet") 
     activity_log = relationship("ActivityLog", back_populates="pet")
+    medical_histories = relationship("MedicalHistory", back_populates="pet")
