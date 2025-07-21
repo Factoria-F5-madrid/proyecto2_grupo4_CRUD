@@ -35,11 +35,11 @@ export const getAssigmentByID = async (id) => {
   }
 };
 
-// Crear una nueva factura
-export const createInvoice = async (formData) => {
+// Crear una nueva asignación de empleo
+export const createAssigment = async (formData) => {
   try {
     const response = await axios.post(
-      "http://127.0.0.1:8000/invoices/",
+      "http://127.0.0.1:8000/assigment/",
       formData,
       {
         headers: {
@@ -49,7 +49,7 @@ export const createInvoice = async (formData) => {
     );
     return response.data; 
   } catch (error) {
-    console.error("Error al crear la factura:", error);
+    console.error("Error al crear la asignación de empleo:", error);
     throw error; 
   }
 };
