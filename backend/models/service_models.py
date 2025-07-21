@@ -20,3 +20,4 @@ class Service(Base):
    
     reservations = relationship("Reservation", back_populates="service")
     assignments = relationship("Assignment", back_populates="service")
+    invoices = relationship("Invoice", back_populates="service")

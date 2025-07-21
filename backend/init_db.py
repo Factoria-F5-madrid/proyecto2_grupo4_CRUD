@@ -15,6 +15,9 @@ from backend.models.employee_models import Employee
 from backend.models.activity_log_models import ActivityLog
 from backend.models.medical_history_models import MedicalHistory
 from backend.models.assignment_models import Assignment
+from backend.models.payment_models import Payment
+from backend.models.invoice_models import Invoice
+
 
 __all__ = [
     'Base',
@@ -25,7 +28,9 @@ __all__ = [
     'Employee',
     'ActivityLog',
     'MedicalHistory',
-    'Assignment'
+    'Assignment',
+    'Payment',
+    'Invoice'
 ]
 
 
