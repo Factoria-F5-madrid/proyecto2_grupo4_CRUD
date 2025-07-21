@@ -35,11 +35,11 @@ export const getPaymentByID = async (id) => {
   }
 };
 
-// Crear una nueva asignación de empleo
-export const createAssigment = async (formData) => {
+// Crear un nuevo pago
+export const createPayment = async (formData) => {
   try {
     const response = await axios.post(
-      "http://127.0.0.1:8000/assigment/",
+      "http://127.0.0.1:8000/payment/",
       formData,
       {
         headers: {
@@ -49,7 +49,7 @@ export const createAssigment = async (formData) => {
     );
     return response.data; 
   } catch (error) {
-    console.error("Error al crear la asignación de empleo:", error);
+    console.error("Error al crear el pago:", error);
     throw error; 
   }
 };
