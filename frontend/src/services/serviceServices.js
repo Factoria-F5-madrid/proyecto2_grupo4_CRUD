@@ -35,11 +35,11 @@ export const getServiceByID = async (id) => {
   }
 };
 
-// Crear una nueva reserva
-export const createReservation = async (formData) => {
+// Crear un nuevo servicio
+export const createService = async (formData) => {
   try {
     const response = await axios.post(
-      "http://127.0.0.1:8000/reservation",
+      "http://127.0.0.1:8000/service",
       formData,
       {
         headers: {
@@ -49,7 +49,7 @@ export const createReservation = async (formData) => {
     );
     return response.data; 
   } catch (error) {
-    console.error("Error al crear la reserva:", error);
+    console.error("Error al crear el servicio:", error);
     throw error; 
   }
 };
