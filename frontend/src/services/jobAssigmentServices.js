@@ -13,13 +13,13 @@ export const getAssigments = async () => {
   }
 };
 
-// Obtener la lista de facturas
-export const getInvoicesList = async () => {
+// Obtener la lista de asignaciones de empleos
+export const getAssignmentsList = async () => {
   try {
     const response = await axios.get(`${BASE_URL}/list`);
     return response.data;
   } catch (error) {
-    console.error(`Error al obtener la lista de facturas:`, error);
+    console.error(`Error al obtener la lista de asignaciones de empleos:`, error);
     throw error;
   }
 };
