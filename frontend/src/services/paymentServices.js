@@ -13,13 +13,13 @@ export const getPayment = async () => {
   }
 };
 
-// Obtener la lista de asignaciones de empleo
-export const getAssignmentsList = async () => {
+// Obtener la lista de los pagos
+export const getPaymentList = async () => {
   try {
     const response = await axios.get(`${BASE_URL}/list`);
     return response.data;
   } catch (error) {
-    console.error(`Error al obtener la lista de asignaciones de empleo:`, error);
+    console.error(`Error al obtener la lista de los pagos:`, error);
     throw error;
   }
 };
