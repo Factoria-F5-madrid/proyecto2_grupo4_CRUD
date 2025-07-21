@@ -2,34 +2,35 @@ import axios from "axios";
 
 const BASE_URL = "http://127.0.0.1:8000/assigment/"; // Cambia esta URL si tu endpoint de videos es diferente
 
-// Acceder a las asignaciones de empleos
+// Acceder a las asignaciones de empleo
 export const getAssigments = async () => {
   try {
     const response = await axios.get(BASE_URL);
     return response.data;
   } catch (error) {
-    console.error("Error al acceder a las asignaciones de empleos:", error);
+    console.error("Error al acceder a las asignaciones de empleo:", error);
     throw error;
   }
 };
 
-// Obtener la lista de asignaciones de empleos
+// Obtener la lista de asignaciones de empleo
 export const getAssignmentsList = async () => {
   try {
     const response = await axios.get(`${BASE_URL}/list`);
     return response.data;
   } catch (error) {
-    console.error(`Error al obtener la lista de asignaciones de empleos:`, error);
+    console.error(`Error al obtener la lista de asignaciones de empleo:`, error);
     throw error;
   }
 };
 
-export const getInvoiceByID = async (id) => {
+// Obtener una asignación de empleo por ID
+export const getAssigmentByID = async (id) => {
   try {
     const response = await axios.get(`${BASE_URL}/list/${id}`);
     return response.data;
   } catch (error) {
-    console.error(`Error al obtener la factura con ID ${id}:`, error);
+    console.error(`Error al obtener la asignación de empleo con ID ${id}:`, error);
     throw error;
   }
 };
