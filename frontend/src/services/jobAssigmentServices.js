@@ -54,8 +54,8 @@ export const createAssigment = async (formData) => {
   }
 };
 
-// Eliminar un video por ID
-export const deleteVideo = async (id) => {
+// Eliminar una asignación de empleo
+export const deleteAssigment = async (id) => {
   const token = localStorage.getItem("token"); 
 
   try {
@@ -66,7 +66,7 @@ export const deleteVideo = async (id) => {
     });
     return response.data;
   } catch (error) {
-    console.error(`Error al eliminar el video con ID ${id}:`, error);
+    console.error(`Error al eliminar la asignación de empleo con ID ${id}:`, error);
     throw error;
   }
 };
