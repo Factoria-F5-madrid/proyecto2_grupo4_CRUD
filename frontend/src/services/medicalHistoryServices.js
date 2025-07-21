@@ -24,7 +24,18 @@ export const getListMedicalHistories = async () => {
   }
 };
 
-// Crear un nuevo video
+// Obtener un historial médico por ID
+export const getMedicalHistoryByID = async (id) => {
+  try {
+    const response = await axios.get(`${BASE_URL}/list/${id}`);
+    return response.data;
+  } catch (error) {
+    console.error(`Error al obtener el historial médico con ID ${id}:`, error);
+    throw error;
+  }
+};
+
+// Crear un nuevo historial médico
 export const createMedicalHistory = async (formData) => {
   try {
     const response = await axios.post(
