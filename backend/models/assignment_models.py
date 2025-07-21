@@ -5,7 +5,7 @@ from .base_models import Base
 
 
 class Assignment(Base):
-    __tablename__ = "Assigment"
+    __tablename__ = "Assignment"
 
     assignment_id = Column(Integer, primary_key=True, index=True)
     service_id = Column(BigInteger, ForeignKey("Service.service_id"), nullable=False)

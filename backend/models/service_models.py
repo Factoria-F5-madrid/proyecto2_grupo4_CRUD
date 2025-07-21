@@ -17,5 +17,6 @@ class Service(Base):
     duration = Column(Time)
     created_at = Column(TIMESTAMP, nullable=False, server_default=func.now())
 
-    # Relaciones
+   
     reservations = relationship("Reservation", back_populates="service")
+    assignments = relationship("Assignment", back_populates="service")
