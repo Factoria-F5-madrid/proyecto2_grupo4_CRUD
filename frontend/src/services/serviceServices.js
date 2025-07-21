@@ -54,8 +54,8 @@ export const createService = async (formData) => {
   }
 };
 
-// Eliminar una reserva
-export const deleteReservation = async (id) => {
+// Eliminar un servicio
+export const deleteService = async (id) => {
   const token = localStorage.getItem("token"); 
 
   try {
@@ -66,7 +66,7 @@ export const deleteReservation = async (id) => {
     });
     return response.data;
   } catch (error) {
-    console.error(`Error al eliminar la reserva con ID ${id}:`, error);
+    console.error(`Error al eliminar el servicio con ID ${id}:`, error);
     throw error;
   } 
 };
