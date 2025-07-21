@@ -54,8 +54,8 @@ export const createReservation = async (formData) => {
   }
 };
 
-// Eliminar un historial médico
-export const deleteMedicalHistory = async (id) => {
+// Eliminar una reserva
+export const deleteReservation = async (id) => {
   const token = localStorage.getItem("token"); 
 
   try {
@@ -66,9 +66,9 @@ export const deleteMedicalHistory = async (id) => {
     });
     return response.data;
   } catch (error) {
-    console.error(`Error al eliminar el Historial Médico con el id ${id}:`, error);
+    console.error(`Error al eliminar la reserva con ID ${id}:`, error);
     throw error;
-  }
+  } 
 };
 
 // Actualizar el Historial Médical por ID
