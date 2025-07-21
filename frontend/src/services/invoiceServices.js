@@ -24,6 +24,16 @@ export const getInvoicesList = async () => {
   }
 };
 
+export const getInvoiceByID = async (id) => {
+  try {
+    const response = await axios.get(`${BASE_URL}/list/${id}`);
+    return response.data;
+  } catch (error) {
+    console.error(`Error al obtener la factura con ID ${id}:`, error);
+    throw error;
+  }
+};
+
 // Crear una nueva factura
 export const createInvoice = async (formData) => {
   try {
