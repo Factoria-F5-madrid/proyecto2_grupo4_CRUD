@@ -24,13 +24,13 @@ export const getListServices = async () => {
   }
 };
 
-// Obtener una reserva por ID
-export const getReservationByID = async (id) => {
+// Obtener un servicio por ID
+export const getServiceByID = async (id) => {
   try {
     const response = await axios.get(`${BASE_URL}/list/${id}`);
     return response.data;
   } catch (error) {
-    console.error(`Error al obtener la reserva con ID ${id}:`, error);
+    console.error(`Error al obtener el servicio con ID ${id}:`, error);
     throw error;
   }
 };
