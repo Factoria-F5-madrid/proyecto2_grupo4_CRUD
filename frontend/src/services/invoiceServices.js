@@ -24,11 +24,11 @@ export const getInvoicesList = async () => {
   }
 };
 
-// Crear un nuevo video
-export const createVideo = async (formData) => {
+// Crear una nueva factura
+export const createInvoice = async (formData) => {
   try {
     const response = await axios.post(
-      "http://localhost:3000/api/videos",
+      "http://127.0.0.1:8000/invoices/",
       formData,
       {
         headers: {
@@ -38,7 +38,7 @@ export const createVideo = async (formData) => {
     );
     return response.data; 
   } catch (error) {
-    console.error("Error al crear el video:", error);
+    console.error("Error al crear la factura:", error);
     throw error; 
   }
 };
