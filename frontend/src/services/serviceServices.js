@@ -13,13 +13,13 @@ export const getService = async () => {
   }
 };
 
-// Obtener la lista de las reservas
-export const getListReservations = async () => {
+// Obtener la lista de los servicios
+export const getListServices = async () => {
   try {
     const response = await axios.get(`${BASE_URL}/list`);
     return response.data;
   } catch (error) {
-    console.error(`Error al obtener las lista de las reservas:`, error);
+    console.error(`Error al obtener las lista de los servicios:`, error);
     throw error;
   }
 };
