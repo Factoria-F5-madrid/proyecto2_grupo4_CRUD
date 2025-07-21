@@ -60,7 +60,7 @@ export const deleteMedicalHistory = async (id) => {
   }
 };
 
-// Actualizar un video por ID
+// Actualizar el Historial Médical por ID
 export const updateMedicalHistory = async (id, updatedData) => {
   const token = localStorage.getItem("token"); 
 
@@ -77,17 +77,3 @@ export const updateMedicalHistory = async (id, updatedData) => {
   }
 };
 
-
-
-
-@router.post("/")
-async def create_medical_history(history: MedicalHistoryCreate, db: AsyncSession = Depends(get_db)):
-    new_history = MedicalHistory(
-        #pet_id=history.pet_id,
-        type=history.type,
-        description=history.description
-    )
-    db.add(new_history)
-    await db.commit()
-    await db.refresh(new_history)
-    return new_history
