@@ -2,7 +2,7 @@ import axios from "axios";
 
 const BASE_URL = "http://127.0.0.1:8000/medicalHistory/medical_history/"; // Cambia esta URL si tu endpoint de videos es diferente
 
-//Obtener los historiales médicos
+//Acceder a los historiales médicos
 export const getMedicalHistories = async () => {
   try {
     const response = await axios.get(BASE_URL);
