@@ -8,6 +8,7 @@ from backend.routes.reservation_routes import router as reservations_router
 from backend.routes.pet_routes import router as pets_router
 from backend.routes.employee_routes import router as employee_router
 from backend.routes.activity_log_routes import router as activity_log_router
+from backend.routes.medical_history_routes import router as medical_history_router
 
 from backend.db.database import AsyncSessionLocal
 
@@ -17,6 +18,7 @@ from backend.models.reservation_models import Reservation
 from backend.models.pet_models import Pet
 from backend.models.employee_models import Employee
 from backend.models.activity_log_models import ActivityLog
+from backend.models.medical_history_models import MedicalHistory
 
 app = FastAPI()
 
@@ -38,4 +40,5 @@ app.include_router(reservations_router, prefix="/reservations", tags=["Reservati
 app.include_router(pets_router, prefix="/pets", tags=["Pets"])
 app.include_router(employee_router, prefix="/employees", tags=["Employees"])
 app.include_router(activity_log_router, prefix="/activitylogs", tags=["Activity Logs"])
+app.include_router(medical_history_router, prefix="/medicalhistory", tags=["Medical History"])
 

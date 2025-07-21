@@ -6,6 +6,7 @@ from .reservation_models import Reservation
 from .pet_models import Pet
 from .employee_models import Employee
 from .activity_log_models import ActivityLog
+from .medical_history_models import MedicalHistory
 
 __all__ = [
     'Base',
@@ -14,5 +15,6 @@ __all__ = [
     'Reservation',
     'Pet', 
     'Employee',
-    'ActivityLog'
+    'ActivityLog',
+    'MedicalHistory'
 ]

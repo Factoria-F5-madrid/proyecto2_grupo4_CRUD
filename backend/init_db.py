@@ -13,6 +13,7 @@ from backend.models.reservation_models import Reservation
 from backend.models.pet_models import Pet
 from backend.models.employee_models import Employee
 from backend.models.activity_log_models import ActivityLog
+from backend.models.medical_history_models import MedicalHistory
 
 __all__ = [
     'Base',
@@ -21,7 +22,8 @@ __all__ = [
     'Reservation',
     'Pet',
     'Employee',
-    'ActivityLog'
+    'ActivityLog',
+    'MedicalHistory'
 ]
 
 
