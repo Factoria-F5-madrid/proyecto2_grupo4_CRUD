@@ -60,8 +60,8 @@ export const deleteVideo = async (id) => {
   }
 };
 
-// Actualizar un video por ID
-export const updateVideo = async (id, updatedData) => {
+// Actualizar una factura por ID
+export const updateInvoice = async (id, updatedData) => {
   const token = localStorage.getItem("token"); 
 
   try {
@@ -72,39 +72,9 @@ export const updateVideo = async (id, updatedData) => {
     });
     return response.data;
   } catch (error) {
-    console.error(`Error al actualizar el video con ID ${id}:`, error);
+    console.error(`Error al actualizar la factura con ID ${id}:`, error);
     throw error;
   }
 };
 
 
-@router.get("/list")
-async def list_invoices(db: AsyncSession = Depends(get_db)):
-    result = await db.execute(select(Invoice))
-    Invoice = result.scalars().all()
-    return Invoice
-
-@router.post("/")
-async def create_invoice(invoice: InvoiceCreate, db: AsyncSession = Depends(get_db)):
-    new_invoice = Invoice(
-        service_id=invoice.service_id,
-        payment_id=invoice.payment_id,
-        tax_identification_number=invoice.tax_identification_number,
-        discounts=invoice.discounts,
-        additional_price=invoice.additional_price,
-        vat=invoice.vat,
-        included_service=invoice.included_service,
-        completed=invoice.completed
-    )
-    db.add(new_invoice)
-    await db.commit()
-    await db.refresh(new_invoice)
-    return new_invoice
-
-@router.put("/")
-async def update_invoice(db: AsyncSession = Depends(get_db)):
-    return await invoice_controller.update_invoice(db, invoice_id=id, invoice=invoice_schema())
-
-@router.delete("/")
-async def delete_pets(db: AsyncSession = Depends(get_db)):
-    return await invoice_controller.delete_invoice(db, invoice_id=id)
