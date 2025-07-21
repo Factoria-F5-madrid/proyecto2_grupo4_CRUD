@@ -71,8 +71,8 @@ export const deleteReservation = async (id) => {
   } 
 };
 
-// Actualizar el Historial Médical por ID
-export const updateMedicalHistory = async (id, updatedData) => {
+// Actualizar la reserva por ID
+export const updateReservation = async (id, updatedData) => {
   const token = localStorage.getItem("token"); 
 
   try {
@@ -83,7 +83,7 @@ export const updateMedicalHistory = async (id, updatedData) => {
     });
     return response.data;
   } catch (error) {
-    console.error(`Error al actualizar el video con ID ${id}:`, error);
+    console.error(`Error al actualizar la reserva con ID ${id}:`, error);
     throw error;
   }
 };
