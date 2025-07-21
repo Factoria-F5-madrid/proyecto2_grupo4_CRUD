@@ -8,18 +8,18 @@ export const getMedicalHistories = async () => {
     const response = await axios.get(BASE_URL);
     return response.data;
   } catch (error) {
-    console.error("Error al obtener los historiales médicos:", error);
+    console.error("Error al acceder a los historiales médicos:", error);
     throw error;
   }
 };
 
-// Obtener un video por ID
-export const getVideoById = async (id) => {
+// Obtener la lista de los historiales médicos
+export const getListMedicalHistories = async (id) => {
   try {
     const response = await axios.get(`${BASE_URL}/${id}`);
     return response.data;
   } catch (error) {
-    console.error(`Error al obtener el video con ID ${id}:`, error);
+    console.error(`Error al obtener las lista de los historiales médicos ${id}:`, error);
     throw error;
   }
 };
@@ -79,20 +79,6 @@ export const updateVideo = async (id, updatedData) => {
 
 
 
-router = APIRouter(prefix="/medical_history", tags=["MedicalHistory"])
-
-class MedicalHistoryCreate(BaseModel):
-    pet_id: int
-    type: str
-    description: str
-
-async def get_db():
-    async with AsyncSessionLocal() as session:
-        yield session
-
-@router.get("/")
-async def get_medical_histories(db: AsyncSession = Depends(get_db)):
-    return {"message": "Ruta de historial médico funcionando"}
 
 @router.get("/list")
 async def list_medical_histories(db: AsyncSession = Depends(get_db)):
