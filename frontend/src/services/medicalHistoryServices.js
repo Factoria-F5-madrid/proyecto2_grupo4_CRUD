@@ -25,10 +25,10 @@ export const getListMedicalHistories = async (id) => {
 };
 
 // Crear un nuevo video
-export const createVideo = async (formData) => {
+export const createMedicalHistory = async (formData) => {
   try {
     const response = await axios.post(
-      "http://localhost:3000/api/videos",
+      "http://127.0.0.1:8000/medicalHistory/medical_history/",
       formData,
       {
         headers: {
@@ -38,13 +38,13 @@ export const createVideo = async (formData) => {
     );
     return response.data; 
   } catch (error) {
-    console.error("Error al crear el video:", error);
+    console.error("Error al crear el Historial Médico:", error);
     throw error; 
   }
 };
 
-// Eliminar un video por ID
-export const deleteVideo = async (id) => {
+// Eliminar un historial médico
+export const deleteMedicalHistory = async (id) => {
   const token = localStorage.getItem("token"); 
 
   try {
@@ -55,13 +55,13 @@ export const deleteVideo = async (id) => {
     });
     return response.data;
   } catch (error) {
-    console.error(`Error al eliminar el video con ID ${id}:`, error);
+    console.error(`Error al eliminar el Historial Médico con el id ${id}:`, error);
     throw error;
   }
 };
 
 // Actualizar un video por ID
-export const updateVideo = async (id, updatedData) => {
+export const updateMedicalHistory = async (id, updatedData) => {
   const token = localStorage.getItem("token"); 
 
   try {
@@ -80,20 +80,5 @@ export const updateVideo = async (id, updatedData) => {
 
 
 
-@router.get("/list")
-async def list_medical_histories(db: AsyncSession = Depends(get_db)):
-    result = await db.execute(select(MedicalHistory))
-    histories = result.scalars().all()
-    return histories
 
-@router.post("/")
-async def create_medical_history(history: MedicalHistoryCreate, db: AsyncSession = Depends(get_db)):
-    new_history = MedicalHistory(
-        #pet_id=history.pet_id,
-        type=history.type,
-        description=history.description
-    )
-    db.add(new_history)
-    await db.commit()
-    await db.refresh(new_history)
-    return new_history
+
