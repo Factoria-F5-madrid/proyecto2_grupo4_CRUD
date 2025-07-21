@@ -71,8 +71,8 @@ export const deleteService = async (id) => {
   } 
 };
 
-// Actualizar la reserva por ID
-export const updateReservation = async (id, updatedData) => {
+// Actualizar el servicio por ID
+export const updateService = async (id, updatedData) => {
   const token = localStorage.getItem("token"); 
 
   try {
@@ -83,7 +83,7 @@ export const updateReservation = async (id, updatedData) => {
     });
     return response.data;
   } catch (error) {
-    console.error(`Error al actualizar la reserva con ID ${id}:`, error);
+    console.error(`Error al actualizar el servicio con ID ${id}:`, error);
     throw error;
   }
 };
