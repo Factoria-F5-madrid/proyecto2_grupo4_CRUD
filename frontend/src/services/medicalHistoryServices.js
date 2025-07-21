@@ -14,12 +14,12 @@ export const getMedicalHistories = async () => {
 };
 
 // Obtener la lista de los historiales médicos
-export const getListMedicalHistories = async (id) => {
+export const getListMedicalHistories = async () => {
   try {
-    const response = await axios.get(`${BASE_URL}/${id}`);
+    const response = await axios.get(`${BASE_URL}/list`);
     return response.data;
   } catch (error) {
-    console.error(`Error al obtener las lista de los historiales médicos ${id}:`, error);
+    console.error(`Error al obtener las lista de los historiales médicos:`, error);
     throw error;
   }
 };

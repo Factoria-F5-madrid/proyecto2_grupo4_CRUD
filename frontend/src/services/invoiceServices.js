@@ -13,13 +13,13 @@ export const getInvoices = async () => {
   }
 };
 
-// Obtener un video por ID
-export const getVideoById = async (id) => {
+// Obtener la lista de facturas
+export const getInvoicesList = async () => {
   try {
-    const response = await axios.get(`${BASE_URL}/${id}`);
+    const response = await axios.get(`${BASE_URL}/list`);
     return response.data;
   } catch (error) {
-    console.error(`Error al obtener el video con ID ${id}:`, error);
+    console.error(`Error al obtener la lista de facturas:`, error);
     throw error;
   }
 };
@@ -77,9 +77,6 @@ export const updateVideo = async (id, updatedData) => {
   }
 };
 
-@router.get("/")
-async def get_invoices(db: AsyncSession = Depends(get_db)):
-    return {"message": "Ruta de facturas funcionando"}
 
 @router.get("/list")
 async def list_invoices(db: AsyncSession = Depends(get_db)):
