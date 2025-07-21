@@ -17,3 +17,4 @@ class Employee(Base):
     updated_at = Column(DateTime(timezone=True), onupdate=func.now())
 
     activity_log = relationship("ActivityLog", back_populates="employee")
+    assignments = relationship("Assignment", back_populates="employee")

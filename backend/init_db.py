@@ -14,6 +14,7 @@ from backend.models.pet_models import Pet
 from backend.models.employee_models import Employee
 from backend.models.activity_log_models import ActivityLog
 from backend.models.medical_history_models import MedicalHistory
+from backend.models.assignment_models import Assignment
 
 __all__ = [
     'Base',
@@ -23,7 +24,8 @@ __all__ = [
     'Pet',
     'Employee',
     'ActivityLog',
-    'MedicalHistory'
+    'MedicalHistory',
+    'Assignment'
 ]
 
 
