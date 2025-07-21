@@ -18,5 +18,5 @@ class ActivityLog(Base):
     created_at = Column(DateTime(timezone=True), server_default=func.now())
     
    
-    employee = relationship("Employees", back_populates="activity_log")
+    employee = relationship("Employee", back_populates="activity_log")
     pet = relationship("Pet", back_populates="activity_log")

@@ -17,5 +17,5 @@ class User(Base):
 
 
     reservations = relationship("Reservation", back_populates="user")
-    pets = relationship("Pet", back_populates="user")
+    pet = relationship("Pet", back_populates="user")
 

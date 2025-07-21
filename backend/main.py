@@ -7,6 +7,7 @@ from backend.routes.service_routes import router as service_router
 from backend.routes.reservation_routes import router as reservations_router
 from backend.routes.pet_routes import router as pets_router
 from backend.routes.employee_routes import router as employee_router
+from backend.routes.activity_log_routes import router as activity_log_router
 
 from backend.db.database import AsyncSessionLocal
 
@@ -15,6 +16,7 @@ from backend.models.service_models import Service
 from backend.models.reservation_models import Reservation
 from backend.models.pet_models import Pet
 from backend.models.employee_models import Employee
+from backend.models.activity_log_models import ActivityLog
 
 app = FastAPI()
 
@@ -35,4 +37,5 @@ app.include_router(service_router, prefix="/services", tags=["Services"])
 app.include_router(reservations_router, prefix="/reservations", tags=["Reservations"])
 app.include_router(pets_router, prefix="/pets", tags=["Pets"])
 app.include_router(employee_router, prefix="/employees", tags=["Employees"])
+app.include_router(activity_log_router, prefix="/activitylogs", tags=["Activity Logs"])
 
