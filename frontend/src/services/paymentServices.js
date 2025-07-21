@@ -1,34 +1,45 @@
 import axios from "axios";
 
-const BASE_URL = "http://127.0.0.1:8000/payment/"; // Cambia esta URL si tu endpoint de videos es diferente
+const BASE_URL = "http://127.0.0.1:8000/payment/"; 
 
-// Obtener todos los videos
-export const getAllVideos = async () => {
+// Acceder a los pagos
+export const getPayment = async () => {
   try {
     const response = await axios.get(BASE_URL);
     return response.data;
   } catch (error) {
-    console.error("Error al obtener los videos:", error);
+    console.error("Error al acceder a los pagos:", error);
     throw error;
   }
 };
 
-// Obtener un video por ID
-export const getVideoById = async (id) => {
+// Obtener la lista de asignaciones de empleo
+export const getAssignmentsList = async () => {
   try {
-    const response = await axios.get(`${BASE_URL}/${id}`);
+    const response = await axios.get(`${BASE_URL}/list`);
     return response.data;
   } catch (error) {
-    console.error(`Error al obtener el video con ID ${id}:`, error);
+    console.error(`Error al obtener la lista de asignaciones de empleo:`, error);
     throw error;
   }
 };
 
-// Crear un nuevo video
-export const createVideo = async (formData) => {
+// Obtener una asignación de empleo por ID
+export const getAssigmentByID = async (id) => {
+  try {
+    const response = await axios.get(`${BASE_URL}/list/${id}`);
+    return response.data;
+  } catch (error) {
+    console.error(`Error al obtener la asignación de empleo con ID ${id}:`, error);
+    throw error;
+  }
+};
+
+// Crear una nueva asignación de empleo
+export const createAssigment = async (formData) => {
   try {
     const response = await axios.post(
-      "http://localhost:3000/api/videos",
+      "http://127.0.0.1:8000/assigment/",
       formData,
       {
         headers: {
@@ -38,13 +49,13 @@ export const createVideo = async (formData) => {
     );
     return response.data; 
   } catch (error) {
-    console.error("Error al crear el video:", error);
+    console.error("Error al crear la asignación de empleo:", error);
     throw error; 
   }
 };
 
-// Eliminar un video por ID
-export const deleteVideo = async (id) => {
+// Eliminar una asignación de empleo
+export const deleteAssigment = async (id) => {
   const token = localStorage.getItem("token"); 
 
   try {
@@ -55,13 +66,13 @@ export const deleteVideo = async (id) => {
     });
     return response.data;
   } catch (error) {
-    console.error(`Error al eliminar el video con ID ${id}:`, error);
+    console.error(`Error al eliminar la asignación de empleo con ID ${id}:`, error);
     throw error;
   }
 };
 
-// Actualizar un video por ID
-export const updateVideo = async (id, updatedData) => {
+// Actualizar una asignación de empleo por ID
+export const updateAssigment = async (id, updatedData) => {
   const token = localStorage.getItem("token"); 
 
   try {
@@ -72,7 +83,7 @@ export const updateVideo = async (id, updatedData) => {
     });
     return response.data;
   } catch (error) {
-    console.error(`Error al actualizar el video con ID ${id}:`, error);
+    console.error(`Error al actualizar la asignación de empleo con ID ${id}:`, error);
     throw error;
   }
 };
