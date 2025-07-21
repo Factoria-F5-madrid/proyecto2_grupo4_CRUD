@@ -55,7 +55,7 @@ export const createPayment = async (formData) => {
 };
 
 // Eliminar un pago
-export const deleteAssigment = async (id) => {
+export const deletePayment = async (id) => {
   const token = localStorage.getItem("token"); 
 
   try {
@@ -71,8 +71,8 @@ export const deleteAssigment = async (id) => {
   }
 };
 
-// Actualizar una asignación de empleo por ID
-export const updateAssigment = async (id, updatedData) => {
+// Actualizar un pago
+export const updatePayment = async (id, updatedData) => {
   const token = localStorage.getItem("token"); 
 
   try {
@@ -83,7 +83,7 @@ export const updateAssigment = async (id, updatedData) => {
     });
     return response.data;
   } catch (error) {
-    console.error(`Error al actualizar la asignación de empleo con ID ${id}:`, error);
+    console.error(`Error al actualizar el pago con ID ${id}:`, error);
     throw error;
   }
 };
