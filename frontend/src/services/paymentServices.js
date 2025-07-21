@@ -54,7 +54,7 @@ export const createPayment = async (formData) => {
   }
 };
 
-// Eliminar una asignación de empleo
+// Eliminar un pago
 export const deleteAssigment = async (id) => {
   const token = localStorage.getItem("token"); 
 
@@ -66,7 +66,7 @@ export const deleteAssigment = async (id) => {
     });
     return response.data;
   } catch (error) {
-    console.error(`Error al eliminar la asignación de empleo con ID ${id}:`, error);
+    console.error(`Error al eliminar el pago con ID ${id}:`, error);
     throw error;
   }
 };
