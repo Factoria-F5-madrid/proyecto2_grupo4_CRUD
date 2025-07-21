@@ -24,13 +24,13 @@ export const getPaymentList = async () => {
   }
 };
 
-// Obtener una asignación de empleo por ID
-export const getAssigmentByID = async (id) => {
+// Obtener un pago por ID
+export const getPaymentByID = async (id) => {
   try {
     const response = await axios.get(`${BASE_URL}/list/${id}`);
     return response.data;
   } catch (error) {
-    console.error(`Error al obtener la asignación de empleo con ID ${id}:`, error);
+    console.error(`Error al obtener el pago con ID ${id}:`, error);
     throw error;
   }
 };
