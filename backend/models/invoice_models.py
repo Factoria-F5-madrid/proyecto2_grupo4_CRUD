@@ -10,7 +10,6 @@ class Invoice(Base):
 
     invoice_id = Column(Integer, primary_key=True, index=True)
     service_id = Column(Integer, ForeignKey("Service.service_id"), nullable=False)
-    payment_id = Column(Integer, ForeignKey("Payment.payment_id"), nullable=True)
     fiscal_number = Column(String(50), nullable=False)
     discounts = Column(Boolean, default=False)
     additional_price = Column(Numeric(10, 2), nullable=True)
