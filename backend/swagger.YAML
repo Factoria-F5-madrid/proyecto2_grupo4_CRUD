@@ -1,0 +1,145 @@
+project:
+  name: proyecto2_grupo4_CRUD
+  backend:
+    root_path: /Documents/proyecto2_grupo4_CRUD/backend/
+    entry_point: main.py
+    database_initialization: init_db.py
+    swagger_docs: swagger.YAML
+    directories:
+      controllers:
+        path: controllers/
+        files:
+          - __init__.py
+          - activity_log_controller.py
+          - assignment_controller.py
+          - employee_controller.py
+          - invoice_controllers.py
+          - medical_history_controller.py
+          - payment_controllers.py
+          - pet_controller.py
+          - reservation_controller.py
+          - service_controller.py
+          - user_controllers.py
+        description: Controladores para operaciones CRUD asíncronas
+        patterns:
+          - "Operaciones CRUD asíncronas"
+          - "Validación de relaciones"
+          - "Manejo consistente de errores HTTP"
+          - "Actualizaciones parciales via exclude_unset=True"
+          - "Patrón de respuesta uniforme"
+
+      db:
+        path: db/
+        files:
+          - __init__.py
+          - database.py
+        description: Configuración y conexión a la base de datos
+
+      models:
+        path: models/
+        files:
+          - __init__.py
+          - activity_log_models.py
+          - assignment_models.py
+          - base_models.py
+          - employee_models.py
+          - enums.py
+          - invoice_models.py
+          - medical_history_models.py
+          - payment_models.py
+          - pet_models.py
+          - reservation_models.py
+          - service_models.py
+          - user_models.py
+        description: Modelos de datos y enumeraciones
+        enums:
+          - ServiceTypeEnum
+          - ReservationStatusEnum
+          - PetTypeEnum
+          - EmployeeSpecialtyEnum
+          - ActivityTypeEnum
+          - PaymentMethodEnum
+          - PaymentStatusEnum
+          - IncludedServicesEnum
+
+      routes:
+        path: routes/
+        files:
+          - __init__.py
+          - activity_log_routes.py
+          - assignment_routes.py
+          - employee_routes.py
+          - invoice_routes.py
+          - medical_history_routes.py
+          - payment_routes.py
+          - pet_routes.py
+          - reservation_routes.py
+          - service_routes.py
+          - user_routes.py
+        description: Definición de endpoints API
+        features:
+          - "Operaciones CRUD completas"
+          - "Endpoints especializados (pets_by_user, reservations_by_service)"
+          - "Validación de seguridad (bearerAuth, adminAuth)"
+          - "Estructura RESTful estándar"
+
+      schema:
+        path: schema/
+        files:
+          - __init__.py
+          - activity_log_schema.py
+          - assignment_schema.py
+          - employee_schema.py
+          - invoice_schema.py
+          - medical_history_schema.py
+          - payment_schema.py
+          - pet_schema.py
+          - reservation_schema.py
+          - service_schemas.py
+          - user_schema.py
+        description: Esquemas Pydantic para validación de datos
+        schema_types:
+          - Create schemas (ej: PetCreate)
+          - Update schemas (ej: PetUpdate)
+          - Output schemas (ej: PetOut)
+
+    dependencies:
+      database: SQLAlchemy AsyncSession
+      security:
+        - bearerAuth (JWT)
+        - adminAuth (API Key)
+      utilities:
+        - pagination_params
+        - date_range_params
+        - search_params
+      services:
+        - email_service
+        - payment_gateway
+        - storage_service
+
+    error_handling:
+      standard_errors:
+        - 404: Recurso no encontrado
+        - 422: Error de validación
+        - 403: Acceso no autorizado
+        - 500: Error interno del servidor
+      custom_errors:
+        - 409: Conflicto (email/phone ya existe)
+        - 400: Solicitud inválida
+
+    architectural_patterns:
+      - MVC (Model-View-Controller)
+      - Async CRUD Operations
+      - Dependency Injection
+      - REST API Design
+      - OpenAPI 3.0 Specification
+      - Separation of Concerns (Routes/Controllers/Models)
+
+    notable_features:
+      - Auditoría automática en UserController
+      - Validación de relaciones complejas en ReservationController
+      - Esquemas de salida estandarizados
+      - Seguridad por roles (adminAuth)
+      - Documentación Swagger integrada
+      - Paginación y filtrado
+      - Manejo transaccional de pagos
