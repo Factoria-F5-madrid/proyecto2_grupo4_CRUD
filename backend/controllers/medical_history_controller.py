@@ -1,4 +1,4 @@
-from fastapi import HTTPException
+from backend.exceptions.custom_exceptions import NotFoundException, BadRequestException
 from sqlalchemy.ext.asyncio import AsyncSession
 from sqlalchemy.future import select
 from backend.models.medical_history_models import MedicalHistory
@@ -32,7 +32,7 @@ async def get_medical_history_by_id(db: AsyncSession, medical_history_id: int):
     medical_history = result.scalar_one_or_none()
     if not medical_history:
         logger.warning(f"Medical history with ID {medical_history_id} not found")
-        raise HTTPException(status_code=404, detail="Medical history not found")
+        raise NotFoundException("Medical history not found")
     logger.info(f"Found medical history with ID {medical_history_id}")    
     return medical_history
 
