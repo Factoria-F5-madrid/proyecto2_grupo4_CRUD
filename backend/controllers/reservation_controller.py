@@ -1,6 +1,7 @@
 from sqlalchemy.ext.asyncio import AsyncSession
 from sqlalchemy.future import select
-from fastapi import HTTPException
+from backend.exceptions.custom_exceptions import NotFoundException,BadRequestException
+
 
 from backend.models.reservation_models import Reservation
 from backend.models.user_models import User
@@ -16,19 +17,19 @@ async def create_reservation_controller(reservation_data: ReservationCreate, db:
     user = user_result.scalar_one_or_none()
     if not user:
         logger.warning(f"Service with ID {service_id} not found")
-        raise HTTPException(status_code=404, detail="User not found")
+        raise NotFoundException("User not found")
     
   
     service_result = await db.execute(select(Service).where(Service.service_id == reservation_data.service_id))
     service = service_result.scalar_one_or_none()
     if not service:
         logger.warning(f"Service with ID {reservation_data.service_id} not found")
-        raise HTTPException(status_code=404, detail="Service not found")
+        raise NotFoundException("User not found")
     
   
     if reservation_data.checkin_date >= reservation_data.checkout_date:
         logger.warning("Invalid reservation dates: check-in is not before check-out")
-        raise HTTPException(status_code=400, detail="Check-in date must be before check-out date")
+        raise BadRequestException(detail="Check-in date must be before check-out date")
     
    
     new_reservation = Reservation(**reservation_data.dict())
@@ -52,7 +53,7 @@ async def get_reservation_by_id_controller(reservation_id: int, db: AsyncSession
     reservation = result.scalar_one_or_none()
     if reservation is None:
         logger.warning(f"Reservation with ID {reservation_id} not found")
-        raise HTTPException(status_code=404, detail="Reservation not found")
+        raise NotFoundException("Reservation not found")
     logger.info(f"Reservation with ID {reservation_id} found")
     return reservation
 
@@ -75,7 +76,7 @@ async def update_reservation_controller(reservation_id: int, reservation_data: R
     reservation = result.scalar_one_or_none()
     if not reservation:
         logger.warning(f"Reservation with ID {reservation_id} not found")
-        raise HTTPException(status_code=404, detail="Reservation not found")
+        raise NotFoundException("Reservation not found")
     
   
     if reservation_data.user_id is not None:
@@ -83,7 +84,7 @@ async def update_reservation_controller(reservation_id: int, reservation_data: R
         user = user_result.scalar_one_or_none()
         if not user:
             logger.warning(f"User with ID {reservation_data.user_id} not found")
-            raise HTTPException(status_code=404, detail="User not found")
+            raise NotFoundException("Reservation not found")
     
 
     if reservation_data.service_id is not None:
@@ -91,13 +92,13 @@ async def update_reservation_controller(reservation_id: int, reservation_data: R
         service = service_result.scalar_one_or_none()
         if not service:
             logger.warning(f"Service with ID {reservation_data.service_id} not found")
-            raise HTTPException(status_code=404, detail="Service not found")
+            raise NotFoundException("Reservation not found")
     
    
     if reservation_data.checkin_date is not None and reservation_data.checkout_date is not None:
         if reservation_data.checkin_date >= reservation_data.checkout_date:
             logger.warning("Invalid reservation dates: check-in is not before check-out")
-            raise HTTPException(status_code=400, detail="Check-in date must be before check-out date")
+            raise BadRequestException(detail="Check-in date must be before check-out date")
     
    
     for field, value in reservation_data.dict(exclude_unset=True).items():
@@ -114,7 +115,7 @@ async def delete_reservation_controller(reservation_id: int, db: AsyncSession):
     reservation = result.scalar_one_or_none()
     if not reservation:
         logger.warning(f"Reservation with ID {reservation_id} not found")
-        raise HTTPException(status_code=404, detail="Reservation not found")
+        raise NotFoundException("Reservation not found")
     
     await db.delete(reservation)
     await db.commit()
