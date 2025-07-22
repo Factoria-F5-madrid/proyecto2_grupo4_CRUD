@@ -1,33 +1,22 @@
 import axios from "axios";
 
-const BASE_URL = "http://127.0.0.1:8000/assigment/"; 
+const BASE_URL = "http://localhost:5173/assigment/"; 
 
-// Acceder a las asignaciones 
+// Obtener todas las asignaciones 
 export const getAssigments = async () => {
   try {
     const response = await axios.get(BASE_URL);
     return response.data;
   } catch (error) {
-    console.error("Error al acceder a las asignaciones de empleados:", error);
+    console.error("Error al obtener todas las asignaciones de empleados:", error);
     throw error;
   }
 };
 
-// Obtener la lista de asignaciones 
-export const getAssignmentsList = async () => {
-  try {
-    const response = await axios.get(`${BASE_URL}/list`);
-    return response.data;
-  } catch (error) {
-    console.error(`Error al obtener la lista de asignaciones de empleados:`, error);
-    throw error;
-  }
-};
-
-// Obtener una asignación de empleados por ID
+// Obtener una asignación por ID
 export const getAssigmentByID = async (id) => {
   try {
-    const response = await axios.get(`${BASE_URL}/list/${id}`);
+    const response = await axios.get(`${BASE_URL}/${assignment_id}`);
     return response.data;
   } catch (error) {
     console.error(`Error al obtener la asignación de empleado con ID ${id}:`, error);
@@ -36,53 +25,54 @@ export const getAssigmentByID = async (id) => {
 };
 
 // Crear una nueva asignación de empleado
-export const createAssigment = async (formData) => {
+export const createInvoice = async (assigmentData) => {
   try {
     const response = await axios.post(
-      "http://127.0.0.1:8000/assigment/",
-      formData,
+      "http://localhost:5173/assigment/",
+      assigmentData,
       {
         headers: {
-          "Content-Type": "multipart/form-data",
+          "Content-Type": "application/json",
         },
       }
     );
     return response.data; 
   } catch (error) {
-    console.error("Error al asignar un empleado:", error);
+    console.error("Error al crear la asignación:", error);
     throw error; 
   }
 };
 
+
 // Eliminar una asignación 
-export const deleteAssigment = async (id) => {
+export const deleteAssigment = async (assigment_id) => {
   const token = localStorage.getItem("token"); 
 
   try {
-    const response = await axios.delete(`${BASE_URL}/${id}`, {
+    const response = await axios.delete(`${BASE_URL}/${assigment_id}`, {
       headers: {
         Authorization: `Bearer ${token}`, 
       },
     });
     return response.data;
   } catch (error) {
-    console.error(`Error al eliminar la asignación de empleado con ID ${id}:`, error);
+    console.error(`Error al eliminar la asignación de empleado con ID ${assigment_id}:`, error);
     throw error;
   }
 };
 
 // Actualizar una asignación de empleado por ID
-export const updateAssigment = async (id, updatedData) => {
+export const updateAssigment = async (assigment_id, updatedData) => {
   const token = localStorage.getItem("token"); 
   try {
-    const response = await axios.put(`${BASE_URL}/${id}`, updatedData, {
+    const response = await axios.put(`${BASE_URL}/${assigment_id}`, updatedData, {
       headers: {
         Authorization: `Bearer ${token}`, 
       },
     });
     return response.data;
   } catch (error) {
-    console.error(`Error al actualizar la asignación de empleado con ID ${id}:`, error);
+    console.error(`Error al actualizar la asignación de empleado con ID ${assigment_id}:`, error);
     throw error;
   }
 };
