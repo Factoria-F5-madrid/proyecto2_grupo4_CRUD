@@ -1,6 +1,6 @@
 from sqlalchemy.ext.asyncio import AsyncSession
 from sqlalchemy.future import select
-from fastapi import HTTPException
+from backend.exceptions.custom_exceptions import NotFoundException
 
 from backend.models.activity_log_models import ActivityLog
 from backend.models.pet_models import Pet
@@ -10,19 +10,19 @@ from backend.schema.activity_log_schema import ActivityLogCreate, ActivityLogUpd
 from backend.logger.logger import logger
 
 async def create_activitylog_controller(activity_data: ActivityLogCreate, db: AsyncSession):
+   
     logger.info(f"Creating ActivityLog for pet_id: {activity_data.pet_id}, employee_id: {activity_data.employee_id}")
     pet_result = await db.execute(select(Pet).where(Pet.pet_id == activity_data.pet_id))
     pet = pet_result.scalar_one_or_none()
     if not pet:
-        logger.error(f"Pet with id {activity_data.pet_id} not found")
-        raise HTTPException(status_code=404, detail="Pet not found")
+        raise NotFoundException(f"Pet with id {activity_data.pet_id} not found")
 
 
     employee_result = await db.execute(select(Employee).where(Employee.employee_id == activity_data.employee_id))
     employee = employee_result.scalar_one_or_none()
     if not employee:
-        logger.error(f"Employee with id {activity_data.employee_id} not found")
-        raise HTTPException(status_code=404, detail="Employee not found")
+        raise NotFoundException(f"Employee with id {activity_data.employee_id} not found")
+
 
     new_activity = ActivityLog(**activity_data.model_dump())
     db.add(new_activity)
@@ -43,8 +43,7 @@ async def get_activitylog_by_id_controller(activity_id: int, db: AsyncSession):
     result = await db.execute(select(ActivityLog).where(ActivityLog.activity_id == activity_id))
     activity = result.scalar_one_or_none()
     if activity is None:
-        logger.error(f"ActivityLog with ID {activity_id} not found")
-        raise HTTPException(status_code=404, detail="ActivityLog not found")
+        raise NotFoundException(f"ActivityLog with ID {activity_id} not found")
     return activity
 
 async def update_activitylog_controller(activity_id: int, activity_data: ActivityLogUpdate, db: AsyncSession):
@@ -52,8 +51,7 @@ async def update_activitylog_controller(activity_id: int, activity_data: Activit
     result = await db.execute(select(ActivityLog).where(ActivityLog.activity_id == activity_id))
     activity = result.scalar_one_or_none()
     if not activity:
-        logger.info(f"Updating ActivityLog with ID {activity_id}")
-        raise HTTPException(status_code=404, detail="ActivityLog not found")
+        raise NotFoundException(f"ActivityLog with ID {activity_id} not found")
 
     for field, value in activity_data.model_dump(exclude_unset=True).items():
         setattr(activity, field, value)
@@ -68,8 +66,7 @@ async def delete_activitylog_controller(activity_id: int, db: AsyncSession):
     result = await db.execute(select(ActivityLog).where(ActivityLog.activity_id == activity_id))
     activity = result.scalar_one_or_none()
     if not activity:
-        logger.error(f"ActivityLog with ID {activity_id} not found")
-        raise HTTPException(status_code=404, detail="ActivityLog not found")
+        raise NotFoundException(f"ActivityLog with ID {activity_id} not found")
 
     await db.delete(activity)
     await db.commit()

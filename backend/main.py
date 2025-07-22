@@ -26,7 +26,10 @@ from backend.models.assignment_models import Assignment
 from backend.models.payment_models import Payment
 from backend.models.invoice_models import Invoice
 
+from backend.exceptions.handlers import register_exception_handlers
+
 app = FastAPI()
+register_exception_handlers(app)
 
 @app.get("/")
 def read_root():
