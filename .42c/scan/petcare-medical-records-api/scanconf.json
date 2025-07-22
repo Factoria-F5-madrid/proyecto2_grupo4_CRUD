@@ -1,0 +1,594 @@
+{
+    "version": "2.0.0",
+    "runtimeConfiguration": {
+        "environment": "default",
+        "laxTestingModeEnabled": false,
+        "apiConnectivityCheck": true,
+        "logLevel": "error",
+        "logDestination": "stdout+platform",
+        "logMaxFileSize": 2147483648,
+        "requestHeaderNameRequestId": "x-scan-request-id",
+        "requestHeaderNameScenarioId": "x-scan-scenario-id",
+        "requestHeaderNameRequestType": "x-scan-request-type",
+        "requestFlowrate": 100,
+        "requestTimeout": 30,
+        "requestTlsInsecureSkipVerify": true,
+        "responseFollowRedirection": false,
+        "responseMaxBodySizeScan": 10485760,
+        "happyPathOnly": false,
+        "maxRequestRetryAttempts": 5,
+        "maxScanDuration": 1800,
+        "memoryLimit": 2147483648,
+        "memoryTimeSpan": 10,
+        "reportMaxRequestSizeHappyPath": 8092,
+        "reportMaxRequestSizeTest": 8092,
+        "reportIncludeRequestBody": true,
+        "reportIncludeResponseBody": true,
+        "reportMaxHttpResponseSizeHappyPath": 8092,
+        "reportMaxBodySizeHappyPath": 8092,
+        "reportMaxHttpResponseSizeTest": 8092,
+        "reportMaxBodySizeTest": 8092,
+        "reportIssuesOnly": false,
+        "reportMaxIssues": 1000,
+        "reportMaxSize": 20971520,
+        "reportGenerateCurlCommand": true,
+        "normalizeServerUrls": true
+    },
+    "customizations": {
+        "happyPaths": {
+            "retry": 1,
+            "responsePolicy": {
+                "httpStatusExpected": true,
+                "mustBeConformant": true
+            },
+            "httpStatusExpected": []
+        },
+        "tests": {
+            "responsePolicy": {
+                "httpStatusExpected": true,
+                "mustBeConformant": true
+            }
+        }
+    },
+    "authenticationDetails": [
+        {
+            "oAuth": {
+                "type": "oauth2",
+                "default": "oAuth",
+                "credentials": {
+                    "oAuth": {
+                        "description": "oAuth security",
+                        "credential": "{{oAuth}}"
+                    }
+                }
+            }
+        }
+    ],
+    "operations": {
+        "createMedicalRecord": {
+            "operationId": "createMedicalRecord",
+            "scenarios": [
+                {
+                    "key": "happy.path",
+                    "fuzzing": true,
+                    "requests": [
+                        {
+                            "$ref": "#/operations/createMedicalRecord/request",
+                            "fuzzing": true
+                        }
+                    ]
+                }
+            ],
+            "request": {
+                "operationId": "createMedicalRecord",
+                "auth": [
+                    "oAuth"
+                ],
+                "request": {
+                    "type": "42c",
+                    "details": {
+                        "url": "{{host}}/medical-records",
+                        "method": "POST",
+                        "headers": [
+                            {
+                                "key": "Content-Type",
+                                "value": "application/json"
+                            }
+                        ],
+                        "requestBody": {
+                            "mode": "json",
+                            "json": {
+                                "description": "Vacuna contra la rabia",
+                                "pet_id": 5,
+                                "type": "Vacunación anual"
+                            }
+                        }
+                    }
+                },
+                "defaultResponse": "201",
+                "responses": {
+                    "201": {
+                        "expectations": {
+                            "httpStatus": 201
+                        }
+                    },
+                    "400": {
+                        "expectations": {
+                            "httpStatus": 400
+                        }
+                    },
+                    "401": {
+                        "expectations": {
+                            "httpStatus": 401
+                        }
+                    },
+                    "403": {
+                        "expectations": {
+                            "httpStatus": 403
+                        }
+                    },
+                    "404": {
+                        "expectations": {
+                            "httpStatus": 404
+                        }
+                    },
+                    "415": {
+                        "expectations": {
+                            "httpStatus": 415
+                        }
+                    },
+                    "429": {
+                        "expectations": {
+                            "httpStatus": 429
+                        }
+                    },
+                    "500": {
+                        "expectations": {
+                            "httpStatus": 500
+                        }
+                    },
+                    "default": {
+                        "expectations": {
+                            "httpStatus": "default"
+                        }
+                    }
+                }
+            }
+        },
+        "deleteMedicalRecord": {
+            "operationId": "deleteMedicalRecord",
+            "scenarios": [
+                {
+                    "key": "happy.path",
+                    "fuzzing": true,
+                    "requests": [
+                        {
+                            "$ref": "#/operations/deleteMedicalRecord/request",
+                            "fuzzing": true
+                        }
+                    ]
+                }
+            ],
+            "request": {
+                "operationId": "deleteMedicalRecord",
+                "auth": [
+                    "oAuth"
+                ],
+                "request": {
+                    "type": "42c",
+                    "details": {
+                        "url": "{{host}}/medical-records/{record_id}",
+                        "method": "DELETE",
+                        "paths": [
+                            {
+                                "key": "record_id",
+                                "value": 3743209210812678052
+                            }
+                        ]
+                    }
+                },
+                "defaultResponse": "204",
+                "responses": {
+                    "204": {
+                        "expectations": {
+                            "httpStatus": 204
+                        }
+                    },
+                    "401": {
+                        "expectations": {
+                            "httpStatus": 401
+                        }
+                    },
+                    "403": {
+                        "expectations": {
+                            "httpStatus": 403
+                        }
+                    },
+                    "404": {
+                        "expectations": {
+                            "httpStatus": 404
+                        }
+                    },
+                    "429": {
+                        "expectations": {
+                            "httpStatus": 429
+                        }
+                    },
+                    "500": {
+                        "expectations": {
+                            "httpStatus": 500
+                        }
+                    },
+                    "default": {
+                        "expectations": {
+                            "httpStatus": "default"
+                        }
+                    }
+                }
+            }
+        },
+        "getMedicalRecordById": {
+            "operationId": "getMedicalRecordById",
+            "scenarios": [
+                {
+                    "key": "happy.path",
+                    "fuzzing": true,
+                    "requests": [
+                        {
+                            "$ref": "#/operations/getMedicalRecordById/request",
+                            "fuzzing": true
+                        }
+                    ]
+                }
+            ],
+            "request": {
+                "operationId": "getMedicalRecordById",
+                "auth": [
+                    "oAuth"
+                ],
+                "request": {
+                    "type": "42c",
+                    "details": {
+                        "url": "{{host}}/medical-records/{record_id}",
+                        "method": "GET",
+                        "paths": [
+                            {
+                                "key": "record_id",
+                                "value": 9025690133374690972
+                            }
+                        ]
+                    }
+                },
+                "defaultResponse": "200",
+                "responses": {
+                    "200": {
+                        "expectations": {
+                            "httpStatus": 200
+                        }
+                    },
+                    "401": {
+                        "expectations": {
+                            "httpStatus": 401
+                        }
+                    },
+                    "403": {
+                        "expectations": {
+                            "httpStatus": 403
+                        }
+                    },
+                    "404": {
+                        "expectations": {
+                            "httpStatus": 404
+                        }
+                    },
+                    "406": {
+                        "expectations": {
+                            "httpStatus": 406
+                        }
+                    },
+                    "429": {
+                        "expectations": {
+                            "httpStatus": 429
+                        }
+                    },
+                    "500": {
+                        "expectations": {
+                            "httpStatus": 500
+                        }
+                    },
+                    "default": {
+                        "expectations": {
+                            "httpStatus": "default"
+                        }
+                    }
+                }
+            }
+        },
+        "getPetMedicalHistory": {
+            "operationId": "getPetMedicalHistory",
+            "scenarios": [
+                {
+                    "key": "happy.path",
+                    "fuzzing": true,
+                    "requests": [
+                        {
+                            "$ref": "#/operations/getPetMedicalHistory/request",
+                            "fuzzing": true
+                        }
+                    ]
+                }
+            ],
+            "request": {
+                "operationId": "getPetMedicalHistory",
+                "auth": [
+                    "oAuth"
+                ],
+                "request": {
+                    "type": "42c",
+                    "details": {
+                        "url": "{{host}}/pets/{pet_id}/medical-records",
+                        "method": "GET",
+                        "paths": [
+                            {
+                                "key": "pet_id",
+                                "value": 5105620375919905199
+                            }
+                        ],
+                        "queries": [
+                            {
+                                "key": "page",
+                                "value": 1
+                            },
+                            {
+                                "key": "pageSize",
+                                "value": 10
+                            }
+                        ]
+                    }
+                },
+                "defaultResponse": "200",
+                "responses": {
+                    "200": {
+                        "expectations": {
+                            "httpStatus": 200
+                        }
+                    },
+                    "401": {
+                        "expectations": {
+                            "httpStatus": 401
+                        }
+                    },
+                    "403": {
+                        "expectations": {
+                            "httpStatus": 403
+                        }
+                    },
+                    "404": {
+                        "expectations": {
+                            "httpStatus": 404
+                        }
+                    },
+                    "406": {
+                        "expectations": {
+                            "httpStatus": 406
+                        }
+                    },
+                    "429": {
+                        "expectations": {
+                            "httpStatus": 429
+                        }
+                    },
+                    "500": {
+                        "expectations": {
+                            "httpStatus": 500
+                        }
+                    },
+                    "default": {
+                        "expectations": {
+                            "httpStatus": "default"
+                        }
+                    }
+                }
+            }
+        },
+        "listMedicalRecords": {
+            "operationId": "listMedicalRecords",
+            "scenarios": [
+                {
+                    "key": "happy.path",
+                    "fuzzing": true,
+                    "requests": [
+                        {
+                            "$ref": "#/operations/listMedicalRecords/request",
+                            "fuzzing": true
+                        }
+                    ]
+                }
+            ],
+            "request": {
+                "operationId": "listMedicalRecords",
+                "auth": [
+                    "oAuth"
+                ],
+                "request": {
+                    "type": "42c",
+                    "details": {
+                        "url": "{{host}}/medical-records",
+                        "method": "GET",
+                        "queries": [
+                            {
+                                "key": "type",
+                                "value": "tdqiienspdthsxdmzunopcetkusvnoca"
+                            },
+                            {
+                                "key": "page",
+                                "value": 1
+                            },
+                            {
+                                "key": "pageSize",
+                                "value": 10
+                            },
+                            {
+                                "key": "pet_id",
+                                "value": 2156083955677673936
+                            }
+                        ]
+                    }
+                },
+                "defaultResponse": "200",
+                "responses": {
+                    "200": {
+                        "expectations": {
+                            "httpStatus": 200
+                        }
+                    },
+                    "401": {
+                        "expectations": {
+                            "httpStatus": 401
+                        }
+                    },
+                    "403": {
+                        "expectations": {
+                            "httpStatus": 403
+                        }
+                    },
+                    "406": {
+                        "expectations": {
+                            "httpStatus": 406
+                        }
+                    },
+                    "429": {
+                        "expectations": {
+                            "httpStatus": 429
+                        }
+                    },
+                    "500": {
+                        "expectations": {
+                            "httpStatus": 500
+                        }
+                    },
+                    "default": {
+                        "expectations": {
+                            "httpStatus": "default"
+                        }
+                    }
+                }
+            }
+        },
+        "updateMedicalRecord": {
+            "operationId": "updateMedicalRecord",
+            "scenarios": [
+                {
+                    "key": "happy.path",
+                    "fuzzing": true,
+                    "requests": [
+                        {
+                            "$ref": "#/operations/updateMedicalRecord/request",
+                            "fuzzing": true
+                        }
+                    ]
+                }
+            ],
+            "request": {
+                "operationId": "updateMedicalRecord",
+                "auth": [
+                    "oAuth"
+                ],
+                "request": {
+                    "type": "42c",
+                    "details": {
+                        "url": "{{host}}/medical-records/{record_id}",
+                        "method": "PUT",
+                        "paths": [
+                            {
+                                "key": "record_id",
+                                "value": 3501415289036527230
+                            }
+                        ],
+                        "headers": [
+                            {
+                                "key": "Content-Type",
+                                "value": "application/json"
+                            }
+                        ],
+                        "requestBody": {
+                            "mode": "json",
+                            "json": {
+                                "date": "3783-10-10",
+                                "description": "pvqgrxxgfzzkoccrpzejhtieulfixojtejoopepxlmnsiiolfrghmauwughqhtjifornvdllywrctyqzovzlpdlhvwjtvkmuqylbrqvpayypxmgqzxbejityfbanvalioinchsdgn",
+                                "notes": "ejjniuzojsaknrhqgzzqyfzgtjvldccskdrblrmncdyxmpnngkzhvrxwjfaqsorptneogxyyoaewkyjtbrxmscsjcftcrnrtxuczgvrdoynfrjqdgphcxhhaahtagbcmgmmnyxstjzzqeprfhrdlgrcsxpwpyvqmdlfrxrfaaafhtgabxejgonttzyxcbvvojcxvtptxwhixbsezjdyymaezjlusqrxkapwqcgorfxsfcaztkbkwblaghscnfnfmcieszkysnlqnxgaqdrkqfoyplqvnbngmilvxiwadrumbmfoeakjwphkwrekqyjmxzhtnuhzrjhmmemtgqnlgddbxhmeobuhazvnyjkhhoxhujyyiwvmnonffdwtapgmwvbgzasmemtvxmgscmeemhqpujophfodmkkhmbdrnplauesqgixkaronegynfmegwtbbhjxdkjhwavnmvatngewpdrhfjixcpbzlrxxaxqwebyvonwobieelprwobvkxzswhopdzzwbvjqlqcmqkfglsbsgmrakgpqprixohrjciiyiweeqzjmcqfsrpsmmgainqjupcbxacdcxrxtankvainifnuezytcgaitxdixdooesbytbdwyeshwbuefvmyclycvqllqvnpzbgwkcxnuxnoaqgofsoovunrmucllfquxywcpiumqogroxvqmpzjqewfaocyopuzaisspuvdzlrlszjevnisqaqkidcvofbcyirnhmjmpcsyiqzwdwkjkpobinzlfgbiiiyfpbxqvjwihrzdfu",
+                                "treatment": "pacvelmzgdwrtzlnvndbwmcoqrbaaomgrrcvlcdehqnjzcyeeekwzdyzcnkcqhifjbqvxicgkzkgzuciyoatpbsgdrijbvdyjwvoecwlhitbbqkqmlrupvjvxwwtkhqulrorlyyjzsdpnrlytmtgjmlvhppdrkhxywxkbcnwfiuwerfndabplkjdrkpnahbmllwrvcwcwoaqmfdjpqzgxhoasfclvkytdadrtcpguebfxgbkvmfwlmwpjdhuqzkfjkgavgdfkxjfdnmznqhyjymnwcdqnbqvleebrkcsnmeoowxcqcelqlkdcjymkwesudyngmeibdtnrkkarxwddklgvfkrjeurjydaqtmdgxkxmenswxhpwwaraeaedfjwjpojeardoydgz",
+                                "type": "Consulta de seguimiento"
+                            }
+                        }
+                    }
+                },
+                "defaultResponse": "200",
+                "responses": {
+                    "200": {
+                        "expectations": {
+                            "httpStatus": 200
+                        }
+                    },
+                    "400": {
+                        "expectations": {
+                            "httpStatus": 400
+                        }
+                    },
+                    "401": {
+                        "expectations": {
+                            "httpStatus": 401
+                        }
+                    },
+                    "403": {
+                        "expectations": {
+                            "httpStatus": 403
+                        }
+                    },
+                    "404": {
+                        "expectations": {
+                            "httpStatus": 404
+                        }
+                    },
+                    "415": {
+                        "expectations": {
+                            "httpStatus": 415
+                        }
+                    },
+                    "429": {
+                        "expectations": {
+                            "httpStatus": 429
+                        }
+                    },
+                    "500": {
+                        "expectations": {
+                            "httpStatus": 500
+                        }
+                    },
+                    "default": {
+                        "expectations": {
+                            "httpStatus": "default"
+                        }
+                    }
+                }
+            }
+        }
+    },
+    "environments": {
+        "default": {
+            "variables": {
+                "host": {
+                    "from": "environment",
+                    "name": "SCAN42C_HOST",
+                    "required": false,
+                    "default": "https://api.petland.com/v1"
+                },
+                "oAuth": {
+                    "from": "environment",
+                    "name": "SCAN42C_SECURITY_OAUTH",
+                    "required": true
+                }
+            }
+        }
+    }
+}

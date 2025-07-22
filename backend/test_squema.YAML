@@ -1,0 +1,629 @@
+openapi: 3.0.1
+info:
+  title: PetCare Medical Records API
+  description: API para gestión integral de historiales médicos de mascotas
+  version: 1.0.0
+  contact:
+    name: Soporte API
+    email: soporte@petland.com
+    url: https://support.petland.com/api
+  license:
+    name: MIT
+    url: https://opensource.org/licenses/MIT
+  termsOfService: https://api.petland.com/terms
+
+servers:
+  - url: https://api.petland.com/v1
+    description: Servidor de producción
+  - url: https://staging-api.petland.com/v1
+    description: Servidor de staging
+
+paths:
+  /medical-records:
+    post:
+      tags: [Medical Records]
+      summary: Crear nuevo registro médico
+      description: Crea un nuevo registro médico para una mascota (Requiere privilegios de veterinario)
+      operationId: createMedicalRecord
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/MedicalRecordCreate'
+            example:
+              pet_id: 5
+              type: "Vacunación anual"
+              description: "Vacuna contra la rabia"
+              veterinarian_id: 3
+              treatment: "Rabisin 1mL"
+              notes: "Mascota presentó leve reacción alérgica"
+              date: "2025-07-23"
+      responses:
+        '201':
+          description: Registro médico creado exitosamente
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/MedicalRecordDetail'
+        '400':
+          $ref: '#/components/responses/BadRequest'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '403':
+          $ref: '#/components/responses/Forbidden'
+        '404':
+          $ref: '#/components/responses/NotFound'
+        '415':
+          description: Tipo de medio no soportado
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        '429':
+          description: Demasiadas solicitudes
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        '500':
+          $ref: '#/components/responses/ServerError'
+        default:
+          description: Error inesperado
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+      security:
+        - oAuth: [veterinary:write]
+
+    get:
+      tags: [Medical Records]
+      summary: Listar registros médicos
+      description: Recupera registros médicos con paginación (Requiere rol de administrador)
+      operationId: listMedicalRecords
+      parameters:
+        - $ref: '#/components/parameters/page'
+        - $ref: '#/components/parameters/pageSize'
+        - $ref: '#/components/parameters/petIdFilter'
+        - $ref: '#/components/parameters/recordTypeFilter'
+      responses:
+        '200':
+          description: Lista paginada de registros médicos
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/MedicalRecordList'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '403':
+          $ref: '#/components/responses/Forbidden'
+        '406':
+          description: Formato de respuesta no aceptable
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        '429':
+          description: Demasiadas solicitudes
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        '500':
+          $ref: '#/components/responses/ServerError'
+        default:
+          description: Error inesperado
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+      security:
+        - oAuth: [admin:read]
+
+  /medical-records/{record_id}:
+    parameters:
+      - name: record_id
+        in: path
+        required: true
+        description: ID del registro médico
+        schema:
+          type: integer
+          format: int64
+          minimum: 1
+          maximum: 9223372036854775807  # Max int64
+          example: 123
+    get:
+      tags: [Medical Records]
+      summary: Obtener registro médico por ID
+      description: Recupera un registro médico específico por su identificador
+      operationId: getMedicalRecordById
+      responses:
+        '200':
+          description: Detalles del registro médico
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/MedicalRecordDetail'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '403':
+          $ref: '#/components/responses/Forbidden'
+        '404':
+          $ref: '#/components/responses/NotFound'
+        '406':
+          description: Formato de respuesta no aceptable
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        '429':
+          description: Demasiadas solicitudes
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        '500':
+          $ref: '#/components/responses/ServerError'
+        default:
+          description: Error inesperado
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+      security:
+        - oAuth: []
+
+    put:
+      tags: [Medical Records]
+      summary: Actualizar registro médico
+      description: Actualiza un registro médico existente (Requiere privilegios de veterinario)
+      operationId: updateMedicalRecord
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/MedicalRecordUpdate'
+            example:
+              type: "Consulta de seguimiento"
+              description: "Control postoperatorio"
+              treatment: "Analgésicos cada 8 horas"
+              notes: "Herida cicatrizando correctamente"
+              date: "2025-07-24"
+      responses:
+        '200':
+          description: Registro médico actualizado exitosamente
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/MedicalRecordDetail'
+        '400':
+          $ref: '#/components/responses/BadRequest'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '403':
+          $ref: '#/components/responses/Forbidden'
+        '404':
+          $ref: '#/components/responses/NotFound'
+        '415':
+          description: Tipo de medio no soportado
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        '429':
+          description: Demasiadas solicitudes
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        '500':
+          $ref: '#/components/responses/ServerError'
+        default:
+          description: Error inesperado
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+      security:
+        - oAuth: [veterinary:write]
+
+    delete:
+      tags: [Medical Records]
+      summary: Eliminar registro médico
+      description: Elimina permanentemente un registro médico (Requiere rol de administrador)
+      operationId: deleteMedicalRecord
+      responses:
+        '204':
+          description: Registro eliminado exitosamente
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '403':
+          $ref: '#/components/responses/Forbidden'
+        '404':
+          $ref: '#/components/responses/NotFound'
+        '429':
+          description: Demasiadas solicitudes
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        '500':
+          $ref: '#/components/responses/ServerError'
+        default:
+          description: Error inesperado
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+      security:
+        - oAuth: [admin:write]
+
+  /pets/{pet_id}/medical-records:
+    parameters:
+      - name: pet_id
+        in: path
+        required: true
+        description: ID de la mascota
+        schema:
+          type: integer
+          format: int64
+          minimum: 1
+          maximum: 9223372036854775807  # Max int64
+          example: 5
+    get:
+      tags: [Medical Records]
+      summary: Obtener historial médico de mascota
+      description: Recupera todos los registros médicos de una mascota específica
+      operationId: getPetMedicalHistory
+      parameters:
+        - $ref: '#/components/parameters/page'
+        - $ref: '#/components/parameters/pageSize'
+      responses:
+        '200':
+          description: Historial médico de la mascota
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/MedicalRecordList'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '403':
+          $ref: '#/components/responses/Forbidden'
+        '404':
+          $ref: '#/components/responses/NotFound'
+        '406':
+          description: Formato de respuesta no aceptable
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        '429':
+          description: Demasiadas solicitudes
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        '500':
+          $ref: '#/components/responses/ServerError'
+        default:
+          description: Error inesperado
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+      security:
+        - oAuth: []
+
+components:
+  schemas:
+    # ================== ESQUEMAS CORREGIDOS ==================
+    MedicalRecordBase:
+      type: object
+      required: [pet_id, type, description]
+      additionalProperties: false
+      properties:
+        pet_id:
+          type: integer
+          format: int64
+          minimum: 1
+          maximum: 9223372036854775807  # Max int64
+          example: 5
+        type:
+          type: string
+          maxLength: 100
+          pattern: '^[a-zA-ZáéíóúÁÉÍÓÚñÑ\s]{3,100}$'
+          example: "Vacunación anual"
+        description:
+          type: string
+          maxLength: 1000
+          pattern: '^[\w\sáéíóúÁÉÍÓÚñÑ.,;:!¿?¡()\-"]{1,1000}$'
+          example: "Vacuna contra la rabia"
+
+    MedicalRecordCreate:
+      type: object
+      required: [pet_id, type, description, veterinarian_id]
+      additionalProperties: false
+      properties:
+        pet_id:
+          type: integer
+          format: int64
+          minimum: 1
+          maximum: 9223372036854775807
+          example: 5
+        type:
+          type: string
+          maxLength: 100
+          pattern: '^[a-zA-ZáéíóúÁÉÍÓÚñÑ\s]{3,100}$'
+          example: "Vacunación anual"
+        description:
+          type: string
+          maxLength: 1000
+          pattern: '^[\w\sáéíóúÁÉÍÓÚñÑ.,;:!¿?¡()\-"]{1,1000}$'
+          example: "Vacuna contra la rabia"
+        veterinarian_id:
+          type: integer
+          format: int64
+          minimum: 1
+          maximum: 9223372036854775807
+          example: 3
+        treatment:
+          type: string
+          maxLength: 500
+          pattern: '^[\w\sáéíóúÁÉÍÓÚñÑ.,;:!¿?¡()\-"]{0,500}$'
+          example: "Rabisin 1mL"
+        notes:
+          type: string
+          maxLength: 1000
+          pattern: '^[\w\sáéíóúÁÉÍÓÚñÑ.,;:!¿?¡()\-"]{0,1000}$'
+          example: "Mascota presentó leve reacción alérgica"
+        date:
+          type: string
+          format: date
+          pattern: '^\d{4}-\d{2}-\d{2}$'
+          example: "2025-07-23"
+
+    MedicalRecordDetail:
+      type: object
+      additionalProperties: false
+      properties:
+        id:
+          type: integer
+          format: int64
+          minimum: 1
+          maximum: 9223372036854775807
+          example: 123
+        pet_id:
+          type: integer
+          format: int64
+          minimum: 1
+          maximum: 9223372036854775807
+          example: 5
+        type:
+          type: string
+          maxLength: 100
+          pattern: '^[a-zA-ZáéíóúÁÉÍÓÚñÑ\s]{3,100}$'
+          example: "Vacunación anual"
+        description:
+          type: string
+          maxLength: 1000
+          pattern: '^[\w\sáéíóúÁÉÍÓÚñÑ.,;:!¿?¡()\-"]{1,1000}$'
+          example: "Vacuna contra la rabia"
+        created_at:
+          type: string
+          format: date-time
+          example: "2025-07-23T10:30:00Z"
+        treatment:
+          type: string
+          maxLength: 500
+          pattern: '^[\w\sáéíóúÁÉÍÓÚñÑ.,;:!¿?¡()\-"]{0,500}$'
+        notes:
+          type: string
+          maxLength: 1000
+          pattern: '^[\w\sáéíóúÁÉÍÓÚñÑ.,;:!¿?¡()\-"]{0,1000}$'
+        date:
+          type: string
+          format: date
+          pattern: '^\d{4}-\d{2}-\d{2}$'
+        veterinarian:
+          $ref: '#/components/schemas/EmployeeReference'
+
+    MedicalRecordUpdate:
+      type: object
+      additionalProperties: false
+      properties:
+        type:
+          type: string
+          maxLength: 100
+          pattern: '^[a-zA-ZáéíóúÁÉÍÓÚñÑ\s]{3,100}$'
+          example: "Consulta de seguimiento"
+        description:
+          type: string
+          maxLength: 1000
+          pattern: '^[\w\sáéíóúÁÉÍÓÚñÑ.,;:!¿?¡()\-"]{1,1000}$'
+        treatment:
+          type: string
+          maxLength: 500
+          pattern: '^[\w\sáéíóúÁÉÍÓÚñÑ.,;:!¿?¡()\-"]{0,500}$'
+        notes:
+          type: string
+          maxLength: 1000
+          pattern: '^[\w\sáéíóúÁÉÍÓÚñÑ.,;:!¿?¡()\-"]{0,1000}$'
+        date:
+          type: string
+          format: date
+          pattern: '^\d{4}-\d{2}-\d{2}$'
+
+    MedicalRecordList:
+      type: object
+      additionalProperties: false
+      properties:
+        data:
+          type: array
+          items:
+            $ref: '#/components/schemas/MedicalRecordDetail'
+          maxItems: 100
+        pagination:
+          $ref: '#/components/schemas/Pagination'
+
+    Pagination:
+      type: object
+      additionalProperties: false
+      properties:
+        total_items:
+          type: integer
+          format: int64
+          minimum: 0
+          example: 150
+        total_pages:
+          type: integer
+          format: int32
+          minimum: 0
+          example: 15
+        current_page:
+          type: integer
+          format: int32
+          minimum: 1
+          example: 1
+        page_size:
+          type: integer
+          format: int32
+          minimum: 1
+          maximum: 100
+          example: 10
+
+    EmployeeReference:
+      type: object
+      additionalProperties: false
+      properties:
+        id:
+          type: integer
+          format: int64
+          minimum: 1
+          maximum: 9223372036854775807
+          example: 3
+        name:
+          type: string
+          maxLength: 100
+          pattern: '^[a-zA-ZáéíóúÁÉÍÓÚñÑ\s\.]{3,100}$'
+          example: "Dra. María López"
+
+    # ========== ESQUEMA DE ERROR ESTANDARIZADO ==========
+    ErrorResponse:
+      type: object
+      additionalProperties: false
+      properties:
+        error:
+          type: string
+          example: "Bad Request"
+          pattern: '^[\w\s\-]{3,50}$'
+        message:
+          type: string
+          example: "Datos inválidos en la solicitud"
+          pattern: '^[\w\sáéíóúÁÉÍÓÚñÑ.,;:!¿?¡()\-"]{5,500}$'
+        status:
+          type: integer
+          format: int32
+          example: 400
+        timestamp:
+          type: string
+          format: date-time
+          example: "2025-07-23T12:34:56Z"
+
+  # ================== RESPUESTAS ESTANDARIZADAS ==================
+  responses:
+    BadRequest:
+      description: Solicitud incorrecta (datos inválidos o faltantes)
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ErrorResponse'
+    Unauthorized:
+      description: No autenticado (token faltante o inválido)
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ErrorResponse'
+    Forbidden:
+      description: No tiene permisos para esta operación
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ErrorResponse'
+    NotFound:
+      description: Recurso no encontrado
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ErrorResponse'
+    ServerError:
+      description: Error interno del servidor
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ErrorResponse'
+
+  # ================== PARÁMETROS MEJORADOS ==================
+  parameters:
+    page:
+      name: page
+      in: query
+      description: Número de página
+      required: false
+      schema:
+        type: integer
+        format: int32
+        minimum: 1
+        default: 1
+        example: 1
+    pageSize:
+      name: pageSize
+      in: query
+      description: Tamaño de página (número de elementos por página)
+      required: false
+      schema:
+        type: integer
+        format: int32
+        minimum: 1
+        maximum: 100
+        default: 10
+        example: 10
+    petIdFilter:
+      name: pet_id
+      in: query
+      description: Filtrar por ID de mascota
+      required: false
+      schema:
+        type: integer
+        format: int64
+        minimum: 1
+        maximum: 9223372036854775807
+        example: 5
+    recordTypeFilter:
+      name: type
+      in: query
+      description: Filtrar por tipo de registro
+      required: false
+      schema:
+        type: string
+        maxLength: 100
+        pattern: '^[a-zA-ZáéíóúÁÉÍÓÚñÑ\s]{3,100}$'
+        example: "Vacunación"
+
+  securitySchemes:
+    oAuth:
+      type: oauth2
+      flows:
+        authorizationCode:
+          authorizationUrl: https://api.petland.com/oauth/authorize
+          tokenUrl: https://api.petland.com/oauth/token
+          scopes:
+            veterinary:read: Acceso veterinario (lectura)
+            veterinary:write: Acceso veterinario (escritura)
+            admin:read: Acceso administrador (lectura)
+            admin:write: Acceso administrador (escritura)
+
+tags:
+  - name: Medical Records
+    description: Gestión de historiales médicos

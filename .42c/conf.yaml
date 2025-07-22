@@ -1,0 +1,3 @@
+apis:
+  backend/test_squema.YAML:
+    alias: petcare-medical-records-api
