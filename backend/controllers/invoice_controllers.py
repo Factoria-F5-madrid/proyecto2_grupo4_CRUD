@@ -1,6 +1,6 @@
 from sqlalchemy.ext.asyncio import AsyncSession
 from sqlalchemy.future import select
-from fastapi import HTTPException
+from backend.exceptions.custom_exceptions import NotFoundException, BadRequestException
 
 from backend.models.invoice_models import Invoice
 from backend.schema.invoice_schema import InvoiceCreate, InvoiceUpdate
@@ -29,7 +29,7 @@ async def get_invoice_by_id_controller(invoice_id: int, db: AsyncSession):
     invoice = result.scalar_one_or_none()
     if invoice is None:
         logger.warning(f"Invoice with ID {invoice_id} not found")
-        raise HTTPException(status_code=404, detail="Invoice not found")
+        raise NotFoundException("Invoice not found")
     logger.info(f"Found invoice with ID: {invoice_id}")    
     return invoice
 
@@ -39,7 +39,7 @@ async def update_invoice_controller(invoice_id: int, invoice_data: InvoiceUpdate
     invoice = result.scalar_one_or_none()
     if not invoice:
         logger.warning(f"Invoice with ID {invoice_id} not found for update")
-        raise HTTPException(status_code=404, detail="Invoice not found")
+        raise NotFoundException("Invoice not found")
 
     for field, value in invoice_data.dict(exclude_unset=True).items():
         setattr(invoice, field, value)
@@ -55,7 +55,7 @@ async def delete_invoice_controller(invoice_id: int, db: AsyncSession):
     invoice = result.scalar_one_or_none()
     if not invoice:
         logger.warning(f"Invoice with ID {invoice_id} not found for deletion")
-        raise HTTPException(status_code=404, detail="Invoice not found")
+        raise NotFoundException("Invoice not found")
 
     await db.delete(invoice)
     await db.commit()
