@@ -1,9 +1,9 @@
 import axios from "axios";
 
-const BASE_URL = "http://localhost:5173/assigment/"; 
+const BASE_URL = "http://127.0.0.1:8000/assigment/"; 
 
 // Obtener todas las asignaciones 
-export const getAssigments = async () => {
+export const getAllAssigments = async () => {
   try {
     const response = await axios.get(BASE_URL);
     return response.data;
@@ -14,7 +14,7 @@ export const getAssigments = async () => {
 };
 
 // Obtener una asignación por ID
-export const getAssigmentByID = async (id) => {
+export const getAssigmentByID = async (assignment_id) => {
   try {
     const response = await axios.get(`${BASE_URL}/${assignment_id}`);
     return response.data;
@@ -28,7 +28,7 @@ export const getAssigmentByID = async (id) => {
 export const createAssignment = async (assigmentData) => {
   try {
     const response = await axios.post(
-      "http://localhost:5173/assigment/",
+      "http://127.0.0.1:8000/assigment/",
       assigmentData,
       {
         headers: {
