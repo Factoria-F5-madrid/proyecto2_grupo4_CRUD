@@ -23,6 +23,20 @@ export const getMedicalHistoryByID = async (medical_history_id) => {
   }
 };
 
+// Obtener historiales médicos por ID de mascota
+export const getMedicalHistoryByID = async (pet_id) => {
+  try {
+    const response = await axios.get(`${PET_BASE_URL}/${pet_id}`, {
+      headers: {
+        Authorization: `Bearer ${localStorage.getItem("token")}`,
+      },
+    });
+    return response.data;
+  } catch (error) {
+    console.error(`Error al obtener los historiales médicos para la mascota con ID ${pet_id}:`, error);
+    throw error;
+  }
+}
 // Crear un nuevo historial médico
 export const createMedicalHistory = async (medicalHistoryData) => {
   try {
