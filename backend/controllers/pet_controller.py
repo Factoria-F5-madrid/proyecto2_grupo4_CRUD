@@ -44,8 +44,9 @@ async def get_pet_by_id_controller(pet_id: int, db: AsyncSession):
 async def get_pets_by_user_controller(user_id: int, db: AsyncSession):
     logger.debug(f"Fetching pets for user ID {user_id}")
     result = await db.execute(select(Pet).where(Pet.user_id == user_id))
+    pets = result.scalars().all()
     logger.info(f"Found {len(pets)} pets for user ID {user_id}")
-    return result.scalars().all()
+    return pets
 
 async def update_pet_controller(pet_id: int, pet_data: PetUpdate, db: AsyncSession):
     logger.debug(f"Attempting to update pet with ID {pet_id}")
