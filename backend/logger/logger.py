@@ -4,7 +4,7 @@ import os
 
 log_level = os.getenv("LOG_LEVEL", "INFO").upper()  
 
-logger = logging.getLogger("myapp")
+logger = logging.getLogger("petlandF5")
 logger.setLevel(getattr(logging, log_level, logging.INFO))
 
 if not logger.handlers:
