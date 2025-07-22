@@ -25,7 +25,7 @@ export const getAssigmentByID = async (id) => {
 };
 
 // Crear una nueva asignación de empleado
-export const createInvoice = async (assigmentData) => {
+export const createAssignment = async (assigmentData) => {
   try {
     const response = await axios.post(
       "http://localhost:5173/assigment/",
