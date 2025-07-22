@@ -1,6 +1,7 @@
 from sqlalchemy.ext.asyncio import AsyncSession
 from sqlalchemy.future import select
-from fastapi import HTTPException
+from backend.exceptions.custom_exceptions import NotFoundException
+
 
 from backend.models.pet_models import Pet
 from backend.models.user_models import User
@@ -14,7 +15,7 @@ async def create_pet_controller(pet_data: PetCreate, db: AsyncSession):
     user = user_result.scalar_one_or_none()
     if not user:
         logger.warning(f"User with ID {pet_data.user_id} not found")
-        raise HTTPException(status_code=404, detail="User not found")
+        raise NotFoundException("User not found")
     
    
     new_pet = Pet(**pet_data.dict())
@@ -37,7 +38,7 @@ async def get_pet_by_id_controller(pet_id: int, db: AsyncSession):
     pet = result.scalar_one_or_none()
     if pet is None:
         logger.warning(f"Pet with ID {pet_id} not found")
-        raise HTTPException(status_code=404, detail="Pet not found")
+        raise NotFoundException("User not found")
     logger.info(f"Pet found: ID {pet_id}")    
     return pet
 
@@ -54,7 +55,7 @@ async def update_pet_controller(pet_id: int, pet_data: PetUpdate, db: AsyncSessi
     pet = result.scalar_one_or_none()
     if not pet:
         logger.warning(f"Pet with ID {pet_id} not found")
-        raise HTTPException(status_code=404, detail="Pet not found")
+        raise NotFoundException("User not found")
     
    
     if pet_data.user_id is not None:
@@ -63,7 +64,7 @@ async def update_pet_controller(pet_id: int, pet_data: PetUpdate, db: AsyncSessi
         user = user_result.scalar_one_or_none()
         if not user:
             logger.warning(f"User with ID {pet_data.user_id} not found")
-            raise HTTPException(status_code=404, detail="User not found")
+            raise NotFoundException("User not found")
     
   
     for field, value in pet_data.dict(exclude_unset=True).items():
@@ -80,7 +81,7 @@ async def delete_pet_controller(pet_id: int, db: AsyncSession):
     pet = result.scalar_one_or_none()
     if not pet:
         logger.warning(f"Pet with ID {pet_id} not found")
-        raise HTTPException(status_code=404, detail="Pet not found")
+        raise NotFoundException("User not found")
     
     await db.delete(pet)
     await db.commit()
