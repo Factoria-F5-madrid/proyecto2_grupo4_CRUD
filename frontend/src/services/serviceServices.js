@@ -27,10 +27,12 @@ export const getServiceByID = async (service_id) => {
 // Crear un nuevo servicio
 export const createService = async (serviceData) => {
   try {
-    const response = await axios.post(BASE_URL, serviceData, {
+    const response = await axios.post(
+      "http://localhost:5173/service/",
+      serviceData,
+      {
         headers: {
           "Content-Type": "application/json",
-          Authorization: 'Bearer ${token}',
         },
       }
     );
