@@ -28,7 +28,7 @@ export const getPaymentByID = async (payment_id) => {
 export const createPayment = async (paymentData) => {
   try {
     const response = await axios.post(
-      "http://localhost:5173/payment/",
+      "http://127.0.0.1:8000/payment/",
       paymentData,
       {
         headers: {
