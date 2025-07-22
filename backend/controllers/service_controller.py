@@ -1,6 +1,6 @@
 from sqlalchemy.ext.asyncio import AsyncSession
 from sqlalchemy.future import select
-from fastapi import HTTPException
+from backend.exceptions.custom_exceptions import NotFoundException
 
 from backend.models.service_models import Service
 from backend.schema.service_schemas import ServiceCreate, ServiceUpdate,ServiceOut
@@ -32,7 +32,7 @@ async def get_service_by_id_controller(service_id: int, db: AsyncSession):
     service = result.scalar_one_or_none()
     if service is None:
         logger.warning(f"Service with ID {service_id} not found")
-        raise HTTPException(status_code=404, detail="Service not found")
+        raise NotFoundException(detail="Service not found")
     return service
 
 
@@ -42,7 +42,7 @@ async def update_service_controller(service_id: int, service_data: ServiceUpdate
     service = result.scalar_one_or_none()
     if not service:
         logger.warning(f"Service with ID {service_id} not found for update")
-        raise HTTPException(status_code=404, detail="Service not found")
+        raise NotFoundException(detail="Service not found")
     
     for field, value in service_data.dict(exclude_unset=True).items():
         setattr(service, field, value)
@@ -59,7 +59,7 @@ async def delete_service_controller(service_id: int, db: AsyncSession):
     service = result.scalar_one_or_none()
     if not service:
         logger.warning(f"Service with ID {service_id} not found for deletion")
-        raise HTTPException(status_code=404, detail="Service not found")
+        raise NotFoundException(detail="Service not found")
     
     await db.delete(service)
     await db.commit()
