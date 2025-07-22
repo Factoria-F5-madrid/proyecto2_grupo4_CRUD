@@ -1,49 +1,36 @@
 import axios from "axios";
 
-const BASE_URL = "http://127.0.0.1:8000/payment/"; 
+const BASE_URL = "http://localhost:5173/payment/"; 
 
-// Acceder a los pagos
-export const getPayment = async () => {
+// Obtener todos los pagos
+export const getAllPayment = async () => {
   try {
     const response = await axios.get(BASE_URL);
     return response.data;
   } catch (error) {
-    console.error("Error al acceder a los pagos:", error);
-    throw error;
-  }
-};
-
-// Obtener la lista de los pagos
-export const getPaymentList = async () => {
-  try {
-    const response = await axios.get(`${BASE_URL}/list`);
-    return response.data;
-  } catch (error) {
-    console.error(`Error al obtener la lista de los pagos:`, error);
+    console.error("Error al obtener todos los pagos:", error);
     throw error;
   }
 };
 
 // Obtener un pago por ID
-export const getPaymentByID = async (id) => {
+export const getPaymentByID = async (payment_id) => {
   try {
-    const response = await axios.get(`${BASE_URL}/list/${id}`);
+    const response = await axios.get(`${BASE_URL}/${payment_id}`);
     return response.data;
   } catch (error) {
-    console.error(`Error al obtener el pago con ID ${id}:`, error);
+    console.error(`Error al obtener el pago con ID ${payment_id}:`, error);
     throw error;
   }
 };
 
 // Crear un nuevo pago
-export const createPayment = async (formData) => {
+export const createPayment = async (paymentData) => {
   try {
-    const response = await axios.post(
-      "http://127.0.0.1:8000/payment/",
-      formData,
-      {
+    const response = await axios.post(BASE_URL, paymentData, {
         headers: {
-          "Content-Type": "multipart/form-data",
+          "Content-Type": "application/json",
+          Autorization: 'Bearer ${token}'
         },
       }
     );
@@ -55,35 +42,36 @@ export const createPayment = async (formData) => {
 };
 
 // Eliminar un pago
-export const deletePayment = async (id) => {
+export const deletePayment = async (payment_id) => {
   const token = localStorage.getItem("token"); 
 
   try {
-    const response = await axios.delete(`${BASE_URL}/${id}`, {
+    const response = await axios.delete(`${BASE_URL}/${payment_id}`, {
       headers: {
         Authorization: `Bearer ${token}`, 
       },
     });
     return response.data;
   } catch (error) {
-    console.error(`Error al eliminar el pago con ID ${id}:`, error);
+    console.error(`Error al eliminar el pago con ID ${payment_id}:`, error);
     throw error;
   }
 };
 
-// Actualizar un pago
-export const updatePayment = async (id, updatedData) => {
+// Actualizar un pago por ID
+export const updatePayment = async (payment_id, updatedData) => {
   const token = localStorage.getItem("token"); 
 
   try {
-    const response = await axios.put(`${BASE_URL}/${id}`, updatedData, {
+    const response = await axios.put(`${BASE_URL}/${payment_id}`, updatedData, {
       headers: {
+        "Content-Type": "application/json",
         Authorization: `Bearer ${token}`, 
       },
     });
     return response.data;
   } catch (error) {
-    console.error(`Error al actualizar el pago con ID ${id}:`, error);
+    console.error(`Error al actualizar el pago con ID ${payment_id}:`, error);
     throw error;
   }
 };
