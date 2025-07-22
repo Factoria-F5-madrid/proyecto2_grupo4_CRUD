@@ -1,55 +1,67 @@
 from sqlalchemy.ext.asyncio import AsyncSession
 from sqlalchemy.future import select
 from fastapi import HTTPException
-from models.pet_model import Pet
-from schema.pet_schema import PetSchema
 
-# empiezo a hacer el GET de pet
-async def get_pets(db: AsyncSession):
-    result = await db.execute(select(Pet))
-    pets = result.scalars().unique().all()
-    return pets
+from backend.models.pet_models import Pet
+from backend.models.user_models import User
+from backend.schema.pet_schema import PetCreate, PetUpdate, PetOut
 
-# ahora GET por id
-async def get_pets_by_id(db: AsyncSession, pet_id: int):
-    result = await db.execute(select(Pet).where(Pet.pet_id == pet_id))
-    pet = result.scalars().unique().one_or_none()
-    if pet is None:
-        raise HTTPException(status_code=404, detail="Pet not found")
-    return pet
-
-# ahora empiezo con el POst
-async def create_pets(db: AsyncSession, pet: PetSchema):
-    new_pet = Pet(**pet.model_dump(exclude_unset=True))
+async def create_pet_controller(pet_data: PetCreate, db: AsyncSession):
+   
+    user_result = await db.execute(select(User).where(User.user_id == pet_data.user_id))
+    user = user_result.scalar_one_or_none()
+    if not user:
+        raise HTTPException(status_code=404, detail="User not found")
+    
+   
+    new_pet = Pet(**pet_data.dict())
     db.add(new_pet)
     await db.commit()
     await db.refresh(new_pet)
     return new_pet
 
-# ahora voy con el PUT para actualizar pet
-async def update_pets(db: AsyncSession, pet_id: int, pet: PetSchema):
-    result = await db.execute(select(Pet).where(Pet.pet_id == pet_id))
-    pet_db = result.scalars().unique().one_or_none()
-    if pet_db is None:
-        raise HTTPException(status_code=404, detail="Pet not found")
-    pet_db.name = pet.name
-    pet_db.species = pet.species
-    pet_db.breed = pet.breed
-    pet_db.birth_date = pet.birth_date
-    pet_db.allergies = pet.allergies
-    pet_db.special_needs = pet.special_needs
-    pet_db.client_id = pet.client_id
-    await db.commit()
-    await db.refresh(pet_db)
-    return pet_db
+async def get_all_pets_controller(db: AsyncSession):
+    result = await db.execute(select(Pet))
+    return result.scalars().all()
 
-# ahora voy con el DELETE para borrar pet
-async def delete_pets(db: AsyncSession, pet_id: int):
+async def get_pet_by_id_controller(pet_id: int, db: AsyncSession):
     result = await db.execute(select(Pet).where(Pet.pet_id == pet_id))
-    pet_db = result.scalars().unique().one_or_none()
-    if pet_db is None:
+    pet = result.scalar_one_or_none()
+    if pet is None:
         raise HTTPException(status_code=404, detail="Pet not found")
-    await db.delete(pet_db)
-    await db.commit()
-    return {"message": "Pet deleted successfully"}
+    return pet
+
+async def get_pets_by_user_controller(user_id: int, db: AsyncSession):
+    result = await db.execute(select(Pet).where(Pet.user_id == user_id))
+    return result.scalars().all()
+
+async def update_pet_controller(pet_id: int, pet_data: PetUpdate, db: AsyncSession):
+    result = await db.execute(select(Pet).where(Pet.pet_id == pet_id))
+    pet = result.scalar_one_or_none()
+    if not pet:
+        raise HTTPException(status_code=404, detail="Pet not found")
     
+   
+    if pet_data.user_id is not None:
+        user_result = await db.execute(select(User).where(User.user_id == pet_data.user_id))
+        user = user_result.scalar_one_or_none()
+        if not user:
+            raise HTTPException(status_code=404, detail="User not found")
+    
+  
+    for field, value in pet_data.dict(exclude_unset=True).items():
+        setattr(pet, field, value)
+    
+    await db.commit()
+    await db.refresh(pet)
+    return pet
+
+async def delete_pet_controller(pet_id: int, db: AsyncSession):
+    result = await db.execute(select(Pet).where(Pet.pet_id == pet_id))
+    pet = result.scalar_one_or_none()
+    if not pet:
+        raise HTTPException(status_code=404, detail="Pet not found")
+    
+    await db.delete(pet)
+    await db.commit()
+    return {"detail": "Pet deleted successfully"} 

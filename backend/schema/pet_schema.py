@@ -1,36 +1,43 @@
 from typing import Optional
 from pydantic import BaseModel
 from datetime import date
-from models.enums import PetTypeEnum
+from backend.models.enums import PetTypeEnum
 
-class PetSchema(BaseModel):
-    pet_id: Optional[int]
+class PetBase(BaseModel):
     name: str
     species: PetTypeEnum
     breed: str
     birth_date: date
     allergies: Optional[str] = None
     special_needs: Optional[str] = None
-    client_id: int
+    user_id: int  
+
+class PetCreate(PetBase):
+    pass
+
+class PetUpdate(BaseModel):
+    name: Optional[str] = None
+    species: Optional[PetTypeEnum] = None
+    breed: Optional[str] = None
+    birth_date: Optional[date] = None
+    allergies: Optional[str] = None
+    special_needs: Optional[str] = None
+    user_id: Optional[int] = None
+
+class PetOut(PetBase):
+    pet_id: int
 
     class Config:
-        orm_mode = True
-        # esto es para que se muestre en el swagger
+        from_attributes = True
         schema_extra = {
             "example": {
+                "pet_id": 1,
                 "name": "Firulais",
                 "species": "Canino",
                 "breed": "Labrador",
                 "birth_date": "2020-05-20",
                 "allergies": "Ninguna",
                 "special_needs": "Ninguna",
-                "client_id": 1
+                "user_id": 1
             }
         }
-
-#  creamos un schema de respuesta
-class Response(BaseModel):
-    code: str
-    status: str
-    message: str
-    result: Optional[PetSchema]
