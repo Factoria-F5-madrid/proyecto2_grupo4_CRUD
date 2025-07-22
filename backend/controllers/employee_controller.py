@@ -1,6 +1,6 @@
 from sqlalchemy.ext.asyncio import AsyncSession
 from sqlalchemy.future import select
-from fastapi import HTTPException
+from backend.exceptions.custom_exceptions import NotFoundException, BadRequestException
 
 from backend.models.employee_models import Employee
 from backend.schema.employee_schema import EmployeeCreate, EmployeeUpdate
@@ -29,7 +29,7 @@ async def get_employee_by_id_controller(employee_id: int, db: AsyncSession):
     employee = result.scalar_one_or_none()
     if employee is None:
         logger.warning(f"Employee with ID {employee_id} not found")
-        raise HTTPException(status_code=404, detail="Employee not found")
+        raise NotFoundException("Employee not found")
     logger.info(f"Found employee with ID: {employee_id}")    
     return employee
 
@@ -39,7 +39,7 @@ async def update_employee_controller(employee_id: int, employee_data: EmployeeUp
     employee = result.scalar_one_or_none()
     if not employee:
         logger.warning(f"Employee with ID {employee_id} not found for update")
-        raise HTTPException(status_code=404, detail="Employee not found")
+        raise NotFoundException("Employee not found")
 
     for field, value in employee_data.dict(exclude_unset=True).items():
         setattr(employee, field, value)
@@ -55,7 +55,7 @@ async def delete_employee_controller(employee_id: int, db: AsyncSession):
     employee = result.scalar_one_or_none()
     if not employee:
         logger.warning(f"Employee with ID {employee_id} not found for deletion")
-        raise HTTPException(status_code=404, detail="Employee not found")
+        raise NotFoundException("Employee not found")
 
     await db.delete(employee)
     await db.commit()
