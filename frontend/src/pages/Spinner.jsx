@@ -14,12 +14,15 @@ const Spinner = () => {
   }, [navigate]);
 
   return (
-    <div className="flex justify-center items-center h-screen bg-blue-900">
+    <div className="flex flex-col justify-center items-center h-screen bg-[#1c1f26]">
       <Lottie
         animationData={spinnerAnimation}
         loop={true}
-        className="w-102 h-102"
+        className="w-84 h-84"
       />
+      <p className="mt-6 text-white text-xl font-semibold animate-pulse">
+        LOADING
+      </p>
     </div>
   );
 };

@@ -11,7 +11,7 @@ const Layout = () => {
 
       {/* Contenido + Footer */}
       <div className="flex flex-col flex-1">
-        <main className="flex-1 p-4 bg-gray-100 overflow-y-auto">
+        <main className="flex-1 bg-[#ffffff] overflow-y-auto flex items-center justify-center">
           <Outlet />
         </main>
         <Footer />
