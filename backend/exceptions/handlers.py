@@ -17,7 +17,7 @@ def register_exception_handlers(app):
         logger.warning(f"[400] {exc.detail} at {request.url}")
         return JSONResponse(status_code=400, content={"error": exc.detail})
 
-      @app.exception_handler(StarletteHTTPException)
+    @app.exception_handler(StarletteHTTPException)
     async def http_exception_handler(request: Request, exc: StarletteHTTPException):
         logger.warning(f"[{exc.status_code}] {exc.detail} at {request.url}")
         return JSONResponse(status_code=exc.status_code, content={"error": exc.detail})

@@ -62,7 +62,7 @@ async def delete_assignment_controller(assignment_id: int, db: AsyncSession):
 
     if not assignment:
         logger.warning(f"Assignment with ID {assignment_id} not found for deletion")
-        raise raise NotFoundException("Assignment not found")
+        raise NotFoundException("Assignment not found")
 
     await db.delete(assignment)
     await db.commit()
