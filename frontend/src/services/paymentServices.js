@@ -25,12 +25,14 @@ export const getPaymentByID = async (payment_id) => {
 };
 
 // Crear un nuevo pago
-export const createPayment = async (paymentData) => {
+export const createInvoice = async (paymentData) => {
   try {
-    const response = await axios.post(BASE_URL, paymentData, {
+    const response = await axios.post(
+      "http://localhost:5173/payment/",
+      paymentData,
+      {
         headers: {
           "Content-Type": "application/json",
-          Autorization: 'Bearer ${token}'
         },
       }
     );
