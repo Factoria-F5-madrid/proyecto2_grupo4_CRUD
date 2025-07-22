@@ -24,7 +24,7 @@ export const getMedicalHistoryByID = async (medical_history_id) => {
 };
 
 // Obtener historiales médicos por ID de mascota
-export const getMedicalHistoryByID = async (pet_id) => {
+export const getMedicalHistoryByPetID = async (pet_id) => {
   try {
     const response = await axios.get(`${PET_BASE_URL}/${pet_id}`, {
       headers: {
@@ -85,7 +85,7 @@ export const updateMedicalHistory = async (medical_history_id, updatedData) => {
     });
     return response.data;
   } catch (error) {
-    console.error(`Error al actualizar el video con ID ${medical_history_id}:`, error);
+    console.error(`Error al actualizar el vídeo con ID ${medical_history_id}:`, error);
     throw error;
   }
 };
