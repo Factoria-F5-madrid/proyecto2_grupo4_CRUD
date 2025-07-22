@@ -25,7 +25,7 @@ export const getPaymentByID = async (payment_id) => {
 };
 
 // Crear un nuevo pago
-export const createInvoice = async (paymentData) => {
+export const createPayment = async (paymentData) => {
   try {
     const response = await axios.post(
       "http://localhost:5173/payment/",
