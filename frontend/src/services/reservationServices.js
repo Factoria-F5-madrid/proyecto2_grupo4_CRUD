@@ -1,6 +1,6 @@
 import axios from "axios";
 
-const BASE_URL = "http://127.0.0.1:8000/reservation"; 
+const BASE_URL = "http://localhost:5173/reservation"; 
 
 //Obtener a las reservas
 export const getAllReservation = async () => {
@@ -24,8 +24,20 @@ export const getReservationById = async (reservation_id) => {
   }
 };
 
+//Obtener reservas por ID de usuario
+export const getReservationByUser= async (user_id) => {
+  try {
+    const response = await axios.get(`${BASE_URL}/user/${user_id}`);
+    return response.data;
+  } catch (error) {
+    console.error(`Error al obtener las reservas del usuario con ID ${reservation_id}:`, error);
+    throw error;
+  }
+};
+
+
 // Crear una nueva reserva
-export async function createReservation(reservationData) {
+export const createReservation(reservationData) {
   const token = localStorage.getItem("token");
 
   try {
