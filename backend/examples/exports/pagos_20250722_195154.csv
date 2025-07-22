@@ -1,0 +1,3 @@
+payment_id,invoice_id,amount,payment_method,payment_date,payment_status,refund_processed,created_at,updated_at
+2,1,150.00,PaymentMethodEnum.TARJETA_CREDITO,2025-07-21T14:30:00+00:00,PaymentStatusEnum.COMPLETADO,False,2025-07-21T10:39:10.421671+00:00,
+5,1,1.75,PaymentMethodEnum.TARJETA_CREDITO,2025-07-21T10:30:00+00:00,PaymentStatusEnum.COMPLETADO,False,2025-07-21T10:51:09.445339+00:00,
