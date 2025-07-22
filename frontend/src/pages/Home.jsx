@@ -1,10 +1,13 @@
 // src/pages/Home.jsx
-import React from 'react';
+import { useState } from 'react';
 import { Link } from 'react-router-dom';
 import perritosImage from '../assets/PetHome.svg';
 import petImage from '../assets/petLand-logo-letra-azul.png';
+import Modal from '../components/Nav/Modal';
 
 const Home = () => {
+    const [showModal, setShowModal] = useState(false);
+  
   return (
    <div className="flex-1 flex flex-col items-center justify-center bg-[#ffffff] px-4 text-center">
       {/* Imagen en lugar del texto "uh oh" */}
@@ -28,10 +31,12 @@ const Home = () => {
 
       {/* Botón "añade un pet" */}
       <button
+        onClick={() => setShowModal(true)}
         className="bg-indigo-600 text-white px-6 py-2 rounded-md hover:bg-indigo-700 transition"
       >
         Añade un pet
       </button>
+       {showModal && <Modal onClose={() => setShowModal(false)} /> }
     </div>
   );
 };
