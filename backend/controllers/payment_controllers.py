@@ -1,6 +1,7 @@
 from sqlalchemy.ext.asyncio import AsyncSession
 from sqlalchemy.future import select
-from fastapi import HTTPException
+from backend.exceptions.custom_exceptions import NotFoundException, BadRequestException
+
 
 from backend.models.payment_models import Payment
 from backend.schema.payment_schema import PaymentCreate, PaymentUpdate
@@ -30,7 +31,7 @@ async def get_payment_by_id_controller(payment_id: int, db: AsyncSession):
     payment = result.scalar_one_or_none()
     if payment is None:
         logger.warning(f"Payment with ID {payment_id} not found")
-        raise HTTPException(status_code=404, detail="Payment not found")
+        raise NotFoundException("Payment not found")
     logger.info(f"Payment with ID {payment_id} retrieved successfully")    
     return payment
 
@@ -40,7 +41,7 @@ async def update_payment_controller(payment_id: int, payment_data: PaymentUpdate
     payment = result.scalar_one_or_none()
     if not payment:
         logger.warning(f"Payment with ID {payment_id} not found for update")
-        raise HTTPException(status_code=404, detail="Payment not found")
+        raise NotFoundException("Payment not found")
 
     for field, value in payment_data.dict(exclude_unset=True).items():
         setattr(payment, field, value)
@@ -56,7 +57,7 @@ async def delete_payment_controller(payment_id: int, db: AsyncSession):
     payment = result.scalar_one_or_none()
     if not payment:
         logger.warning(f"Payment with ID {payment_id} not found for deletion")
-        raise HTTPException(status_code=404, detail="Payment not found")
+        raise NotFoundException("Payment not found")
 
     await db.delete(payment)
     await db.commit()
