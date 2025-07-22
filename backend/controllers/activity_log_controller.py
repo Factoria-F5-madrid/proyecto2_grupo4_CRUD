@@ -12,6 +12,7 @@ from backend.logger.logger import logger
 async def create_activitylog_controller(activity_data: ActivityLogCreate, db: AsyncSession):
    
     logger.info(f"Creating ActivityLog for pet_id: {activity_data.pet_id}, employee_id: {activity_data.employee_id}")
+    
     pet_result = await db.execute(select(Pet).where(Pet.pet_id == activity_data.pet_id))
     pet = pet_result.scalar_one_or_none()
     if not pet:
