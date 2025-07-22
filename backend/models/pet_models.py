@@ -14,6 +14,7 @@ class Pet(Base):
     birth_date = Column(Date, nullable=False)
     allergies = Column(String(100), nullable=True)
     special_needs = Column(String(100), nullable=True)
+    img_url = Column(String(100), nullable=True)
 
     user_id = Column(Integer, ForeignKey('User.user_id'), nullable=False)
 
