@@ -30,14 +30,25 @@ export const getReservationByUser= async (user_id) => {
     const response = await axios.get(`${BASE_URL}/user/${user_id}`);
     return response.data;
   } catch (error) {
-    console.error(`Error al obtener las reservas del usuario con ID ${reservation_id}:`, error);
+    console.error(`Error al obtener las reservas del usuario con ID ${user_id}:`, error);
+    throw error;
+  }
+};
+
+//Obtener reservas por ID de servicio
+export const getReservationByService= async (service_id) => {
+  try {
+    const response = await axios.get(`${BASE_URL}/service/${service_id}`);
+    return response.data;
+  } catch (error) {
+    console.error(`Error al obtener las reservas del servicio con ID ${service_id}:`, error);
     throw error;
   }
 };
 
 
 // Crear una nueva reserva
-export const createReservation(reservationData) {
+export const createReservation = async (reservationData) => {
   const token = localStorage.getItem("token");
 
   try {
@@ -72,7 +83,7 @@ export const deleteReservation = async (reservation_id) => {
 };
 
 // Actualizar la reserva por ID
-export const updateReservation(reservation_id, updatedData: {
+export const updateReservation = async (reservation_id, updatedData) => {
     const token = localStorage.getItem("token");
 
     try {
