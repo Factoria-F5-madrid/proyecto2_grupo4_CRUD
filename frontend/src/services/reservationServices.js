@@ -49,21 +49,22 @@ export const getReservationByService= async (service_id) => {
 
 // Crear una nueva reserva
 export const createReservation = async (reservationData) => {
-  const token = localStorage.getItem("token");
-
   try {
-    const response = await axios.post(BASE_URL, reservationData, {
-      headers: {
-        "Content-Type": "application/json",
-        Authorization: `Bearer ${token}`,
-      },
-    });
-    return response.data;
+    const response = await axios.post(
+      "http://localhost:5173/reservation/",
+      reservationData,
+      {
+        headers: {
+          "Content-Type": "application/json",
+        },
+      }
+    );
+    return response.data; 
   } catch (error) {
     console.error("Error al crear la reserva:", error);
-    throw error;
+    throw error; 
   }
-}
+};
 
 // Eliminar una reserva
 export const deleteReservation = async (reservation_id) => {
