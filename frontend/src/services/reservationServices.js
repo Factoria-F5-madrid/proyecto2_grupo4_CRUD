@@ -2,88 +2,78 @@ import axios from "axios";
 
 const BASE_URL = "http://127.0.0.1:8000/reservation"; 
 
-//Acceder a las reservas
-export const getReservation = async () => {
+//Obtener a las reservas
+export const getAllReservation = async () => {
   try {
     const response = await axios.get(BASE_URL);
     return response.data;
   } catch (error) {
-    console.error("Error al acceder a las reservas:", error);
-    throw error;
-  }
-};
-
-// Obtener la lista de las reservas
-export const getListReservations = async () => {
-  try {
-    const response = await axios.get(`${BASE_URL}/list`);
-    return response.data;
-  } catch (error) {
-    console.error(`Error al obtener las lista de las reservas:`, error);
+    console.error("Error al obtener a las reservas:", error);
     throw error;
   }
 };
 
 // Obtener una reserva por ID
-export const getReservationByID = async (id) => {
+export const getReservationById = async (reservation_id) => {
   try {
-    const response = await axios.get(`${BASE_URL}/list/${id}`);
+    const response = await axios.get(`${BASE_URL}/${reservation_id}`);
     return response.data;
   } catch (error) {
-    console.error(`Error al obtener la reserva con ID ${id}:`, error);
+    console.error(`Error al obtener la reserva con ID ${reservation_id}:`, error);
     throw error;
   }
 };
 
 // Crear una nueva reserva
-export const createReservation = async (formData) => {
+export async function createReservation(reservationData) {
+  const token = localStorage.getItem("token");
+
   try {
-    const response = await axios.post(
-      "http://127.0.0.1:8000/reservation",
-      formData,
-      {
-        headers: {
-          "Content-Type": "multipart/form-data",
-        },
-      }
-    );
-    return response.data; 
+    const response = await axios.post(BASE_URL, reservationData, {
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${token}`,
+      },
+    });
+    return response.data;
   } catch (error) {
     console.error("Error al crear la reserva:", error);
-    throw error; 
+    throw error;
   }
-};
+}
 
 // Eliminar una reserva
-export const deleteReservation = async (id) => {
+export const deleteReservation = async (reservation_id) => {
   const token = localStorage.getItem("token"); 
 
   try {
-    const response = await axios.delete(`${BASE_URL}/${id}`, {
+    const response = await axios.delete(`${BASE_URL}/${reservation_id}`, {
       headers: {
         Authorization: `Bearer ${token}`, 
       },
     });
     return response.data;
   } catch (error) {
-    console.error(`Error al eliminar la reserva con ID ${id}:`, error);
+    console.error(`Error al eliminar la reserva con ID ${reservation_id}:`, error);
     throw error;
   } 
 };
 
 // Actualizar la reserva por ID
-export const updateReservation = async (id, updatedData) => {
-  const token = localStorage.getItem("token"); 
+export const updateReservation(reservation_id, updatedData: {
+    const token = localStorage.getItem("token");
 
-  try {
-    const response = await axios.put(`${BASE_URL}/${id}`, updatedData, {
-      headers: {
-        Authorization: `Bearer ${token}`, 
-      },
-    });
-    return response.data;
-  } catch (error) {
-    console.error(`Error al actualizar la reserva con ID ${id}:`, error);
-    throw error;
-  }
-};
+    try {
+        const response = await axios.put(`${BASE_URL}/${reservation_id}`,
+            updatedData, {
+            headers: {
+                "Content-Type": "application/json",
+                Authorization: `Bearer ${token}`,
+            },
+        });
+        return response.data;
+    } catch (error) {
+        console.error(`Error al actualizar la reserva con ID ${reservation_id}:`, error);
+        throw error;
+    }
+}
