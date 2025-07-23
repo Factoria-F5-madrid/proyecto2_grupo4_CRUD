@@ -1,2 +1,0 @@
-pet_id,name,species,breed,birth_date,allergies,special_needs,user_id
-1,Firulais Ramón,PetTypeEnum.CANINO,Labrador,2020-05-20,Ninguna,Ninguna,1

@@ -8,9 +8,10 @@ class UserBase(BaseModel):
     phone_number: int
     email: str
     address: str
+   
 
 class UserCreate(UserBase):
-    pass
+    password: str
 
 class UserUpdate(BaseModel):
     first_name: Optional[str] = None
@@ -18,6 +19,7 @@ class UserUpdate(BaseModel):
     phone_number: Optional[int] = None
     email: Optional[str] = None
     address: Optional[str] = None
+    password: Optional[str] = None 
 
 class UserOut(UserBase):
     user_id: int

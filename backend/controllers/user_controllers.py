@@ -8,17 +8,27 @@ from backend.models.user_models import User
 from backend.schema.user_schema import UserCreate, UserUpdate, UserOut
 
 from backend.logger.logger import logger  
+from backend.utils.auth import hash_password
 
 
 async def create_user_controller(user_data: UserCreate, db: AsyncSession):
     logger.debug(f"Creating user with data: {user_data}")
-    new_user = User(**user_data.dict())
+
+    hashed_pw = hash_password(user_data.password)
+
+    user_dict = user_data.dict()
+    user_dict['hashed_password'] = hashed_pw
+    user_dict.pop('password')
+
+    new_user = User(**user_dict)
     new_user.registration_date = datetime.utcnow() 
     new_user.updated_by = "system" 
     new_user.update_date = func.now() 
+ 
     db.add(new_user)
     await db.commit()
     await db.refresh(new_user)
+
     logger.info(f"User created successfully with ID: {new_user.user_id}")
     return new_user
 
@@ -43,12 +53,21 @@ async def get_user_by_id_controller(user_id: int, db: AsyncSession):
 
 async def update_user_controller(user_id: int, user_data: UserUpdate, db: AsyncSession):
     logger.debug(f"Updating user ID {user_id} with data: {user_data}")
+
     result = await db.execute(select(User).where(User.user_id== user_id))
     user = result.scalar_one_or_none()
     if not user:
         logger.warning(f"User not found for update with ID: {user_id}") 
         return None
-    for field, value in user_data.model_dump(exclude_unset=True).items():
+
+    update_data = user_data.model_dump(exclude_unset=True)
+
+    if 'password' in update_data:
+        hashed = hash_password(update_data.pop('password'))
+        update_data['hashed_password'] = hashed
+
+
+    for field, value in update_data.items():
         setattr(user, field, value)
     user.updated_by = "system"  
     user.update_date = func.now()  
