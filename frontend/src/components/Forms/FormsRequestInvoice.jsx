@@ -38,6 +38,12 @@ const Form = ({ onClose, userId}) => {
             return
         }
 
+        const medicalHistoryData = {
+        ...formData,
+        user_id: userId,
+        };
+
+
         console.log("Solicitud de factura enviada", invoiceData);
         onClose(); // cerrar modal
     };
