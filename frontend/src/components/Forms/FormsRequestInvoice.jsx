@@ -1,17 +1,17 @@
 import { useState } from "react";
-import { getMedicalHistoryByID } from "../../services/medicalHistoryServices";
+import { getInvoiceByID } from "../../services/invoiceServices";
 
 const Form = ({ onClose, userId}) => {
     const [formData, setFormData] = useState ({
         name: "",
-        medical_history_id: "",
+        invoice_id: "",
     });
 
     const [errors, setErrors] = useState({});
 
     const regex = {
         name: /^[A-Za-zÁÉÍÓÚáéíóúüÑñ ]{2,30}$/,
-        medical_history_id: /^[0-9]+$/,
+        invoice_id: /^[0-9]+$/,
     };
 
     const handleChange = (e) => {
@@ -29,8 +29,8 @@ const Form = ({ onClose, userId}) => {
             newErrors.name = "Falta el nombre";
         }
         
-        if (!regex.medical_history_id.test(formData.medical_history_id)) {
-            newErrors.medical_history_id = "ID inválido";
+        if (!regex.invoice_id.test(formData.invoice_id)) {
+            newErrors.invoice_id = "ID inválido";
         }
 
         if (Object.keys(newErrors).length > 0) {
@@ -38,7 +38,7 @@ const Form = ({ onClose, userId}) => {
             return
         }
 
-        console.log("Solicitud de historial enviada", medicalHistoryData);
+        console.log("Solicitud de factura enviada", invoiceData);
         onClose(); // cerrar modal
     };
 
@@ -56,9 +56,9 @@ const Form = ({ onClose, userId}) => {
             />
             <input
                 type="text"
-                name="medical_history_id"
-                placeholder="medical history ID"
-                value={formData.medical_history_id}
+                name="invoice_id"
+                placeholder="invoice ID"
+                value={formData.invoice_id}
                 onChange={handleChange}
                 className={`w-full px-4 py-2 border rounded ${
                     errors.visit_date ? "border-red-500 text-red-500" : ""
@@ -66,7 +66,7 @@ const Form = ({ onClose, userId}) => {
             />
             <div className="flex justify-between items-center">
                 <button
-                    onClick={getMedicalHistoryByID}
+                    onClick={getInvoiceByID}
                     type="submit"
                     className="bg-indigo-600 text-white px-4 py-2 rounded hover:bg-indigo-700"
                 >
