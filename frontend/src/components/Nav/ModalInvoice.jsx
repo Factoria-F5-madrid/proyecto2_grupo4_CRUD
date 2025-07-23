@@ -17,4 +17,4 @@ const Modal = ({ onClose}) => {
   );
 };
 
-export default ModalInvoice;
+export default Modal;

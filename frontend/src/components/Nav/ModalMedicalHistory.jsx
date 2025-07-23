@@ -17,4 +17,4 @@ const Modal = ({ onClose}) => {
   );
 };
 
-export default ModalMedicalHistory;
+export default Modal;
