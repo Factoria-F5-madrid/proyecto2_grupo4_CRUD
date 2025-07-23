@@ -1,2 +1,0 @@
-reservation_id,user_id,service_id,created_at,checkin_date,checkout_date,status,internal_notes
-3,3,2,2025-07-22T11:38:22.330534,2024-01-15T10:00:00,2024-01-15T18:00:00,ReservationStatusEnum.PENDING,para borrar
