@@ -1,0 +1,5 @@
+user_id,user_first_name,user_last_name,user_email,user_phone,pet_id,pet_name,pet_species,pet_breed
+1,Barb,Prueba,barb@email.com,22222222,1.0,Firulais Ramón,PetTypeEnum.CANINO,Labrador
+11,Barb para el 2,Prueba,barbiprueba@email.com,34521,,,,
+4,Luis,García,luis@example.com,123456789,,,,
+3,Barb para el 2,Prueba,barbi@email.com,111121,,,,

@@ -1,8 +1,8 @@
-from fastapi import APIRouter, Depends, HTTPException
+from fastapi import APIRouter, Depends, HTTPException,Query
 from sqlalchemy.ext.asyncio import AsyncSession
-from typing import List
+from typing import List, Optional
 
-from backend.schema.activity_log_schema import ActivityLogCreate, ActivityLogOut, ActivityLogUpdate
+from backend.schema.activity_log_schema import ActivityLogCreate, ActivityLogOut, ActivityLogUpdate, PaginatedActivityLogResponse
 
 from backend.controllers.activity_log_controller import (
     create_activitylog_controller,
@@ -22,6 +22,22 @@ async def create_activitylog(activity_data: ActivityLogCreate, db: AsyncSession 
 @router.get("/", response_model=List[ActivityLogOut])
 async def get_all_activitylogs(db: AsyncSession = Depends(get_db)):
     return await get_all_activitylogs_controller(db)
+
+@router.get("/activity_logs", response_model=PaginatedActivityLogResponse)
+async def get_activity_logs(
+    db: AsyncSession = Depends(get_db),
+    page: int = Query(1, ge=1),
+    limit: int = Query(10, ge=1, le=100),
+    pet_id: Optional[int] = Query(None),
+    employee_id: Optional[int] = Query(None),
+):
+    return await get_all_activitylogs_controller(
+        db=db,
+        page=page,
+        limit=limit,
+        pet_id=pet_id,
+        employee_id=employee_id
+    )
 
 @router.get("/{activity_id}", response_model=ActivityLogOut)
 async def get_activitylog_by_id(activity_id: int, db: AsyncSession = Depends(get_db)):
