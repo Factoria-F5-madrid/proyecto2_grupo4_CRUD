@@ -38,11 +38,6 @@ const Form = ({ onClose, userId}) => {
             return
         }
 
-        const medicalHistoryData = {
-        ...formData,
-        user_id: userId,
-        };
-
         console.log("Solicitud de historial enviada", medicalHistoryData);
         onClose(); // cerrar modal
     };
