@@ -1,0 +1,2 @@
+reservation_id,user_name,user_email,service_type,service_price,checkin_date,checkout_date,status
+3,Barb para el 2 Prueba,barbi@email.com,ServiceTypeEnum.TRANSPORTE,50.00,2024-01-15T10:00:00,2024-01-15T18:00:00,ReservationStatusEnum.PENDING
