@@ -4,7 +4,6 @@ import { getMedicalHistoryByID } from "../../services/medicalHistoryServices";
 const Form = ({ onClose, userId}) => {
     const [formData, setFormData] = useState ({
         name: "",
-        visit_date: "",
         medical_history_id: "",
     });
 
@@ -12,7 +11,6 @@ const Form = ({ onClose, userId}) => {
 
     const regex = {
         name: /^[A-Za-zÁÉÍÓÚáéíóúüÑñ ]{2,30}$/,
-        visit_date: /^\d{4}-\d{2}-\d{2}$/,
         medical_history_id: /^[0-9]+$/,
     };
 
@@ -31,10 +29,6 @@ const Form = ({ onClose, userId}) => {
             newErrors.name = "Falta el nombre";
         }
         
-        if (!regex.visit_date.test(formData.visit_date)) {
-            newErrors.visit_date = "Fecha inválida (YYYY-MM-DD)";
-        }
-
         if (!regex.medical_history_id.test(formData.medical_history_id)) {
             newErrors.medical_history_id = "ID inválido";
         }
@@ -53,7 +47,7 @@ const Form = ({ onClose, userId}) => {
             <input
                 type="text"
                 name="name"
-                placeholder={errors.name || "Nombre"}
+                placeholder={errors.name || "name"}
                 value={formData.name}
                 onChange={handleChange}
                 className={`w-full px-4 py-2 border rounded ${
@@ -61,10 +55,10 @@ const Form = ({ onClose, userId}) => {
                 }`}
             />
             <input
-                type="date"
-                name="visit_date"
-                placeholder="Fecha de la visita"
-                value={formData.visit_date}
+                type="text"
+                name="medical_history_id"
+                placeholder="medical history ID"
+                value={formData.medical_history_id}
                 onChange={handleChange}
                 className={`w-full px-4 py-2 border rounded ${
                     errors.visit_date ? "border-red-500 text-red-500" : ""
