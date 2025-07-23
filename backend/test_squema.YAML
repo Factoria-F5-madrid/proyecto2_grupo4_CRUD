@@ -35,7 +35,7 @@ paths:
               pet_id: 5
               type: "Vacunación anual"
               description: "Vacuna contra la rabia"
-              veterinarian_id: 3
+              employee_id: 3
               treatment: "Rabisin 1mL"
               notes: "Mascota presentó leve reacción alérgica"
               date: "2025-07-23"
@@ -75,7 +75,7 @@ paths:
               schema:
                 $ref: '#/components/schemas/ErrorResponse'
       security:
-        - oAuth: [veterinary:write]
+        - oAuth: [employee:write]
 
     get:
       tags: [Medical Records]
@@ -121,9 +121,9 @@ paths:
       security:
         - oAuth: [admin:read]
 
-  /medical-records/{record_id}:
+  /medical-records/{id}:
     parameters:
-      - name: record_id
+      - name: id
         in: path
         required: true
         description: ID del registro médico
@@ -318,7 +318,6 @@ paths:
 
 components:
   schemas:
-    # ================== ESQUEMAS CORREGIDOS ==================
     MedicalRecordBase:
       type: object
       required: [pet_id, type, description]
@@ -343,7 +342,7 @@ components:
 
     MedicalRecordCreate:
       type: object
-      required: [pet_id, type, description, veterinarian_id]
+      required: [pet_id, type, description, employee_id]
       additionalProperties: false
       properties:
         pet_id:
@@ -362,7 +361,7 @@ components:
           maxLength: 1000
           pattern: '^[\w\sáéíóúÁÉÍÓÚñÑ.,;:!¿?¡()\-"]{1,1000}$'
           example: "Vacuna contra la rabia"
-        veterinarian_id:
+        employee_id:
           type: integer
           format: int64
           minimum: 1
@@ -426,7 +425,7 @@ components:
           type: string
           format: date
           pattern: '^\d{4}-\d{2}-\d{2}$'
-        veterinarian:
+        employee:
           $ref: '#/components/schemas/EmployeeReference'
 
     MedicalRecordUpdate:
@@ -509,7 +508,7 @@ components:
           pattern: '^[a-zA-ZáéíóúÁÉÍÓÚñÑ\s\.]{3,100}$'
           example: "Dra. María López"
 
-    # ========== ESQUEMA DE ERROR ESTANDARIZADO ==========
+    #  ESQUEMA DE ERROR ESTANDARIZADO 
     ErrorResponse:
       type: object
       additionalProperties: false
@@ -531,7 +530,7 @@ components:
           format: date-time
           example: "2025-07-23T12:34:56Z"
 
-  # ================== RESPUESTAS ESTANDARIZADAS ==================
+  # RESPUESTAS ESTANDARIZADAS 
   responses:
     BadRequest:
       description: Solicitud incorrecta (datos inválidos o faltantes)
@@ -564,7 +563,7 @@ components:
           schema:
             $ref: '#/components/schemas/ErrorResponse'
 
-  # ================== PARÁMETROS MEJORADOS ==================
+  # PARÁMETROS MEJORADOS 
   parameters:
     page:
       name: page
@@ -619,8 +618,8 @@ components:
           authorizationUrl: https://api.petland.com/oauth/authorize
           tokenUrl: https://api.petland.com/oauth/token
           scopes:
-            veterinary:read: Acceso veterinario (lectura)
-            veterinary:write: Acceso veterinario (escritura)
+            employee:read: Acceso veterinario (lectura)
+            employee:write: Acceso veterinario (escritura)
             admin:read: Acceso administrador (lectura)
             admin:write: Acceso administrador (escritura)
 
