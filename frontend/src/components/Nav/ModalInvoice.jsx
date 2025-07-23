@@ -1,4 +1,4 @@
-import Form from "../Forms/FormsRequestMedicalHistory";
+import Form from "../Forms/FormsRequestInvoice";
 
 const Modal = ({ onClose}) => {
     return (
@@ -10,11 +10,11 @@ const Modal = ({ onClose}) => {
         >
           &times;
         </button>
-        <h2 className="text-2xl font-semibold mb-4 text-center text-[#1c1f26]">Request a Medical History</h2>
+        <h2 className="text-2xl font-semibold mb-4 text-center text-[#1c1f26]">Request an invoice</h2>
         <Form onClose={onClose} />
       </div>
     </div>
   );
 };
 
-export default ModalMedicalHistory;
+export default ModalInvoice;
