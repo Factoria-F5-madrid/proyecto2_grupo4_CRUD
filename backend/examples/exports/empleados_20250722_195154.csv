@@ -1,0 +1,2 @@
+employee_id,first_name,last_name,specialty,is_active,created_at,updated_at
+1,Juan,Pérez,EmployeeSpecialtyEnum.VETERINARIO,True,2025-07-20T17:04:37.121705+00:00,

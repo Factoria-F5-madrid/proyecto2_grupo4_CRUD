@@ -1,6 +1,7 @@
 from fastapi import FastAPI, Depends, HTTPException
 from sqlalchemy.ext.asyncio import AsyncSession
 from sqlalchemy.future import select
+from fastapi.middleware.cors import CORSMiddleware
 
 from backend.routes.user_routes import router as users_router
 from backend.routes.service_routes import router as service_router 
@@ -12,6 +13,9 @@ from backend.routes.medical_history_routes import router as medical_history_rout
 from backend.routes.assignment_routes import router as assignment_router
 from backend.routes.payment_routes import router as payment_router
 from backend.routes.invoice_routes import router as invoice_router
+from backend.routes.export_routes import router as export_router
+
+
 
 from backend.db.database import AsyncSessionLocal
 
@@ -26,7 +30,19 @@ from backend.models.assignment_models import Assignment
 from backend.models.payment_models import Payment
 from backend.models.invoice_models import Invoice
 
+
+from backend.exceptions.handlers import register_exception_handlers
+
 app = FastAPI()
+
+app.add_middleware(
+    CORSMiddleware,
+    allow_origins=["*"],  
+    allow_credentials=True,
+    allow_methods=["*"], 
+    allow_headers=["*"],
+)
+register_exception_handlers(app)
 
 @app.get("/")
 def read_root():
@@ -50,4 +66,5 @@ app.include_router(medical_history_router, prefix="/medicalhistory", tags=["Medi
 app.include_router(assignment_router, prefix="/assignment", tags=["Assignment"])
 app.include_router(payment_router, prefix="/payment", tags=["Payment"])
 app.include_router(invoice_router, prefix="/invoice", tags=["Invoice"])
+app.include_router(export_router, prefix="/export", tags=["Export"])
 
