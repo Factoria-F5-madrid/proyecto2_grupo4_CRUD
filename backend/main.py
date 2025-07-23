@@ -1,6 +1,7 @@
 from fastapi import FastAPI, Depends, HTTPException
 from sqlalchemy.ext.asyncio import AsyncSession
 from sqlalchemy.future import select
+from fastapi.middleware.cors import CORSMiddleware
 
 from backend.routes.user_routes import router as users_router
 from backend.routes.service_routes import router as service_router 
@@ -33,6 +34,14 @@ from backend.models.invoice_models import Invoice
 from backend.exceptions.handlers import register_exception_handlers
 
 app = FastAPI()
+
+app.add_middleware(
+    CORSMiddleware,
+    allow_origins=["*"],  
+    allow_credentials=True,
+    allow_methods=["*"], 
+    allow_headers=["*"],
+)
 register_exception_handlers(app)
 
 @app.get("/")
