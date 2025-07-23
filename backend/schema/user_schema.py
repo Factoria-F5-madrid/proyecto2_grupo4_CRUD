@@ -21,10 +21,10 @@ class UserUpdate(BaseModel):
 
 class UserOut(UserBase):
     user_id: int
-    registration_date: datetime
-    last_update: datetime
-    updated_by: str
-    update_date: datetime
+    registration_date: Optional[datetime] = None
+    last_update: Optional[datetime] = None
+    updated_by: Optional[str] = None
+    update_date: Optional[datetime] = None
 
     class Config:
         from_attributes = True
