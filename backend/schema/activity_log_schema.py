@@ -1,4 +1,4 @@
-from typing import Optional
+from typing import Optional, List
 from pydantic import BaseModel
 from datetime import datetime
 from backend.models.enums import ActivityTypeEnum
@@ -39,6 +39,35 @@ class ActivityLogOut(ActivityLogBase):
                 "end_time": "2025-07-20T09:00:00Z",
                 "notes": "El perro disfrutó mucho el paseo y socializó con otros perros.",
                 "created_at": "2025-07-20T08:30:00Z"
+            }
+        }
+    }
+
+class PaginatedActivityLogResponse(BaseModel):
+    total: int
+    page: int
+    limit: int
+    items: List[ActivityLogOut]
+
+    model_config = {
+        "json_schema_extra": {
+            "example": {
+                "total": 1,
+                "page": 1,
+                "limit": 10,
+                "items": [
+                    {
+                        "activity_id": 1,
+                        "employee_id": 1,
+                        "pet_id": 2,
+                        "activity_type": "Paseo",
+                        "description": "Paseo matutino en el parque central.",
+                        "start_time": "2025-07-20T08:30:00Z",
+                        "end_time": "2025-07-20T09:00:00Z",
+                        "notes": "El perro disfrutó mucho el paseo y socializó con otros perros.",
+                        "created_at": "2025-07-20T08:30:00Z"
+                    }
+                ]
             }
         }
     }
