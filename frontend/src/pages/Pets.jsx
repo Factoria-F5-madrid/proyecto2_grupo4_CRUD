@@ -21,7 +21,7 @@ const Pets = () => {
 
   return (
     <div className="p-6">
-      <h1 className="text-3xl font-bold mb-6">Mascotas registradas</h1>
+      <h1 className="text-3xl text-[#1c1f26] text-center  font-bold mb-6">Mascotas registradas</h1>
       {error && <p className="text-red-500 mb-4">{error}</p>}
       <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-6">
         {pets.length > 0 ? (

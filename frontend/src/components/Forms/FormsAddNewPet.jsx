@@ -75,6 +75,7 @@ const Form = ({ onClose, userId }) => {
 
     try {
       await createPet(petData);
+      window.location.reload();
       onClose();
     } catch (error) {
       console.error("Error al crear el pet:", error);

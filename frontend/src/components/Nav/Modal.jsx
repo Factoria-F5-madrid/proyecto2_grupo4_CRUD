@@ -10,7 +10,7 @@ const Modal = ({ onClose, userId  }) => {
         >
           &times;
         </button>
-        <h2 className="text-2xl font-semibold mb-4 text-center text-[#1c1f26]">Add New Pet</h2>
+        <h2 className="text-2xl font-semibold mb-4 text-center text-[#1c1f26]">Añade una mascota</h2>
         <Form onClose={onClose} userId={userId} />
       </div>
     </div>
