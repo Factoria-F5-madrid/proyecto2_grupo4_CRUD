@@ -1,13 +1,12 @@
 from sqlalchemy.ext.asyncio import AsyncSession
 from sqlalchemy.future import select
 from backend.exceptions.custom_exceptions import NotFoundException,BadRequestException
-
+from backend.websockets.notifications import notification_service
 
 from backend.models.reservation_models import Reservation
 from backend.models.user_models import User
 from backend.models.service_models import Service
 from backend.schema.reservation_schema import ReservationCreate, ReservationUpdate, ReservationOut
-
 
 from backend.logger.logger import logger
 
@@ -38,6 +37,23 @@ async def create_reservation_controller(reservation_data: ReservationCreate, db:
     await db.refresh(new_reservation)
 
     logger.info(f"Reservation {new_reservation.reservation_id} created successfully for user_id={reservation_data.user_id}")
+    
+    # Enviar notificación en tiempo real
+    reservation_dict = {
+        "reservation_id": new_reservation.reservation_id,
+        "user_id": new_reservation.user_id,
+        "service_id": new_reservation.service_id,
+        "checkin_date": new_reservation.checkin_date.isoformat(),
+        "checkout_date": new_reservation.checkout_date.isoformat(),
+        "status": new_reservation.status
+    }
+    await notification_service.send_reservation_update("created", reservation_dict)
+    await notification_service.send_user_notification(
+        str(new_reservation.user_id), 
+        "reservation_created", 
+        {"reservation_id": new_reservation.reservation_id}
+    )
+    
     return new_reservation
 
 async def get_all_reservations_controller(db: AsyncSession):
@@ -107,6 +123,23 @@ async def update_reservation_controller(reservation_id: int, reservation_data: R
     await db.commit()
     await db.refresh(reservation)
     logger.info(f"Reservation with ID {reservation_id} updated successfully")
+    
+    # Enviar notificación en tiempo real
+    reservation_dict = {
+        "reservation_id": reservation.reservation_id,
+        "user_id": reservation.user_id,
+        "service_id": reservation.service_id,
+        "checkin_date": reservation.checkin_date.isoformat(),
+        "checkout_date": reservation.checkout_date.isoformat(),
+        "status": reservation.status
+    }
+    await notification_service.send_reservation_update("updated", reservation_dict)
+    await notification_service.send_user_notification(
+        str(reservation.user_id), 
+        "reservation_updated", 
+        {"reservation_id": reservation.reservation_id}
+    )
+    
     return reservation
 
 async def delete_reservation_controller(reservation_id: int, db: AsyncSession):
@@ -117,7 +150,23 @@ async def delete_reservation_controller(reservation_id: int, db: AsyncSession):
         logger.warning(f"Reservation with ID {reservation_id} not found")
         raise NotFoundException("Reservation not found")
     
+    # Guardar información antes de eliminar para la notificación
+    reservation_info = {
+        "reservation_id": reservation.reservation_id,
+        "user_id": reservation.user_id,
+        "service_id": reservation.service_id
+    }
+    
     await db.delete(reservation)
     await db.commit()
     logger.info(f"Reservation with ID {reservation_id} deleted successfully")
+    
+    # Enviar notificación en tiempo real
+    await notification_service.send_reservation_update("deleted", reservation_info)
+    await notification_service.send_user_notification(
+        str(reservation_info["user_id"]), 
+        "reservation_deleted", 
+        {"reservation_id": reservation_info["reservation_id"]}
+    )
+    
     return {"detail": "Reservation deleted successfully"}

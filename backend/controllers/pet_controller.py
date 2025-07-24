@@ -2,6 +2,7 @@ from sqlalchemy.ext.asyncio import AsyncSession
 from sqlalchemy.future import select
 from backend.exceptions.custom_exceptions import NotFoundException
 from backend.utils.cache_decorators import cache_response, invalidate_cache
+from backend.websockets.notifications import notification_service
 
 from backend.models.pet_models import Pet
 from backend.models.user_models import User
@@ -24,6 +25,23 @@ async def create_pet_controller(pet_data: PetCreate, db: AsyncSession):
     await db.commit()
     await db.refresh(new_pet)
     logger.info(f"Pet created with ID {new_pet.pet_id}")
+    
+    # Enviar notificación en tiempo real
+    pet_dict = {
+        "pet_id": new_pet.pet_id,
+        "name": new_pet.name,
+        "species": new_pet.species,
+        "breed": new_pet.breed,
+        "age": new_pet.age,
+        "user_id": new_pet.user_id
+    }
+    await notification_service.send_pet_update("created", pet_dict)
+    await notification_service.send_user_notification(
+        str(new_pet.user_id), 
+        "pet_created", 
+        {"pet_name": new_pet.name, "pet_id": new_pet.pet_id}
+    )
+    
     return new_pet
 
 @cache_response("pets:all", ttl=600)  # 10 minutos para listas
@@ -78,6 +96,23 @@ async def update_pet_controller(pet_id: int, pet_data: PetUpdate, db: AsyncSessi
     await db.commit()
     await db.refresh(pet)
     logger.info(f"Pet with ID {pet_id} updated successfully")
+    
+    # Enviar notificación en tiempo real
+    pet_dict = {
+        "pet_id": pet.pet_id,
+        "name": pet.name,
+        "species": pet.species,
+        "breed": pet.breed,
+        "age": pet.age,
+        "user_id": pet.user_id
+    }
+    await notification_service.send_pet_update("updated", pet_dict)
+    await notification_service.send_user_notification(
+        str(pet.user_id), 
+        "pet_updated", 
+        {"pet_name": pet.name, "pet_id": pet.pet_id}
+    )
+    
     return pet
 
 @invalidate_cache("pets")
@@ -89,7 +124,23 @@ async def delete_pet_controller(pet_id: int, db: AsyncSession):
         logger.warning(f"Pet with ID {pet_id} not found")
         raise NotFoundException("User not found")
     
+    # Guardar información antes de eliminar para la notificación
+    pet_info = {
+        "pet_id": pet.pet_id,
+        "name": pet.name,
+        "user_id": pet.user_id
+    }
+    
     await db.delete(pet)
     await db.commit()
     logger.info(f"Pet with ID {pet_id} deleted successfully")
+    
+    # Enviar notificación en tiempo real
+    await notification_service.send_pet_update("deleted", pet_info)
+    await notification_service.send_user_notification(
+        str(pet_info["user_id"]), 
+        "pet_deleted", 
+        {"pet_name": pet_info["name"], "pet_id": pet_info["pet_id"]}
+    )
+    
     return {"detail": "Pet deleted successfully"} 

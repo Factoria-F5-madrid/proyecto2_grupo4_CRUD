@@ -20,3 +20,4 @@ pytest>=7.0
 httpx
 pandas>=2.0.0
 redis==5.0.1
+websockets==12.0
