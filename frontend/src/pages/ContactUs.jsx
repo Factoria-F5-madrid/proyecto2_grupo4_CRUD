@@ -1,75 +1,192 @@
 import { useState, useRef } from 'react';
-import { Link } from 'react-router-dom';
 import emailjs from '@emailjs/browser';
-
-import perritosImage from '../assets/PetHome.svg';
 import petImage from '../assets/petLand-logo-letra-azul.png';
-import Modal from '../components/Nav/Modal';
+import pet from '../assets/mascotas.jpg';
+import { FaFacebookF, FaInstagram, FaWhatsapp } from 'react-icons/fa';
+
 
 const ContactForm = () => {
   const form = useRef();
+  const [formSuccess, setFormSuccess] = useState('');
+  const [errors, setErrors] = useState({
+    name: '',
+    email: '',
+    message: '',
+  });
+
+  const validateForm = (name, email, message) => {
+    const newErrors = {
+      name: '',
+      email: '',
+      message: '',
+    };
+
+    const nameRegex = /^[a-zA-ZáéíóúÁÉÍÓÚñÑ\s]{2,50}$/;
+    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+
+    if (!nameRegex.test(name)) {
+      newErrors.name = 'El nombre solo debe contener letras y espacios (mínimo 2 caracteres).';
+    }
+
+    if (!emailRegex.test(email)) {
+      newErrors.email = 'Correo electrónico no válido.';
+    }
+
+    if (message.trim().length < 10) {
+      newErrors.message = 'El mensaje debe tener al menos 10 caracteres.';
+    }
+
+    return newErrors;
+  };
 
   const sendEmail = (e) => {
     e.preventDefault();
 
+    const name = form.current.user_name.value.trim();
+    const email = form.current.user_email.value.trim();
+    const message = form.current.message.value.trim();
+
+    const validationErrors = validateForm(name, email, message);
+    const hasErrors = Object.values(validationErrors).some((error) => error !== '');
+
+    if (hasErrors) {
+      setErrors(validationErrors);
+      setFormSuccess('');
+      return;
+    }
+
+    setErrors({ name: '', email: '', message: '' });
+
     emailjs
       .sendForm(
-        'service_a0br7l7',      // ⚠️ Reemplaza con tu Service ID
-        'template_60qy2ln',     // ⚠️ Reemplaza con tu Template ID
+        'service_a0br7l7',
+        'template_60qy2ln',
         form.current,
-        'u4pNSJNBDkNpwqp3O'       // ⚠️ Reemplaza con tu Public Key
+        'u4pNSJNBDkNpwqp3O'
       )
       .then(
         (result) => {
           console.log('Email sent!', result.text);
-          alert('Mensaje enviado correctamente');
-          form.current.reset(); // Limpiar el formulario después de enviar
+          setFormSuccess('✅ Mensaje enviado correctamente');
+          form.current.reset();
         },
         (error) => {
           console.error('Error:', error.text);
-          alert('Hubo un error al enviar el mensaje');
+          setFormSuccess('❌ Hubo un error al enviar el mensaje');
         }
       );
   };
 
   return (
-    <form ref={form} onSubmit={sendEmail} className="flex flex-col gap-4 w-full max-w-md mx-auto text-left">
-      <label>Nombre</label>
-      <input className="border p-2 rounded" type="text" name="user_name" required />
+    <div className="w-full px-4 py-8">
+      <div className="text-center mb-6">
 
-      <label>Email</label>
-      <input className="border p-2 rounded" type="email" name="user_email" required />
+        <img
+          src={petImage}
+          alt="PetImage"
+          className="w-48 h-auto object-contain mx-auto mb-4"
+        />
 
-      <label>Mensaje</label>
-      <textarea className="border p-2 rounded" name="message" required />
-
-      <button className="bg-blue-600 text-white py-2 px-4 rounded hover:bg-blue-700 transition" type="submit">
-        Enviar
-      </button>
-    </form>
-  );
-};
-
-const ContactUs = () => {
-  const [showModal, setShowModal] = useState(false);
-
-  return (
-    <div className="flex-1 flex flex-col items-center justify-center bg-[#ffffff] px-4 text-center">
-      <img
-        src={petImage}
-        alt="PetImage"
-        className="w-55 h-15 object-contain mb-4"
-      />
-
-      <h1 className="text-[#1c1f26] text-md mb-6">
+        <h1 className="text-[#1c1f26] text-center mb-6">
         Formulario de contacto 🐾, si tienes alguna pregunta o necesitas ayuda, no dudes en contactarnos. Estamos aquí para ayudarte a cuidar de tus mascotas con amor y dedicación.
       </h1>
 
-      <ContactForm />
+        <h2 className="text-2xl font-bold text-[#1c1f26]">
+          Contacta con nosotros
+        </h2>
 
-      {showModal && <Modal onClose={() => setShowModal(false)} />}
+      </div>
+
+      {/* Contenedor responsivo */}
+      <div className="flex flex-col md:flex-row items-center justify-center gap-8 max-w-5xl mx-auto">
+        {/* Imagen a la izquierda */}
+        <div className="w-full md:w-1/2 flex justify-center">
+          <img
+            src={pet}
+            alt="Pet"
+            className="w-84 h-auto object-contain"
+          />
+        </div>
+
+        {/* Formulario */}
+        <form
+          ref={form}
+          onSubmit={sendEmail}
+          noValidate
+          className="flex flex-col gap-4 w-full md:w-1/2 text-left"
+        >
+          <label>Nombre</label>
+          <input
+            className={`border p-2 rounded ${errors.name ? 'border-red-500' : 'border-gray-300'}`}
+            type="text"
+            name="user_name"
+          />
+          {errors.name && <p className="text-red-500 text-sm">{errors.name}</p>}
+
+          <label>Email</label>
+          <input
+            className={`border p-2 rounded ${errors.email ? 'border-red-500' : 'border-gray-300'}`}
+            type="email"
+            name="user_email"
+          />
+          {errors.email && <p className="text-red-500 text-sm">{errors.email}</p>}
+
+          <label>Mensaje</label>
+          <textarea
+            className={`border p-2 rounded ${errors.message ? 'border-red-500' : 'border-gray-300'}`}
+            name="message"
+          />
+          {errors.message && <p className="text-red-500 text-sm">{errors.message}</p>}
+
+          {formSuccess && <p className="text-green-600 text-sm">{formSuccess}</p>}
+
+          <button
+            className="bg-blue-600 text-white py-2 px-4 rounded hover:bg-blue-700 transition"
+            type="submit"
+          >
+            Enviar
+          </button>
+        </form>
+   
+        
+      </div>
+
+      {/*botones redes sociales*/}
+
+       <div className="mt-6 flex justify-center gap-6 w-full">
+  <a
+    href="https://www.facebook.com/tuPagina"
+    target="_blank"
+    rel="noopener noreferrer"
+    className="text-white bg-blue-600 hover:bg-blue-700 p-3 rounded-full transition"
+    title="Facebook"
+  >
+    <FaFacebookF size={20} />
+  </a>
+
+  <a
+    href="https://www.instagram.com/tuPerfil"
+    target="_blank"
+    rel="noopener noreferrer"
+    className="text-white bg-gradient-to-r from-pink-500 to-yellow-500 hover:opacity-80 p-3 rounded-full transition"
+    title="Instagram"
+  >
+    <FaInstagram size={20} />
+  </a>
+
+  <a
+    href="https://wa.me/34123456789"
+    target="_blank"
+    rel="noopener noreferrer"
+    className="text-white bg-green-500 hover:bg-green-600 p-3 rounded-full transition"
+    title="WhatsApp"
+  >
+    <FaWhatsapp size={20} />
+  </a>
+</div>
+
     </div>
   );
 };
 
-export default ContactUs;
+export default ContactForm;
