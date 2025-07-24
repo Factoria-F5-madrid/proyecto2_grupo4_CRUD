@@ -38,7 +38,7 @@ const Serv = () => {
                 </div>
                 <img className="w-56 h-44" src={daycareServ} alt="Guardería" />
                 <div className="w-full flex justify-center items-center gap-4 pb-5">
-                  <Link to="/reservation" className="w-32 p-4 bg-blue-500 rounded-2xl flex justify-center items-center">
+                  <Link to="/reservations" className="w-32 p-4 bg-blue-500 rounded-2xl flex justify-center items-center">
                     <div className="text-center text-white text-base font-medium font-['Noto_Sans'] leading-tight">Reservar</div>
                   </Link>
                   <button className="w-32 p-4 rounded-2xl flex justify-center items-center">
@@ -52,7 +52,7 @@ const Serv = () => {
                 </div>
                 <img className="w-56 h-44" src={transportationServ} alt="Transporte" />
                 <div className="w-full flex justify-center items-center gap-4 pb-5">
-                  <Link to="/reservation" className="w-32 p-4 bg-blue-500 rounded-2xl flex justify-center items-center">
+                  <Link to="/reservations" className="w-32 p-4 bg-blue-500 rounded-2xl flex justify-center items-center">
                     <div className="text-center text-white text-base font-medium font-['Noto_Sans'] leading-tight">Reservar</div>
                   </Link>
                   <button className="w-32 p-4 rounded-2xl flex justify-center items-center">
@@ -69,7 +69,7 @@ const Serv = () => {
                 </div>
                 <img className="w-56 h-44" src={foodServ} alt="Comida" />
                 <div className="w-full flex justify-center items-center gap-4 pb-5">
-                  <Link to="/reservation" className="w-32 p-4 bg-blue-500 rounded-2xl flex justify-center items-center">
+                  <Link to="/reservations" className="w-32 p-4 bg-blue-500 rounded-2xl flex justify-center items-center">
                     <div className="text-center text-white text-base font-medium font-['Noto_Sans'] leading-tight">Reservar</div>
                   </Link>
                   <button className="w-32 p-4 rounded-2xl flex justify-center items-center">
@@ -83,7 +83,7 @@ const Serv = () => {
                 </div>
                 <img className="w-56 h-44" src={othersServ} alt="Otros" />
                 <div className="w-full flex justify-center items-center gap-4 pb-5">
-                  <Link to="/reservation" className="w-32 p-4 bg-blue-500 rounded-2xl flex justify-center items-center">
+                  <Link to="/reservations" className="w-32 p-4 bg-blue-500 rounded-2xl flex justify-center items-center">
                     <div className="text-center text-white text-base font-medium font-['Noto_Sans'] leading-tight">Reservar</div>
                   </Link>
                   <button className="w-32 p-4 rounded-2xl flex justify-center items-center">
