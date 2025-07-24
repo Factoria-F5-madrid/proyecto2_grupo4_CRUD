@@ -46,7 +46,7 @@ export default function Nav() {
           <SidebarLink icon={<FaFileInvoice />} label="Invoices" to="/invoices" isOpen={isOpen} navigate={navigate} />
           <SidebarLink icon={<FaUserAlt />} label="Account" to="/account" isOpen={isOpen} navigate={navigate} />
           <SidebarLink icon={<FaCog />} label="Settings" to="/settings" isOpen={isOpen} navigate={navigate} />
-          <SidebarLink icon={<FaPaw />} label="Service" to="/serv" isOpen={isOpen} navigate={navigate} />
+          <SidebarLink icon={<FaPaw />} label="Services" to="/serv" isOpen={isOpen} navigate={navigate} />
         </nav>
       </div>
 
