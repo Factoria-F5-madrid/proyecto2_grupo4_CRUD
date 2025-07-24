@@ -25,7 +25,7 @@ const PetCard = ({ pet }) => {
         <h3 className="text-xl font-semibold mb-2">{name}</h3>
         <p><strong>Especie:</strong> {species}</p>
         <p><strong>Raza:</strong> {breed}</p>
-        <p><strong>Edad:</strong> {birth_date ? `${getAge(birth_date)} años` : "No definida"}</p>
+        <p><strong>Edad:</strong>  {birth_date ? `${getAge(birth_date)} ${getAge(birth_date) === 1 ? "año" : "años"}` : "No disponible"}</p>
       </div>
     </div>
   );
