@@ -11,12 +11,23 @@ import Payments from "../pages/Payments";
 import Invoice from "../pages/Invoice";
 import Account from "../pages/Account";
 import Settings from "../pages/Settings";
+import Login from "../pages/Login";
+import Register from "../pages/Register";
 
 
 export const router = createBrowserRouter([
   {
     path: "/", 
     element: <Spinner />,
+  },
+  // Rutas de autenticación (sin layout)
+  {
+    path: "/login",
+    element: <Login />,
+  },
+  {
+    path: "/register",
+    element: <Register />,
   },
   {
     path: "/", // rutas con layout (Nav + Footer)
