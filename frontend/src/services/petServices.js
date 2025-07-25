@@ -1,8 +1,5 @@
 import axios from "axios";
-
-// Usar variable de entorno para la URL de la API
-const API_BASE_URL = import.meta.env.VITE_API_URL || "http://localhost:8000";
-const API_URL = `${API_BASE_URL}/pets`;
+const API_URL = "http://127.0.0.1:8000/pets";
 
 // ahora mis servicios con manejo de errores try catch que consumira mi endpoint
 

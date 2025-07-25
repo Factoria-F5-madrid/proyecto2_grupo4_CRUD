@@ -3,14 +3,16 @@ import { useNavigate } from "react-router-dom";
 import {
   FaUserAlt, FaCog, FaCalendarAlt, FaBars, FaTimes, FaPlus,
   FaMoneyCheckAlt, FaStethoscope, FaFileInvoice, FaEnvelope,
-  FaDog, FaClipboardList
+  FaDog, FaClipboardList, FaSignOutAlt
 } from "react-icons/fa";
-import Modal from "./Modal"; 
+import Modal from "./Modal";
+import { useAuth } from "../../context/AuthContext"; 
 
 export default function Nav() {
   const [isOpen, setIsOpen] = useState(true);
   const [showModal, setShowModal] = useState(false);
   const navigate = useNavigate();
+  const { user, logout } = useAuth();
 
   return (
     <>
@@ -57,10 +59,18 @@ export default function Nav() {
           alt="User"
         />
         {isOpen && (
-          <div>
+          <div className="flex-1">
             <p className="text-sm text-gray-300">Hello</p>
-            <p className="text-lg font-semibold text-white">YEDER</p> 
-            {/* luego acuerdate de cambiar el YEDER por el id del cliente para que traiga el nombre del cliente logeado */}
+            <p className="text-lg font-semibold text-white">
+              {user ? `${user.first_name} ${user.last_name}` : 'Guest'}
+            </p>
+            <button
+              onClick={logout}
+              className="flex items-center gap-2 text-sm text-gray-400 hover:text-white mt-1"
+            >
+              <FaSignOutAlt size={12} />
+              Logout
+            </button>
           </div>
         )}
       </div>
