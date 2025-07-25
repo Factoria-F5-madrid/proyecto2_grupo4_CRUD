@@ -1,6 +1,6 @@
 //  voy hacer los servicios de activityLog
 import axios from "axios";
-const BASE_URL = "http://127.0.0.1:8000/activitylogs";
+const BASE_URL = "http://localhost:8000/activitylogs";
 
 // ahora mis servicios con manejo de errores try catch que consumira mi endpoint
 

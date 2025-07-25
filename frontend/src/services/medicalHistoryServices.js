@@ -1,6 +1,6 @@
 import axios from "axios";
 
-const BASE_URL = "http://127.0.0.1:8000/medicalhistory"; 
+const BASE_URL = "http://localhost:8000/medicalhistory"; 
 //Obtener todos los historiales médicos
 export const getAllMedicalHistories = async () => {
   try {
@@ -41,7 +41,7 @@ export const getMedicalHistoryByPetID = async (pet_id) => {
 export const createMedicalHistory = async (medicalHistoryData) => {
   try {
     const response = await axios.post(
-      "http://127.0.0.1:8000/medicalhistory",
+      "http://localhost:8000/medicalhistory",
       medicalHistoryData,
       {
         headers: {

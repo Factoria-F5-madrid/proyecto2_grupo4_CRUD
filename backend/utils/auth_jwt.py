@@ -13,7 +13,7 @@ SECRET_KEY = os.getenv("SECRET_KEY")
 if not SECRET_KEY:
     raise ValueError("SECRET_KEY no está definida en las variables de entorno")
 
-ALGORITHM = "HS256"
+ALGORITHM = "HS256" 
 ACCESS_TOKEN_EXPIRE_MINUTES = int(os.getenv("ACCESS_TOKEN_EXPIRE_MINUTES", 60))
 
 

@@ -1,6 +1,6 @@
 import axios from "axios";
 
-const BASE_URL = "http://127.0.0.1:8000/service"; 
+const BASE_URL = "http://localhost:8000/service"; 
 
 //Obtener todos los servicios
 export const getAllService = async () => {
@@ -28,7 +28,7 @@ export const getServiceByID = async (service_id) => {
 export const createService = async (serviceData) => {
   try {
     const response = await axios.post(
-      "http://127.0.0.1:8000/service/",
+      "http://localhost:8000/service/",
       serviceData,
       {
         headers: {

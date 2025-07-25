@@ -1,6 +1,6 @@
 // voy hacer los servicios de employee
 import axios from "axios";
-const BASE_URL = "http://127.0.0.1:8000/employees";
+const BASE_URL = "http://localhost:8000/employees";
 
 // ahora mis servicios con manejo de errores try catch que consumira mi endpoint
 

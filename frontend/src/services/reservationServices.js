@@ -1,6 +1,6 @@
 import axios from "axios";
 
-const BASE_URL = "http://127.0.0.1:8000/reservation"; 
+const BASE_URL = "http://localhost:8000/reservation"; 
 
 //Obtener a las reservas
 export const getAllReservation = async () => {
@@ -51,7 +51,7 @@ export const getReservationByService= async (service_id) => {
 export const createReservation = async (reservationData) => {
   try {
     const response = await axios.post(
-      "http://127.0.0.1:8000/reservation/",
+      "http://localhost:8000/reservation/",
       reservationData,
       {
         headers: {

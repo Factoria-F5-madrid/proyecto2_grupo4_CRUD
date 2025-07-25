@@ -1,6 +1,6 @@
 import axios from "axios";
 
-const BASE_URL = "http://127.0.0.1:8000/invoices/"; 
+const BASE_URL = "http://localhost:8000/invoices/"; 
 
 // Obtener todas las facturas
 export const getAllInvoices = async () => {
@@ -28,7 +28,7 @@ export const getInvoiceByID = async (invoice_id) => {
 export const createInvoice = async (invoiceData) => {
   try {
     const response = await axios.post(
-      "http://127.0.0.1:8000/invoices/",
+      "http://localhost:8000/invoices/",
       invoiceData,
       {
         headers: {

@@ -3,6 +3,8 @@ from sqlalchemy.ext.asyncio import AsyncSession
 from sqlalchemy.future import select
 from fastapi.middleware.cors import CORSMiddleware
 
+
+
 from backend.routes.user_routes import router as users_router
 from backend.routes.service_routes import router as service_router 
 from backend.routes.reservation_routes import router as reservations_router
@@ -39,9 +41,10 @@ app.add_middleware(
     CORSMiddleware,
     allow_origins=["*"],  
     allow_credentials=True,
-    allow_methods=["*"], 
+    allow_methods=["GET", "POST", "PUT", "DELETE", "OPTIONS", "PATCH"],
     allow_headers=["*"],
 )
+
 register_exception_handlers(app)
 
 @app.on_event("startup")
