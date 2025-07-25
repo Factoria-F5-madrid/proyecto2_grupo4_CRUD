@@ -6,22 +6,34 @@ from datetime import datetime
 
 from backend.models.user_models import User
 from backend.schema.user_schema import UserCreate, UserUpdate, UserOut
-
+from backend.utils.simple_cache import cache_response, invalidate_cache
 from backend.logger.logger import logger  
+from backend.utils.auth import hash_password
 
 
+@invalidate_cache("users")
 async def create_user_controller(user_data: UserCreate, db: AsyncSession):
     logger.debug(f"Creating user with data: {user_data}")
-    new_user = User(**user_data.dict())
+
+    hashed_pw = hash_password(user_data.password)
+
+    user_dict = user_data.dict()
+    user_dict['hashed_password'] = hashed_pw
+    user_dict.pop('password')
+
+    new_user = User(**user_dict)
     new_user.registration_date = datetime.utcnow() 
     new_user.updated_by = "system" 
     new_user.update_date = func.now() 
+ 
     db.add(new_user)
     await db.commit()
     await db.refresh(new_user)
+
     logger.info(f"User created successfully with ID: {new_user.user_id}")
     return new_user
 
+@cache_response("users:all", ttl=600)  # 10 minutos para listas
 async def get_all_users_controller(db: AsyncSession):
     logger.debug("Fetching all users")
     result = await db.execute(select(User))
@@ -29,6 +41,7 @@ async def get_all_users_controller(db: AsyncSession):
     logger.info(f"Fetched {len(users)} users")
     return users
 
+@cache_response("users:by_id", ttl=900)  # 15 minutos para usuarios individuales
 async def get_user_by_id_controller(user_id: int, db: AsyncSession):
     logger.debug(f"Fetching user by ID: {user_id}")
     result = await db.execute(select(User).where(User.user_id == user_id))
@@ -41,14 +54,24 @@ async def get_user_by_id_controller(user_id: int, db: AsyncSession):
     
     return user
 
+@invalidate_cache("users")
 async def update_user_controller(user_id: int, user_data: UserUpdate, db: AsyncSession):
     logger.debug(f"Updating user ID {user_id} with data: {user_data}")
+
     result = await db.execute(select(User).where(User.user_id== user_id))
     user = result.scalar_one_or_none()
     if not user:
         logger.warning(f"User not found for update with ID: {user_id}") 
         return None
-    for field, value in user_data.model_dump(exclude_unset=True).items():
+
+    update_data = user_data.model_dump(exclude_unset=True)
+
+    if 'password' in update_data:
+        hashed = hash_password(update_data.pop('password'))
+        update_data['hashed_password'] = hashed
+
+
+    for field, value in update_data.items():
         setattr(user, field, value)
     user.updated_by = "system"  
     user.update_date = func.now()  
@@ -57,6 +80,7 @@ async def update_user_controller(user_id: int, user_data: UserUpdate, db: AsyncS
     logger.info(f"User updated successfully with ID: {user_id}") 
     return user
 
+@invalidate_cache("users")
 async def delete_user_controller(user_id: int, db: AsyncSession):
     logger.debug(f"Deleting user with ID: {user_id}")
     result = await db.execute(select(User).where(User.user_id == user_id))
