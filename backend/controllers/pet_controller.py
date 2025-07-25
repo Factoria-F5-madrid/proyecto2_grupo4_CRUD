@@ -1,7 +1,7 @@
 from sqlalchemy.ext.asyncio import AsyncSession
 from sqlalchemy.future import select
 from backend.exceptions.custom_exceptions import NotFoundException
-
+from backend.utils.cache_decorators import cache_response, invalidate_cache
 
 from backend.models.pet_models import Pet
 from backend.models.user_models import User
@@ -9,6 +9,7 @@ from backend.schema.pet_schema import PetCreate, PetUpdate, PetOut
 
 from backend.logger.logger import logger
 
+@invalidate_cache("pets")
 async def create_pet_controller(pet_data: PetCreate, db: AsyncSession):
     logger.debug(f"Attempting to create pet for user ID {pet_data.user_id}")
     user_result = await db.execute(select(User).where(User.user_id == pet_data.user_id))
@@ -25,6 +26,7 @@ async def create_pet_controller(pet_data: PetCreate, db: AsyncSession):
     logger.info(f"Pet created with ID {new_pet.pet_id}")
     return new_pet
 
+@cache_response("pets:all", ttl=600)  # 10 minutos para listas
 async def get_all_pets_controller(db: AsyncSession):
     logger.debug("Fetching all pets from the database")
     result = await db.execute(select(Pet))
@@ -32,6 +34,7 @@ async def get_all_pets_controller(db: AsyncSession):
     logger.info(f"Fetched {len(pets)} pets")
     return pets
 
+@cache_response("pets:by_id", ttl=900)  # 15 minutos para mascotas individuales
 async def get_pet_by_id_controller(pet_id: int, db: AsyncSession):
     logger.debug(f"Fetching pet with ID {pet_id}")
     result = await db.execute(select(Pet).where(Pet.pet_id == pet_id))
@@ -42,6 +45,7 @@ async def get_pet_by_id_controller(pet_id: int, db: AsyncSession):
     logger.info(f"Pet found: ID {pet_id}")    
     return pet
 
+@cache_response("pets:by_user", ttl=600)  # 10 minutos para mascotas por usuario
 async def get_pets_by_user_controller(user_id: int, db: AsyncSession):
     logger.debug(f"Fetching pets for user ID {user_id}")
     result = await db.execute(select(Pet).where(Pet.user_id == user_id))
@@ -49,6 +53,7 @@ async def get_pets_by_user_controller(user_id: int, db: AsyncSession):
     logger.info(f"Found {len(pets)} pets for user ID {user_id}")
     return pets
 
+@invalidate_cache("pets")
 async def update_pet_controller(pet_id: int, pet_data: PetUpdate, db: AsyncSession):
     logger.debug(f"Attempting to update pet with ID {pet_id}")
     result = await db.execute(select(Pet).where(Pet.pet_id == pet_id))
@@ -75,6 +80,7 @@ async def update_pet_controller(pet_id: int, pet_data: PetUpdate, db: AsyncSessi
     logger.info(f"Pet with ID {pet_id} updated successfully")
     return pet
 
+@invalidate_cache("pets")
 async def delete_pet_controller(pet_id: int, db: AsyncSession):
     logger.debug(f"Attempting to delete pet with ID {pet_id}")
     result = await db.execute(select(Pet).where(Pet.pet_id == pet_id))
