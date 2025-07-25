@@ -1,4 +1,4 @@
-#!/usr/bin/env python3
+
 """
 Script para iniciar el servidor FastAPI con WebSockets
 """
