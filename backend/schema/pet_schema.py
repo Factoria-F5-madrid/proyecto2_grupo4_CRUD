@@ -10,6 +10,7 @@ class PetBase(BaseModel):
     birth_date: date
     allergies: Optional[str] = None
     special_needs: Optional[str] = None
+    img_url: Optional[str] = None  
     user_id: int  
 
 class PetCreate(PetBase):
@@ -22,6 +23,7 @@ class PetUpdate(BaseModel):
     birth_date: Optional[date] = None
     allergies: Optional[str] = None
     special_needs: Optional[str] = None
+    img_url: Optional[str] = None
     user_id: Optional[int] = None
 
 class PetOut(PetBase):
@@ -38,6 +40,7 @@ class PetOut(PetBase):
                 "birth_date": "2020-05-20",
                 "allergies": "Ninguna",
                 "special_needs": "Ninguna",
+                "img_url": "https://res.cloudinary.com/yederpt/image/upload/v1753339634/h3citaq7jde3vsmz8zkc.png",
                 "user_id": 1
             }
         }
