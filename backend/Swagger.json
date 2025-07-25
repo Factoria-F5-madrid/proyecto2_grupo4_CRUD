@@ -1,0 +1,683 @@
+openapi: 3.0.0
+info:
+  title: PETLAND API
+  version: 1.0.0
+  description: Hotel de mascotas
+
+servers:
+  - url: http://localhost:8000/docs
+
+paths:
+  # ========================
+  # Autenticación
+  # ========================
+  /auth/test:
+    get:
+      summary: Verify authentication routes
+      responses:
+        '200':
+          description: Authentication routes working
+
+  /auth/login:
+    post:
+      summary: User authentication
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                email:
+                  type: string
+                password:
+                  type: string
+      responses:
+        '200':
+          description: Authentication successful
+
+  /auth/register:
+    post:
+      summary: Register new user
+      responses:
+        '200':
+          description: User registered
+
+  /auth/me:
+    get:
+      summary: Get authenticated user info
+      responses:
+        '200':
+          description: User information
+
+  # ========================
+  # Gestión de Usuarios
+  # ========================
+  /users/:
+    post:
+      summary: Create new user
+      responses:
+        '200':
+          description: User created
+    get:
+      summary: Get all users
+      responses:
+        '200':
+          description: List of users
+
+  /users/{user_id}:
+    get:
+      summary: Get user by ID
+      parameters:
+        - name: user_id
+          in: path
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: User details
+    put:
+      summary: Update user
+      parameters:
+        - name: user_id
+          in: path
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: User updated
+    delete:
+      summary: Delete user
+      parameters:
+        - name: user_id
+          in: path
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: User deleted
+
+  # ========================
+  # Operaciones con Mascotas
+  # ========================
+  /pets/:
+    post:
+      summary: Register new pet
+      responses:
+        '200':
+          description: Pet registered
+    get:
+      summary: Get all pets
+      responses:
+        '200':
+          description: List of pets
+
+  /pets/{pet_id}:
+    get:
+      summary: Get pet by ID
+      parameters:
+        - name: pet_id
+          in: path
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: Pet details
+    put:
+      summary: Update pet information
+      parameters:
+        - name: pet_id
+          in: path
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: Pet updated
+    delete:
+      summary: Delete pet
+      parameters:
+        - name: pet_id
+          in: path
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: Pet deleted
+
+  /pets/user/{user_id}:
+    get:
+      summary: Get pets by user
+      parameters:
+        - name: user_id
+          in: path
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: User's pets
+
+  # ========================
+  # Flujo de Reservas
+  # ========================
+  /reservations/:
+    post:
+      summary: Create new reservation
+      responses:
+        '200':
+          description: Reservation created
+    get:
+      summary: Get all reservations
+      responses:
+        '200':
+          description: List of reservations
+
+  /reservations/{reservation_id}:
+    get:
+      summary: Get reservation by ID
+      parameters:
+        - name: reservation_id
+          in: path
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: Reservation details
+    put:
+      summary: Update reservation
+      parameters:
+        - name: reservation_id
+          in: path
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: Reservation updated
+    delete:
+      summary: Cancel reservation
+      parameters:
+        - name: reservation_id
+          in: path
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: Reservation canceled
+
+  /reservations/user/{user_id}:
+    get:
+      summary: Get reservations by user
+      parameters:
+        - name: user_id
+          in: path
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: User's reservations
+
+  /reservations/service/{service_id}:
+    get:
+      summary: Get reservations by service
+      parameters:
+        - name: service_id
+          in: path
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: Service reservations
+
+  # ========================
+  # Gestión de Servicios
+  # ========================
+  /services/:
+    post:
+      summary: Create new service
+      responses:
+        '200':
+          description: Service created
+    get:
+      summary: Get all services
+      responses:
+        '200':
+          description: List of services
+
+  /services/{service_id}:
+    get:
+      summary: Get service by ID
+      parameters:
+        - name: service_id
+          in: path
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: Service details
+    put:
+      summary: Update service
+      parameters:
+        - name: service_id
+          in: path
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: Service updated
+    delete:
+      summary: Delete service
+      parameters:
+        - name: service_id
+          in: path
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: Service deleted
+
+  # ========================
+  # Gestión de Empleados
+  # ========================
+  /employees/:
+    post:
+      summary: Register new employee
+      responses:
+        '200':
+          description: Employee registered
+    get:
+      summary: Get all employees
+      responses:
+        '200':
+          description: List of employees
+
+  /employees/{employee_id}:
+    get:
+      summary: Get employee by ID
+      parameters:
+        - name: employee_id
+          in: path
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: Employee details
+    put:
+      summary: Update employee
+      parameters:
+        - name: employee_id
+          in: path
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: Employee updated
+    delete:
+      summary: Delete employee
+      parameters:
+        - name: employee_id
+          in: path
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: Employee deleted
+
+  # ========================
+  # Asignación de Personal
+  # ========================
+  /assignments/:
+    post:
+      summary: Create new assignment
+      responses:
+        '200':
+          description: Assignment created
+    get:
+      summary: Get all assignments
+      responses:
+        '200':
+          description: List of assignments
+
+  /assignments/{assignment_id}:
+    get:
+      summary: Get assignment by ID
+      parameters:
+        - name: assignment_id
+          in: path
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: Assignment details
+    put:
+      summary: Update assignment
+      parameters:
+        - name: assignment_id
+          in: path
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: Assignment updated
+    delete:
+      summary: Delete assignment
+      parameters:
+        - name: assignment_id
+          in: path
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: Assignment deleted
+
+  # ========================
+  # Registro de Actividades
+  # ========================
+  /activity-logs/:
+    post:
+      summary: Create new activity log
+      responses:
+        '200':
+          description: Activity log created
+    get:
+      summary: Get all activity logs
+      responses:
+        '200':
+          description: List of activity logs
+
+  /activity-logs/activity_logs:
+    get:
+      summary: Get paginated activity logs
+      responses:
+        '200':
+          description: Paginated activity logs
+
+  /activity-logs/{activity_id}:
+    get:
+      summary: Get activity by ID
+      parameters:
+        - name: activity_id
+          in: path
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: Activity details
+    put:
+      summary: Update activity
+      parameters:
+        - name: activity_id
+          in: path
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: Activity updated
+    delete:
+      summary: Delete activity
+      parameters:
+        - name: activity_id
+          in: path
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: Activity deleted
+
+  # ========================
+  # Historial Médico
+  # ========================
+  /medical-history/:
+    post:
+      summary: Create medical record
+      responses:
+        '200':
+          description: Medical record created
+    get:
+      summary: Get all medical records
+      responses:
+        '200':
+          description: List of medical records
+
+  /medical-history/{medical_history_id}:
+    get:
+      summary: Get medical record by ID
+      parameters:
+        - name: medical_history_id
+          in: path
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: Medical record details
+    put:
+      summary: Update medical record
+      parameters:
+        - name: medical_history_id
+          in: path
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: Medical record updated
+    delete:
+      summary: Delete medical record
+      parameters:
+        - name: medical_history_id
+          in: path
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: Medical record deleted
+
+  # ========================
+  # Facturación
+  # ========================
+  /invoices/:
+    post:
+      summary: Generate new invoice
+      responses:
+        '200':
+          description: Invoice generated
+    get:
+      summary: Get all invoices
+      responses:
+        '200':
+          description: List of invoices
+
+  /invoices/{invoice_id}:
+    get:
+      summary: Get invoice by ID
+      parameters:
+        - name: invoice_id
+          in: path
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: Invoice details
+    put:
+      summary: Update invoice
+      parameters:
+        - name: invoice_id
+          in: path
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: Invoice updated
+    delete:
+      summary: Delete invoice
+      parameters:
+        - name: invoice_id
+          in: path
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: Invoice deleted
+
+  # ========================
+  # Pagos
+  # ========================
+  /payments/:
+    post:
+      summary: Register new payment
+      responses:
+        '200':
+          description: Payment registered
+    get:
+      summary: Get all payments
+      responses:
+        '200':
+          description: List of payments
+
+  /payments/{payment_id}:
+    get:
+      summary: Get payment by ID
+      parameters:
+        - name: payment_id
+          in: path
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: Payment details
+    put:
+      summary: Update payment
+      parameters:
+        - name: payment_id
+          in: path
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: Payment updated
+    delete:
+      summary: Delete payment
+      parameters:
+        - name: payment_id
+          in: path
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: Payment deleted
+
+  # ========================
+  # Exportación de Datos
+  # ========================
+  /export/users/csv:
+    get:
+      summary: Export users to CSV
+      responses:
+        '200':
+          description: CSV file of users
+
+  /export/pets/csv:
+    get:
+      summary: Export pets to CSV
+      responses:
+        '200':
+          description: CSV file of pets
+
+  /export/reservations/csv:
+    get:
+      summary: Export reservations to CSV
+      responses:
+        '200':
+          description: CSV file of reservations
+
+  /export/services/csv:
+    get:
+      summary: Export services to CSV
+      responses:
+        '200':
+          description: CSV file of services
+
+  /export/employees/csv:
+    get:
+      summary: Export employees to CSV
+      responses:
+        '200':
+          description: CSV file of employees
+
+  /export/invoices/csv:
+    get:
+      summary: Export invoices to CSV
+      responses:
+        '200':
+          description: CSV file of invoices
+
+  /export/payments/csv:
+    get:
+      summary: Export payments to CSV
+      responses:
+        '200':
+          description: CSV file of payments
+
+  /export/users-with-pets/csv:
+    get:
+      summary: Export users with pets
+      responses:
+        '200':
+          description: CSV file of users with pets
+
+  /export/reservations-with-details/csv:
+    get:
+      summary: Export reservations with details
+      responses:
+        '200':
+          description: CSV file of detailed reservations
+
+  /export/invoices-with-payments/csv:
+    get:
+      summary: Export invoices with payments
+      responses:
+        '200':
+          description: CSV file of invoices with payments
+
+  /export/all/csv:
+    get:
+      summary: Export any entity by name
+      parameters:
+        - name: entity
+          in: query
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: CSV file of requested entity
