@@ -14,6 +14,8 @@ from backend.routes.assignment_routes import router as assignment_router
 from backend.routes.payment_routes import router as payment_router
 from backend.routes.invoice_routes import router as invoice_router
 from backend.routes.export_routes import router as export_router
+from backend.routes.auth_routes import router as auth_router
+from backend.websockets.routes import router as websocket_router
 
 from backend.db.database import AsyncSessionLocal
 from backend.utils.cache import cache_service
@@ -75,4 +77,6 @@ app.include_router(assignment_router, prefix="/assignment", tags=["Assignment"])
 app.include_router(payment_router, prefix="/payment", tags=["Payment"])
 app.include_router(invoice_router, prefix="/invoice", tags=["Invoice"])
 app.include_router(export_router, prefix="/export", tags=["Export"])
+app.include_router(auth_router, prefix="/auth", tags=["Auth"])
+app.include_router(websocket_router, tags=["WebSockets"])
 
