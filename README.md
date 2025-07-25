@@ -85,10 +85,10 @@ pip install -r requirements.txt
 # Ejecutar migraciones
 alembic upgrade head
 
-# Iniciar servidor
-python scripts/start_server.py
-# o
-uvicorn backend.main:app --reload
+# Iniciar servidor (opciones)
+./scripts/server_utils.sh start    # Script de utilidades (recomendado)
+python scripts/start_server.py     # Script directo
+uvicorn backend.main:app --reload  # Uvicorn directo
 ```
 
 ### Frontend
@@ -113,6 +113,21 @@ pytest
 # Tests específicos
 pytest backend/tests/test_websockets.py
 pytest backend/tests/test_cache.py
+```
+
+## 🛠️ Utilidades del Servidor
+
+```bash
+# Ver todos los comandos disponibles
+./scripts/server_utils.sh help
+
+# Gestionar el servidor
+./scripts/server_utils.sh start     # Iniciar servidor
+./scripts/server_utils.sh stop      # Detener servidor
+./scripts/server_utils.sh restart   # Reiniciar servidor
+./scripts/server_utils.sh status    # Verificar estado
+./scripts/server_utils.sh logs      # Ver logs en tiempo real
+./scripts/server_utils.sh clean     # Limpiar procesos
 ```
 
 ## 📝 Logs
