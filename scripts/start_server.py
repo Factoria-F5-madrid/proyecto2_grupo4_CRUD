@@ -7,6 +7,9 @@ import uvicorn
 import os
 import sys
 
+# Agregar el directorio raíz al path para que Python pueda encontrar el módulo backend
+sys.path.insert(0, os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
+
 def main():
     """Inicia el servidor FastAPI"""
     print("🚀 Iniciando servidor PetLand con WebSockets...")
@@ -36,7 +39,7 @@ def main():
     print()
     
     print("💡 Para probar los WebSockets:")
-    print("   1. Ejecuta: python test_websockets.py")
+    print("   1. Ejecuta: python backend/tests/test_websockets.py")
     print("   2. Usa un cliente WebSocket como wscat")
     print("   3. Conecta desde el frontend")
     print()
