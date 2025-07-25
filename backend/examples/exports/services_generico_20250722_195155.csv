@@ -1,4 +1,0 @@
-service_id,lodging,service_type,other_service,notes,base_price,duration,created_at
-1,True,ServiceTypeEnum.OTROS,Prueba3,,50.00,01:30:00,2025-07-19T20:21:49.848058
-2,True,ServiceTypeEnum.TRANSPORTE,,,50.00,01:30:00,2025-07-19T20:35:20.426378
-3,False,ServiceTypeEnum.GUARDERIA,,Servicio de guardería,100.00,,2025-07-21T12:34:40.800679

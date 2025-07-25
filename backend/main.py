@@ -14,10 +14,11 @@ from backend.routes.assignment_routes import router as assignment_router
 from backend.routes.payment_routes import router as payment_router
 from backend.routes.invoice_routes import router as invoice_router
 from backend.routes.export_routes import router as export_router
-
-
+from backend.routes.auth_routes import router as auth_router
+from backend.websockets.routes import router as websocket_router
 
 from backend.db.database import AsyncSessionLocal
+from backend.utils.cache import cache_service
 
 from backend.models.user_models import User
 from backend.models.service_models import Service
@@ -29,7 +30,6 @@ from backend.models.medical_history_models import MedicalHistory
 from backend.models.assignment_models import Assignment
 from backend.models.payment_models import Payment
 from backend.models.invoice_models import Invoice
-
 
 from backend.exceptions.handlers import register_exception_handlers
 
@@ -43,6 +43,16 @@ app.add_middleware(
     allow_headers=["*"],
 )
 register_exception_handlers(app)
+
+@app.on_event("startup")
+async def startup_event():
+    """Inicializar servicios al arrancar la aplicación"""
+    await cache_service.connect()
+
+@app.on_event("shutdown")
+async def shutdown_event():
+    """Cerrar conexiones al apagar la aplicación"""
+    await cache_service.disconnect()
 
 @app.get("/")
 def read_root():
@@ -67,4 +77,6 @@ app.include_router(assignment_router, prefix="/assignment", tags=["Assignment"])
 app.include_router(payment_router, prefix="/payment", tags=["Payment"])
 app.include_router(invoice_router, prefix="/invoice", tags=["Invoice"])
 app.include_router(export_router, prefix="/export", tags=["Export"])
+app.include_router(auth_router, prefix="/auth", tags=["Auth"])
+app.include_router(websocket_router, tags=["WebSockets"])
 
