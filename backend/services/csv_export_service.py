@@ -78,8 +78,7 @@ class CSVExportService:
                     "name": pet.name,
                     "species": pet.species,
                     "breed": pet.breed,
-                    "age": pet.age,
-                    "weight": pet.weight,
+                    "birth_date": pet.birth_date.isoformat() if pet.birth_date else None,
                     "user_id": pet.user_id,
                     "created_at": pet.created_at.isoformat() if pet.created_at else None,
                     "updated_at": pet.updated_at.isoformat() if pet.updated_at else None
@@ -311,7 +310,7 @@ class CSVExportService:
                     "pet_name": pet.name if pet else None,
                     "pet_species": pet.species if pet else None,
                     "pet_breed": pet.breed if pet else None,
-                    "pet_age": pet.age if pet else None
+                    "pet_birth_date": pet.birth_date.isoformat() if pet and pet.birth_date else None
                 })
             
             df = pd.DataFrame(data)

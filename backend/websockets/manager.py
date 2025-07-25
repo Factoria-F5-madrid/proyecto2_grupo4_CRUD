@@ -66,30 +66,38 @@ class ConnectionManager:
     
     async def send_notification(self, user_id: str, notification_type: str, data: dict):
         """Enviar notificación específica a un usuario"""
-        message = {
-            "type": "notification",
-            "notification_type": notification_type,
-            "user_id": user_id,
-            "data": data,
-            "timestamp": datetime.now().isoformat()
-        }
-        
-        # Enviar a todos los canales relevantes
-        await self.broadcast_to_channel(json.dumps(message), "users")
+        try:
+            message = {
+                "type": "notification",
+                "notification_type": notification_type,
+                "user_id": user_id,
+                "data": data,
+                "timestamp": datetime.now().isoformat()
+            }
+            
+            # Enviar a todos los canales relevantes
+            await self.broadcast_to_channel(json.dumps(message), "users")
+        except Exception as e:
+            print(f"Error en send_notification: {e}")
+            # No lanzar la excepción para evitar que falle la operación principal
     
     async def send_realtime_update(self, entity_type: str, action: str, data: dict):
         """Enviar actualización en tiempo real para una entidad específica"""
-        message = {
-            "type": "realtime_update",
-            "entity_type": entity_type,
-            "action": action,
-            "data": data,
-            "timestamp": datetime.now().isoformat()
-        }
-        
-        # Enviar al canal correspondiente
-        if entity_type in self.active_connections:
-            await self.broadcast_to_channel(json.dumps(message), entity_type)
+        try:
+            message = {
+                "type": "realtime_update",
+                "entity_type": entity_type,
+                "action": action,
+                "data": data,
+                "timestamp": datetime.now().isoformat()
+            }
+            
+            # Enviar al canal correspondiente
+            if entity_type in self.active_connections:
+                await self.broadcast_to_channel(json.dumps(message), entity_type)
+        except Exception as e:
+            print(f"Error en send_realtime_update: {e}")
+            # No lanzar la excepción para evitar que falle la operación principal
     
     def get_connection_count(self, channel: str = None) -> int:
         """Obtener el número de conexiones activas"""

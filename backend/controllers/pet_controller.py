@@ -32,7 +32,7 @@ async def create_pet_controller(pet_data: PetCreate, db: AsyncSession):
         "name": new_pet.name,
         "species": new_pet.species,
         "breed": new_pet.breed,
-        "age": new_pet.age,
+        "birth_date": str(new_pet.birth_date),
         "user_id": new_pet.user_id
     }
     await notification_service.send_pet_update("created", pet_dict)
@@ -103,7 +103,7 @@ async def update_pet_controller(pet_id: int, pet_data: PetUpdate, db: AsyncSessi
         "name": pet.name,
         "species": pet.species,
         "breed": pet.breed,
-        "age": pet.age,
+        "birth_date": str(pet.birth_date),
         "user_id": pet.user_id
     }
     await notification_service.send_pet_update("updated", pet_dict)

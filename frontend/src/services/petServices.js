@@ -6,7 +6,7 @@ const API_URL = "/pets/";
 
 export const getAllPets = async () => {
   try {
-    const response = await axios.get(API_URL);
+    const response = await apiClient.get(API_URL);
     return response.data;
   } catch (error) {
     console.error("Error al obtener a los pets:", error);
@@ -60,7 +60,7 @@ export const subirImagenCloudinary = async (file) => {
   formData.append("upload_preset", "musenion");
 
   try {
-    const response = await axios.post(
+    const response = await apiClient.post(
       "https://api.cloudinary.com/v1_1/yederpt/image/upload",
       formData
     );
