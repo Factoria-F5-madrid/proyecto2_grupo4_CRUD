@@ -16,7 +16,7 @@ export default function Nav() {
     <>
     <div className={`${isOpen ? "w-72" : "w-20"} bg-[#1c1f26] text-white duration-300 flex flex-col justify-between`}>
 
-    {/* Header / Logo */}
+    
       <div>
         <div className="flex items-center justify-between p-6">
           {isOpen && <img src="../../src/assets/petLand-sinFondo.png" alt="Logo" className="h-8" />}
@@ -25,7 +25,7 @@ export default function Nav() {
           </button>
         </div>
 
-        {/* Add section */}
+        
         <div className="px-6 mb-6">
           <p className="text-sm text-gray-300 mb-2">Your Pets</p>
           <button 
@@ -35,7 +35,7 @@ export default function Nav() {
           </button>
         </div>
 
-        {/* Navigation links */}
+        
         <nav className="flex flex-col gap-2 px-6">
           <SidebarLink icon={<FaClipboardList />} label="Dashboard" to="/home" isOpen={isOpen} navigate={navigate} />
           <SidebarLink icon={<FaEnvelope />} label="Contact Us" to="/contact" isOpen={isOpen} navigate={navigate} />
@@ -49,7 +49,7 @@ export default function Nav() {
         </nav>
       </div>
 
-      {/* Footer user preview */}
+    
       <div className="flex items-center gap-3 px-6 py-4 bg-gray-800">
         <img
           src="https://placehold.co/40x40"
@@ -59,7 +59,8 @@ export default function Nav() {
         {isOpen && (
           <div>
             <p className="text-sm text-gray-300">Hello</p>
-            <p className="text-lg font-semibold text-white">YEDER</p>
+            <p className="text-lg font-semibold text-white">YEDER</p> 
+            {/* luego acuerdate de cambiar el YEDER por el id del cliente para que traiga el nombre del cliente logeado */}
           </div>
         )}
       </div>

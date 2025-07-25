@@ -52,3 +52,20 @@ export const deletePet = async (petId) => {
     throw error;
   }
 };
+
+export const subirImagenCloudinary = async (file) => {
+  const formData = new FormData();
+  formData.append("file", file);
+  formData.append("upload_preset", "musenion");
+
+  try {
+    const response = await axios.post(
+      "https://api.cloudinary.com/v1_1/yederpt/image/upload",
+      formData
+    );
+    return response.data.secure_url;
+  } catch (error) {
+    console.error("Error subiendo la imagen:", error);
+    throw error;
+  }
+};
