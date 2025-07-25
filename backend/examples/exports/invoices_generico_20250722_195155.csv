@@ -1,2 +1,0 @@
-invoice_id,service_id,fiscal_number,discounts,additional_price,vat,included_services,completed,created_at,updated_at
-1,3,FAC-001,False,,21.00,IncludedServicesEnum.BASICO,False,2025-07-21T10:38:52.568195+00:00,

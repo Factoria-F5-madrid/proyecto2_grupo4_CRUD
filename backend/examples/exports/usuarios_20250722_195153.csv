@@ -1,5 +1,0 @@
-user_id,first_name,last_name,phone_number,email,address,last_update,updated_by,update_date
-3,Barb para el 2,Prueba,111121,barbi@email.com,"Calle Principal 123, Ciudad",2025-07-19T20:35:52.427357,system,2025-07-19T20:35:52.427357
-4,Luis,García,123456789,luis@example.com,123 calle imaginaria,2025-07-22T08:45:36.808619,system,2025-07-22T08:45:36.808619
-11,Barb para el 2,Prueba,34521,barbiprueba@email.com,"Calle Principal 123, Ciudad",2025-07-22T09:55:37.995753,system,2025-07-22T09:55:37.995753
-1,Barb,Prueba,22222222,barb@email.com,"Calle Principal 123, Ciudad",2025-07-19T20:20:01.310210,system,2025-07-22T10:24:28.916489
