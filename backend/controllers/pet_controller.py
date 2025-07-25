@@ -12,6 +12,10 @@ from backend.logger.logger import logger
 
 @invalidate_cache("pets")
 async def create_pet_controller(pet_data: PetCreate, db: AsyncSession):
+    print('-'*20)
+    print('esto es el pet data', pet_data)
+    print('-'*20)
+
     logger.debug(f"Attempting to create pet for user ID {pet_data.user_id}")
     user_result = await db.execute(select(User).where(User.user_id == pet_data.user_id))
     user = user_result.scalar_one_or_none()

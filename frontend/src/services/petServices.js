@@ -1,11 +1,11 @@
 import axios from "axios";
-const API_URL = "http://127.0.0.1:8000/pets";
+const API_URL = "http://127.0.0.1:8000";
 
 // ahora mis servicios con manejo de errores try catch que consumira mi endpoint
 
 export const getAllPets = async () => {
   try {
-    const response = await axios.get(API_URL);
+    const response = await axios.get(`${API_URL}/pets`);
     return response.data;
   } catch (error) {
     console.error("Error al obtener a los pets:", error);
@@ -25,7 +25,9 @@ export const getPetById = async (petId) => {
 
 export const createPet = async (petData) => {
   try {
-    const response = await axios.post(API_URL, petData);
+    console.log("esto es el petData",petData)
+    const response = await axios.post( `${API_URL}/pets`, petData);
+    console.log(response);
     return response.data;
   } catch (error) {
     console.error("Error al crear el pet:", error);
@@ -35,7 +37,7 @@ export const createPet = async (petData) => {
 
 export const updatePet = async (petId, petData) => {
   try {
-    const response = await axios.put(`${API_URL}/${petId}`, petData);
+    const response = await axios.put(`${API_URL}/pets/${petId}`, petData);
     return response.data;
   } catch (error) {
     console.error("Error al actualizar el pet:", error);
@@ -45,7 +47,7 @@ export const updatePet = async (petId, petData) => {
 
 export const deletePet = async (petId) => {
   try {
-    const response = await axios.delete(`${API_URL}/${petId}`);
+    const response = await axios.delete(`${API_URL}/pets/${petId}`);
     return response.data;
   } catch (error) {
     console.error("Error al eliminar el pet:", error);

@@ -11,7 +11,7 @@ const Form = ({ onClose, userId }) => {
     allergies: "",
     special_needs: "",
     image: null,
-    user_id: 1,
+    user_id: userId,
   });
 
   const [errors, setErrors] = useState({});
