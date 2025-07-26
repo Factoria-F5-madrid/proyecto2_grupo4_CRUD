@@ -3,7 +3,8 @@ import { useNavigate } from "react-router-dom";
 import {
   FaUserAlt, FaCog, FaCalendarAlt, FaBars, FaTimes,
   FaMoneyCheckAlt, FaStethoscope, FaFileInvoice,
-  FaDog, FaClipboardList, FaSignOutAlt, FaUsers, FaUserTie, FaClipboard
+  FaDog, FaClipboardList, FaSignOutAlt, FaUsers, FaUserTie, FaClipboard,
+  FaEnvelope, FaSignInAlt
 } from "react-icons/fa";
 import Modal from "./Modal";
 import { useAuth } from "../../context/AuthContext"; 
@@ -17,70 +18,22 @@ export default function Nav() {
   const getNavigationItems = () => {
     const items = [
       {
-        icon: <FaClipboardList />,
-        label: "Dashboard",
-        to: "/home",
-        show: true // Todos los roles pueden ver dashboard
-      },
-      {
-        icon: <FaUsers />,
-        label: "Usuarios",
-        to: "/users",
-        show: hasRouteAccess('users') && isAdmin() // Solo admin puede ver usuarios
-      },
-      {
-        icon: <FaUserTie />,
-        label: "Empleados",
-        to: "/employees",
-        show: hasRouteAccess('employees') && isAdmin() // Solo admin puede ver empleados
-      },
-      {
-        icon: <FaDog />,
-        label: "Mascotas",
-        to: "/pets",
-        show: hasRouteAccess('pets') // Todos los roles pueden ver mascotas (con filtros por usuario)
-      },
-      {
-        icon: <FaCalendarAlt />,
-        label: "Reservas",
-        to: "/reservations",
-        show: hasRouteAccess('reservations') && (isAdmin() || isEmployee()) // Solo admin y employee ven reservas
-      },
-      {
-        icon: <FaStethoscope />,
-        label: "Historial Médico",
-        to: "/medicalhistory",
-        show: hasRouteAccess('medical_history') // Todos los roles pueden ver historial médico (con filtros por usuario)
-      },
-      {
-        icon: <FaMoneyCheckAlt />,
-        label: "Pagos",
-        to: "/payments",
-        show: hasRouteAccess('payments') && isAdmin() // Solo admin ve pagos
-      },
-      {
-        icon: <FaFileInvoice />,
-        label: "Facturas",
-        to: "/invoices",
-        show: hasRouteAccess('invoices') // Todos los roles pueden ver facturas (con filtros por usuario)
-      },
-      {
         icon: <FaClipboard />,
         label: "Servicios",
         to: "/services",
-        show: isUser() // Solo usuarios regulares ven servicios
+        show: true // Todos pueden ver servicios
       },
       {
-        icon: <FaUserAlt />,
-        label: "Cuenta",
-        to: "/account",
+        icon: <FaEnvelope />,
+        label: "Contacto",
+        to: "/contact",
         show: true // Siempre visible
       },
       {
-        icon: <FaCog />,
-        label: "Configuración",
-        to: "/settings",
-        show: hasRouteAccess('settings') && isAdmin() // Solo admin puede ver configuración
+        icon: <FaSignInAlt />,
+        label: "Login",
+        to: "/login",
+        show: !user // Solo visible si no hay usuario logueado
       }
     ];
 

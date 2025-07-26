@@ -160,8 +160,12 @@ const Home = () => {
         return (
             <div className="flex-1 p-6 bg-gray-50 flex items-center justify-center">
                 <div className="text-center">
-                    <FaSpinner className="animate-spin text-4xl text-blue-500 mx-auto mb-4" />
-                    <p className="text-gray-600">Cargando dashboard...</p>
+                    <img 
+                        src={perritosImage} 
+                        alt="PetLand Home" 
+                        className="w-64 h-64 mx-auto mb-4 animate-pulse"
+                    />
+                    <p className="text-gray-600 text-lg">Cargando dashboard...</p>
                 </div>
             </div>
         );
