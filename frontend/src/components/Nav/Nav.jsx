@@ -3,7 +3,7 @@ import { useNavigate } from "react-router-dom";
 import {
   FaUserAlt, FaCog, FaCalendarAlt, FaBars, FaTimes,
   FaMoneyCheckAlt, FaStethoscope, FaFileInvoice,
-  FaDog, FaClipboardList, FaSignOutAlt, FaUsers, FaUserTie
+  FaDog, FaClipboardList, FaSignOutAlt, FaUsers, FaUserTie, FaClipboard
 } from "react-icons/fa";
 import Modal from "./Modal";
 import { useAuth } from "../../context/AuthContext"; 
@@ -11,7 +11,7 @@ import { useAuth } from "../../context/AuthContext";
 export default function Nav() {
   const [isOpen, setIsOpen] = useState(true);
   const navigate = useNavigate();
-  const { user, logout, hasRouteAccess, isAdmin, isEmployee } = useAuth();
+  const { user, logout, hasRouteAccess, isAdmin, isEmployee, isUser } = useAuth();
 
   // Configuración de navegación basada en roles
   const getNavigationItems = () => {
@@ -20,7 +20,7 @@ export default function Nav() {
         icon: <FaClipboardList />,
         label: "Dashboard",
         to: "/home",
-        show: true // Siempre visible
+        show: isAdmin() || isEmployee() // Solo admin y employee ven dashboard
       },
       {
         icon: <FaUsers />,
@@ -38,31 +38,37 @@ export default function Nav() {
         icon: <FaDog />,
         label: "Mascotas",
         to: "/pets",
-        show: hasRouteAccess('pets') // Empleados y admin pueden ver mascotas
+        show: hasRouteAccess('pets') // Todos los roles pueden ver mascotas (con filtros por usuario)
       },
       {
         icon: <FaCalendarAlt />,
         label: "Reservas",
         to: "/reservations",
-        show: hasRouteAccess('reservations') // Empleados y admin pueden ver reservas
+        show: hasRouteAccess('reservations') && (isAdmin() || isEmployee()) // Solo admin y employee ven reservas
       },
       {
         icon: <FaStethoscope />,
         label: "Historial Médico",
         to: "/medicalhistory",
-        show: hasRouteAccess('medical_history') // Empleados y admin pueden ver historial médico
+        show: hasRouteAccess('medical_history') // Todos los roles pueden ver historial médico (con filtros por usuario)
       },
       {
         icon: <FaMoneyCheckAlt />,
         label: "Pagos",
         to: "/payments",
-        show: hasRouteAccess('payments') // Empleados y admin pueden ver pagos
+        show: hasRouteAccess('payments') && (isAdmin() || isEmployee()) // Solo admin y employee ven pagos
       },
       {
         icon: <FaFileInvoice />,
         label: "Facturas",
         to: "/invoices",
-        show: hasRouteAccess('invoices') // Empleados y admin pueden ver facturas
+        show: hasRouteAccess('invoices') // Todos los roles pueden ver facturas (con filtros por usuario)
+      },
+      {
+        icon: <FaClipboard />,
+        label: "Servicios",
+        to: "/services",
+        show: isUser() // Solo usuarios regulares ven servicios
       },
       {
         icon: <FaUserAlt />,
@@ -99,7 +105,7 @@ export default function Nav() {
         <div className="px-6 mb-6">
           <p className="text-sm text-gray-300 mb-2">
             {isAdmin() ? "Admin Panel" : 
-             isEmployee() ? "Employee Panel" : "Your Pets"}
+             isEmployee() ? "Employee Panel" : "Mi Panel"}
           </p>
         </div>
 

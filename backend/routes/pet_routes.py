@@ -12,6 +12,8 @@ from backend.controllers.pet_controller import (
     delete_pet_controller,
 )
 from backend.db.database import get_db
+from backend.utils.auth_jwt import get_current_user
+from backend.models.enums import UserRole
 
 router = APIRouter()
 
@@ -20,8 +22,24 @@ async def create_pet(pet_data: PetCreate, db: AsyncSession = Depends(get_db)):
     return await create_pet_controller(pet_data, db)
 
 @router.get("/", response_model=List[PetOut])
-async def get_all_pets(db: AsyncSession = Depends(get_db)):
-    return await get_all_pets_controller(db)
+async def get_all_pets(
+    db: AsyncSession = Depends(get_db),
+    current_user: dict = Depends(get_current_user)
+):
+    """
+    Obtiene mascotas según el rol del usuario:
+    - Admin/Employee: Todas las mascotas
+    - User: Solo sus propias mascotas
+    """
+    user_role = UserRole(current_user["role"])
+    
+    if user_role in [UserRole.ADMIN, UserRole.EMPLOYEE]:
+        # Admin y Employee ven todas las mascotas
+        return await get_all_pets_controller(db)
+    else:
+        # Usuario regular solo ve sus mascotas
+        user_id = current_user["user_id"]
+        return await get_pets_by_user_controller(user_id, db)
 
 @router.get("/{pet_id}", response_model=PetOut)
 async def get_pet_by_id(pet_id: int, db: AsyncSession = Depends(get_db)):
