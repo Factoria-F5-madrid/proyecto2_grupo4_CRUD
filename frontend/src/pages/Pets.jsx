@@ -1,7 +1,8 @@
 import React, { useEffect, useState } from "react";
-import { getAllPets } from "../services/petServices";
+import { getAllPets, deletePet } from "../services/petServices";
 import PetCard from "../components/Cards/PetCard";
 import FormsAddNewPet from "../components/Forms/FormsAddNewPet";
+import FormsEditPet from "../components/Forms/FormsEditPet";
 import { useAuth } from "../context/AuthContext";
 import { FaPlus } from "react-icons/fa";
 
@@ -9,6 +10,9 @@ const Pets = () => {
   const [pets, setPets] = useState([]);
   const [error, setError] = useState("");
   const [showForm, setShowForm] = useState(false);
+  const [showEditForm, setShowEditForm] = useState(false);
+  const [selectedPet, setSelectedPet] = useState(null);
+  const [loading, setLoading] = useState(false);
   const { user, isUser } = useAuth();
 
   useEffect(() => {
@@ -36,6 +40,45 @@ const Pets = () => {
     window.location.reload();
   };
 
+  const handleEditClick = (pet) => {
+    console.log("🖱️ Editando mascota:", pet);
+    setSelectedPet(pet);
+    setShowEditForm(true);
+  };
+
+  const handleDeleteClick = async (pet) => {
+    console.log("🗑️ Eliminando mascota:", pet);
+    setLoading(true);
+    
+    try {
+      await deletePet(pet.pet_id);
+      console.log("✅ Mascota eliminada exitosamente");
+      
+      // Actualizar la lista de mascotas
+      setPets(prevPets => prevPets.filter(p => p.pet_id !== pet.pet_id));
+      
+      // Mostrar mensaje de éxito
+      alert(`${pet.name} ha sido eliminado exitosamente`);
+    } catch (error) {
+      console.error("❌ Error eliminando mascota:", error);
+      alert("Error al eliminar la mascota: " + error.message);
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  const handlePetUpdated = (updatedPet) => {
+    console.log("✅ Mascota actualizada:", updatedPet);
+    // Actualizar la lista de mascotas con los datos actualizados
+    setPets(prevPets => 
+      prevPets.map(pet => 
+        pet.pet_id === updatedPet.pet_id ? updatedPet : pet
+      )
+    );
+    setShowEditForm(false);
+    setSelectedPet(null);
+  };
+
   console.log("🎨 Renderizando Pets component");
   console.log("📊 Estado actual de pets:", pets);
   console.log("👤 Usuario:", user);
@@ -58,9 +101,22 @@ const Pets = () => {
       
       {error && <p className="text-red-500 mb-4">{error}</p>}
       
+      {loading && (
+        <div className="mb-4 p-3 bg-blue-50 border border-blue-200 text-blue-700 rounded-lg">
+          Eliminando mascota...
+        </div>
+      )}
+      
       {pets.length > 0 ? (
         <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-6">
-          {pets.map((pet) => <PetCard key={pet.pet_id} pet={pet} />)}
+          {pets.map((pet) => (
+            <PetCard 
+              key={pet.pet_id} 
+              pet={pet} 
+              onEditClick={handleEditClick}
+              onDeleteClick={handleDeleteClick}
+            />
+          ))}
         </div>
       ) : (
         <div className="text-center py-12">
@@ -82,13 +138,29 @@ const Pets = () => {
         </div>
       )}
 
-      {/* Modal para el formulario */}
+      {/* Modal para el formulario de creación */}
       {showForm && (
         <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
           <div className="bg-white rounded-lg p-6 max-w-md w-full mx-4">
             <FormsAddNewPet 
               onClose={() => setShowForm(false)} 
               userId={user?.user_id}
+            />
+          </div>
+        </div>
+      )}
+
+      {/* Modal para el formulario de edición */}
+      {showEditForm && selectedPet && (
+        <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
+          <div className="bg-white rounded-lg p-6 max-w-md w-full mx-4">
+            <FormsEditPet 
+              pet={selectedPet}
+              onClose={() => {
+                setShowEditForm(false);
+                setSelectedPet(null);
+              }}
+              onPetUpdated={handlePetUpdated}
             />
           </div>
         </div>
