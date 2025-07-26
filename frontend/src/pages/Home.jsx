@@ -133,8 +133,8 @@ const Home = () => {
             </div>
         );
     }
-
-    return (
+  
+  return (
         <div className="flex-1 p-6 bg-gray-50">
             {/* Header */}
             <div className="mb-8">
@@ -150,8 +150,8 @@ const Home = () => {
                              'Tu mascota es importante para nosotros 🐾'}
                         </p>
                     </div>
-                    <img
-                        src={petImage}
+      <img
+        src={petImage}
                         alt="PetLand Logo"
                         className="w-32 h-12 object-contain"
                     />
@@ -187,8 +187,8 @@ const Home = () => {
 
             {/* Modal para añadir mascota */}
             {showModal && <Modal onClose={() => setShowModal(false)} />}
-        </div>
-    );
+    </div>
+  );
 };
 
 export default Home;

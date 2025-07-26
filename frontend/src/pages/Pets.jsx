@@ -108,7 +108,7 @@ const Pets = () => {
       )}
       
       {pets.length > 0 ? (
-        <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-6">
+      <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-6">
           {pets.map((pet) => (
             <PetCard 
               key={pet.pet_id} 
@@ -118,7 +118,7 @@ const Pets = () => {
             />
           ))}
         </div>
-      ) : (
+        ) : (
         <div className="text-center py-12">
           <p className="text-gray-500 text-lg mb-4">
             {isUser() 
@@ -134,8 +134,8 @@ const Pets = () => {
               <FaPlus />
               Registrar mi primera mascota
             </button>
-          )}
-        </div>
+        )}
+      </div>
       )}
 
       {/* Modal para el formulario de creación */}

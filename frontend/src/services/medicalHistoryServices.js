@@ -1,6 +1,6 @@
 import axios from "axios";
 
-const BASE_URL = "http://127.0.0.1:8000/medicalhistory";
+const BASE_URL = "http://127.0.0.1:8000/medicalhistory"; 
 
 // Función para obtener el token de autenticación
 const getAuthToken = () => {

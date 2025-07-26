@@ -6,7 +6,7 @@ import { FaPlus, FaStethoscope } from 'react-icons/fa';
 const MedicalHistory = () => {
   const [histories, setHistories] = useState([]);
   const [error, setError] = useState("");
-  const [showModal, setShowModal] = useState(false);
+    const [showModal, setShowModal] = useState(false);
   const { user, isUser } = useAuth();
 
   useEffect(() => {
@@ -86,8 +86,8 @@ const MedicalHistory = () => {
             }
           </p>
           {isUser() && (
-            <button
-              onClick={() => setShowModal(true)}
+      <button
+        onClick={() => setShowModal(true)}
               className="bg-indigo-600 text-white px-6 py-3 rounded-lg hover:bg-indigo-700 flex items-center gap-2 mx-auto"
             >
               <FaPlus />
@@ -110,7 +110,7 @@ const MedicalHistory = () => {
               className="bg-gray-500 text-white px-4 py-2 rounded-lg hover:bg-gray-600"
             >
               Cerrar
-            </button>
+      </button>
           </div>
         </div>
       )}
