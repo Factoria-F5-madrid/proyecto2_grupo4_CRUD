@@ -97,19 +97,33 @@ export const getAdminStats = async () => {
   try {
     console.log("🔍 Obteniendo estadísticas de administrador...");
     
-    // Para admin, usamos reservas en lugar de servicios
-    const [petsResponse, reservationsResponse, invoicesResponse, medicalHistoryResponse] = await Promise.allSettled([
+    // Para admin, obtenemos todos los datos disponibles
+    const [
+      petsResponse, 
+      reservationsResponse, 
+      invoicesResponse, 
+      medicalHistoryResponse,
+      usersResponse,
+      employeesResponse,
+      paymentsResponse
+    ] = await Promise.allSettled([
       apiClient.get("/pets/"),
-      apiClient.get("/reservations/"), // Admin ve reservas, no servicios
+      apiClient.get("/reservations/"),
       apiClient.get("/invoice/"),
-      apiClient.get("/medical-history/")
+      apiClient.get("/medical-history/"),
+      apiClient.get("/users/"),
+      apiClient.get("/employees/"),
+      apiClient.get("/payments/")
     ]);
 
     const stats = {
       totalPets: 0,
-      totalReservations: 0, // Admin ve reservas
+      totalReservations: 0,
       totalInvoices: 0,
-      totalMedicalHistory: 0
+      totalMedicalHistory: 0,
+      totalUsers: 0,
+      totalEmployees: 0,
+      totalPayments: 0
     };
 
     if (petsResponse.status === 'fulfilled') {
@@ -123,6 +137,15 @@ export const getAdminStats = async () => {
     }
     if (medicalHistoryResponse.status === 'fulfilled') {
       stats.totalMedicalHistory = medicalHistoryResponse.value.data.length;
+    }
+    if (usersResponse.status === 'fulfilled') {
+      stats.totalUsers = usersResponse.value.data.length;
+    }
+    if (employeesResponse.status === 'fulfilled') {
+      stats.totalEmployees = employeesResponse.value.data.length;
+    }
+    if (paymentsResponse.status === 'fulfilled') {
+      stats.totalPayments = paymentsResponse.value.data.length;
     }
 
     console.log("📊 Estadísticas de admin:", stats);

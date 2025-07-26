@@ -83,6 +83,39 @@ const Home = () => {
                 color: "bg-blue-50 border-blue-200",
                 route: "/medicalhistory",
                 show: hasRouteAccess('medical_history')
+            },
+            // Cards adicionales para admin
+            {
+                title: "Usuarios",
+                value: stats.totalUsers || 0,
+                icon: <FaUsers className="text-indigo-500" />,
+                color: "bg-indigo-50 border-indigo-200",
+                route: "/users",
+                show: hasRouteAccess('users') && isAdmin()
+            },
+            {
+                title: "Empleados",
+                value: stats.totalEmployees || 0,
+                icon: <FaUserTie className="text-teal-500" />,
+                color: "bg-teal-50 border-teal-200",
+                route: "/employees",
+                show: hasRouteAccess('employees') && isAdmin()
+            },
+            {
+                title: "Pagos",
+                value: stats.totalPayments || 0,
+                icon: <FaMoneyCheckAlt className="text-green-500" />,
+                color: "bg-green-50 border-green-200",
+                route: "/payments",
+                show: hasRouteAccess('payments') && isAdmin()
+            },
+            {
+                title: "Cuenta",
+                value: null, // No necesitamos valor para cuenta
+                icon: <FaCog className="text-gray-500" />,
+                color: "bg-gray-50 border-gray-200",
+                route: "/account",
+                show: true // Siempre visible
             }
         ];
 
