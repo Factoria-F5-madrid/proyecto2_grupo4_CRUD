@@ -174,8 +174,8 @@ const Home = () => {
                     >
                         <div className="flex items-center justify-between">
                             <div>
-                                <p className="text-sm font-medium text-gray-600">{card.title}</p>
-                                <p className="text-2xl font-bold text-gray-900">{card.value}</p>
+                                <p className="text-lg font-semibold text-gray-800">{card.title}</p>
+                                <p className="text-sm text-gray-600 mt-1">Haz click para ver</p>
                             </div>
                             <div className="text-3xl">
                                 {card.icon}
@@ -184,55 +184,6 @@ const Home = () => {
                     </div>
                 ))}
             </div>
-
-            {/* Acciones Rápidas */}
-            {quickActions.length > 0 && (
-                <div className="mb-8">
-                    <h2 className="text-xl font-semibold text-gray-800 mb-4">Acciones Rápidas</h2>
-                    <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
-                        {quickActions.map((action, index) => (
-                            <button
-                                key={index}
-                                onClick={action.action}
-                                className="p-4 bg-white rounded-lg border border-gray-200 hover:border-blue-300 hover:shadow-md transition-all flex items-center gap-3"
-                            >
-                                <div className="text-blue-500 text-xl">
-                                    {action.icon}
-                                </div>
-                                <span className="font-medium text-gray-700">{action.title}</span>
-                            </button>
-                        ))}
-                    </div>
-                </div>
-            )}
-
-            {/* Mensaje de bienvenida para usuarios normales */}
-            {!isAdmin() && !isEmployee() && (
-                <div className="bg-white rounded-lg p-6 border border-gray-200">
-                    <div className="flex items-center justify-center">
-                        <img
-                            src={perritosImage}
-                            alt="Perritos"
-                            className="w-32 h-32 object-contain mr-6"
-                        />
-                        <div>
-                            <h3 className="text-xl font-semibold text-gray-800 mb-2">
-                                ¡Bienvenido a PetLand!
-                            </h3>
-                            <p className="text-gray-600 mb-4">
-                                Tu mascota es importante para nosotros 🐾, porque su felicidad es nuestra prioridad. 
-                                Cuidamos de ellas con amor y la atención que merecen tus compañeros más fieles.
-                            </p>
-                            <button
-                                onClick={() => setShowModal(true)}
-                                className="bg-indigo-600 text-white px-6 py-2 rounded-md hover:bg-indigo-700 transition"
-                            >
-                                Añade tu mascota
-                            </button>
-                        </div>
-                    </div>
-                </div>
-            )}
 
             {/* Modal para añadir mascota */}
             {showModal && <Modal onClose={() => setShowModal(false)} />}
