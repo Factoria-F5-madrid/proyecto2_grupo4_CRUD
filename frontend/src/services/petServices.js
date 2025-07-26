@@ -1,4 +1,5 @@
 import apiClient from "../config/axios.js";
+import axios from "axios";
 
 const API_URL = "/pets/";
 
@@ -6,7 +7,7 @@ const API_URL = "/pets/";
 
 export const getAllPets = async () => {
   try {
-    const response = await axios.get(API_URL);
+    const response = await apiClient.get(API_URL);
     return response.data;
   } catch (error) {
     console.error("Error al obtener a los pets:", error);

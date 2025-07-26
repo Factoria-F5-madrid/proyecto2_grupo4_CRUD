@@ -2,7 +2,7 @@ import axios from 'axios';
 
 // Configuración global de axios
 const apiClient = axios.create({
-  baseURL: 'http://localhost:8002',
+  baseURL: 'http://localhost:8000',
   headers: {
     'Content-Type': 'application/json',
     'Accept': 'application/json'

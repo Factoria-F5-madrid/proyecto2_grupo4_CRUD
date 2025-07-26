@@ -10,6 +10,20 @@ from backend.schema.pet_schema import PetCreate, PetUpdate, PetOut
 
 from backend.logger.logger import logger
 
+def serialize_pet_for_websocket(pet: Pet) -> dict:
+    """Convertir objeto Pet a dict serializable para WebSocket"""
+    return {
+        "pet_id": pet.pet_id,
+        "name": pet.name,
+        "species": pet.species.value if hasattr(pet.species, 'value') else str(pet.species),
+        "breed": pet.breed,
+        "birth_date": pet.birth_date.isoformat() if pet.birth_date else None,
+        "allergies": pet.allergies,
+        "special_needs": pet.special_needs,
+        "img_url": pet.img_url,
+        "user_id": pet.user_id
+    }
+
 @invalidate_cache("pets")
 async def create_pet_controller(pet_data: PetCreate, db: AsyncSession):
     logger.debug(f"Attempting to create pet for user ID {pet_data.user_id}")
@@ -26,15 +40,8 @@ async def create_pet_controller(pet_data: PetCreate, db: AsyncSession):
     await db.refresh(new_pet)
     logger.info(f"Pet created with ID {new_pet.pet_id}")
     
-    # Enviar notificación en tiempo real
-    pet_dict = {
-        "pet_id": new_pet.pet_id,
-        "name": new_pet.name,
-        "species": new_pet.species,
-        "breed": new_pet.breed,
-        "age": new_pet.age,
-        "user_id": new_pet.user_id
-    }
+    # Enviar notificación en tiempo real - CORREGIDO
+    pet_dict = serialize_pet_for_websocket(new_pet)
     await notification_service.send_pet_update("created", pet_dict)
     await notification_service.send_user_notification(
         str(new_pet.user_id), 
@@ -59,7 +66,7 @@ async def get_pet_by_id_controller(pet_id: int, db: AsyncSession):
     pet = result.scalar_one_or_none()
     if pet is None:
         logger.warning(f"Pet with ID {pet_id} not found")
-        raise NotFoundException("User not found")
+        raise NotFoundException("Pet not found")
     logger.info(f"Pet found: ID {pet_id}")    
     return pet
 
@@ -78,7 +85,7 @@ async def update_pet_controller(pet_id: int, pet_data: PetUpdate, db: AsyncSessi
     pet = result.scalar_one_or_none()
     if not pet:
         logger.warning(f"Pet with ID {pet_id} not found")
-        raise NotFoundException("User not found")
+        raise NotFoundException("Pet not found")
     
    
     if pet_data.user_id is not None:
@@ -97,15 +104,8 @@ async def update_pet_controller(pet_id: int, pet_data: PetUpdate, db: AsyncSessi
     await db.refresh(pet)
     logger.info(f"Pet with ID {pet_id} updated successfully")
     
-    # Enviar notificación en tiempo real
-    pet_dict = {
-        "pet_id": pet.pet_id,
-        "name": pet.name,
-        "species": pet.species,
-        "breed": pet.breed,
-        "age": pet.age,
-        "user_id": pet.user_id
-    }
+    # Enviar notificación en tiempo real - CORREGIDO
+    pet_dict = serialize_pet_for_websocket(pet)
     await notification_service.send_pet_update("updated", pet_dict)
     await notification_service.send_user_notification(
         str(pet.user_id), 
@@ -122,9 +122,9 @@ async def delete_pet_controller(pet_id: int, db: AsyncSession):
     pet = result.scalar_one_or_none()
     if not pet:
         logger.warning(f"Pet with ID {pet_id} not found")
-        raise NotFoundException("User not found")
+        raise NotFoundException("Pet not found")
     
-    # Guardar información antes de eliminar para la notificación
+    # Guardar información antes de eliminar para la notificación - CORREGIDO
     pet_info = {
         "pet_id": pet.pet_id,
         "name": pet.name,
@@ -143,4 +143,4 @@ async def delete_pet_controller(pet_id: int, db: AsyncSession):
         {"pet_name": pet_info["name"], "pet_id": pet_info["pet_id"]}
     )
     
-    return {"detail": "Pet deleted successfully"} 
+    return {"detail": "Pet deleted successfully"}
