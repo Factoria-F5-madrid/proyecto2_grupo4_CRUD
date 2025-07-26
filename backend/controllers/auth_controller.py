@@ -7,6 +7,7 @@ from backend.models.user_models import User
 from backend.schema.auth_schema import LoginRequest, RegisterRequest, TokenResponse
 from backend.utils.auth import hash_password, verify_password
 from backend.utils.auth_jwt import create_access_token
+from backend.utils.authorization import get_user_permissions, get_available_routes
 from backend.logger.logger import logger
 
 async def login_user(login_data: LoginRequest, db: AsyncSession) -> TokenResponse:
@@ -56,11 +57,20 @@ async def login_user(login_data: LoginRequest, db: AsyncSession) -> TokenRespons
     
     access_token = create_access_token(data=token_data)
     
-    logger.info(f"Login exitoso para usuario: {user.email}")
+    # Obtener permisos y rutas disponibles
+    permissions = get_user_permissions(user.role)
+    available_routes = get_available_routes(user.role)
+    
+    logger.info(f"Login exitoso para usuario: {user.email} con rol: {user.role}")
     
     return TokenResponse(
         access_token=access_token,
-        token_type="bearer"
+        token_type="bearer",
+        user_id=user.user_id,
+        email=user.email,
+        role=user.role,
+        permissions=permissions,
+        available_routes=available_routes
     )
 
 async def register_user(register_data: RegisterRequest, db: AsyncSession) -> TokenResponse:
@@ -112,7 +122,7 @@ async def register_user(register_data: RegisterRequest, db: AsyncSession) -> Tok
         email=register_data.email,
         address=register_data.address,
         hashed_password=hashed_password,
-        role="client",  # Por defecto es cliente
+        role="user",  # Por defecto es usuario
         updated_by="system",
         update_date=func.now()
     )
@@ -131,9 +141,18 @@ async def register_user(register_data: RegisterRequest, db: AsyncSession) -> Tok
     
     access_token = create_access_token(data=token_data)
     
-    logger.info(f"Registro exitoso para usuario: {new_user.email}")
+    # Obtener permisos y rutas disponibles
+    permissions = get_user_permissions(new_user.role)
+    available_routes = get_available_routes(new_user.role)
+    
+    logger.info(f"Registro exitoso para usuario: {new_user.email} con rol: {new_user.role}")
     
     return TokenResponse(
         access_token=access_token,
-        token_type="bearer"
+        token_type="bearer",
+        user_id=new_user.user_id,
+        email=new_user.email,
+        role=new_user.role,
+        permissions=permissions,
+        available_routes=available_routes
     ) 

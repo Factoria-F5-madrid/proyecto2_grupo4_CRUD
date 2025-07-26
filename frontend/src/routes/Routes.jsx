@@ -11,12 +11,26 @@ import Payments from "../pages/Payments";
 import Invoice from "../pages/Invoice";
 import Account from "../pages/Account";
 import Settings from "../pages/Settings";
+import Login from "../pages/Login";
+import Register from "../pages/Register";
+import Users from "../pages/Users";
+import Employees from "../pages/Employees";
+import Services from "../pages/Services";
 
 
 export const router = createBrowserRouter([
   {
     path: "/", 
     element: <Spinner />,
+  },
+  // Rutas de autenticación (sin layout)
+  {
+    path: "/login",
+    element: <Login />,
+  },
+  {
+    path: "/register",
+    element: <Register />,
   },
   {
     path: "/", // rutas con layout (Nav + Footer)
@@ -25,6 +39,14 @@ export const router = createBrowserRouter([
       {
         path: "home", // /home
         element: <Home />,
+      },
+      {
+        path: "users", // /users
+        element: <Users />,
+      },
+      {
+        path: "employees", // /employees
+        element: <Employees />,
       },
       {
         path: "contact", // /contact-us
@@ -49,6 +71,10 @@ export const router = createBrowserRouter([
       {
         path: "invoices", // /invoice
         element: <Invoice />,
+      },
+      {
+        path: "services", // /services
+        element: <Services />,
       },
       {
         path: "account", // /account

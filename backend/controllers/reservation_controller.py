@@ -1,11 +1,14 @@
 from sqlalchemy.ext.asyncio import AsyncSession
 from sqlalchemy.future import select
+from sqlalchemy.orm import selectinload
 from backend.exceptions.custom_exceptions import NotFoundException,BadRequestException
 from backend.websockets.notifications import notification_service
 
 from backend.models.reservation_models import Reservation
 from backend.models.user_models import User
 from backend.models.service_models import Service
+from backend.models.assignment_models import Assignment
+from backend.models.employee_models import Employee
 from backend.schema.reservation_schema import ReservationCreate, ReservationUpdate, ReservationOut
 
 from backend.logger.logger import logger
@@ -57,11 +60,47 @@ async def create_reservation_controller(reservation_data: ReservationCreate, db:
     return new_reservation
 
 async def get_all_reservations_controller(db: AsyncSession):
-    logger.debug("Fetching all reservations")
-    result = await db.execute(select(Reservation))
+    logger.debug("Fetching all reservations with employee assignments")
+    
+    # Query para obtener reservas con información del empleado asignado
+    query = select(Reservation).options(
+        selectinload(Reservation.service).selectinload(Service.assignments).selectinload(Assignment.employee)
+    )
+    
+    result = await db.execute(query)
     reservations = result.scalars().all()
-    logger.info(f"Fetched {len(reservations)} reservations")
-    return reservations
+    
+    # Procesar cada reserva para agregar información del empleado
+    reservations_with_employee = []
+    for reservation in reservations:
+        reservation_dict = {
+            "reservation_id": reservation.reservation_id,
+            "user_id": reservation.user_id,
+            "service_id": reservation.service_id,
+            "checkin_date": reservation.checkin_date,
+            "checkout_date": reservation.checkout_date,
+            "status": reservation.status,
+            "internal_notes": reservation.internal_notes,
+            "created_at": reservation.created_at,
+            "assigned_employee": None
+        }
+        
+        # Buscar el empleado asignado para este servicio
+        if reservation.service and reservation.service.assignments:
+            # Tomar el empleado de la primera asignación (asumiendo una asignación por servicio)
+            assignment = reservation.service.assignments[0] if reservation.service.assignments else None
+            if assignment and assignment.employee:
+                reservation_dict["assigned_employee"] = {
+                    "employee_id": assignment.employee.employee_id,
+                    "first_name": assignment.employee.first_name,
+                    "last_name": assignment.employee.last_name,
+                    "specialty": assignment.employee.specialty.value if assignment.employee.specialty else None
+                }
+        
+        reservations_with_employee.append(reservation_dict)
+    
+    logger.info(f"Fetched {len(reservations_with_employee)} reservations with employee info")
+    return reservations_with_employee
 
 async def get_reservation_by_id_controller(reservation_id: int, db: AsyncSession):
     logger.debug(f"Fetching reservation by ID: {reservation_id}")
@@ -76,8 +115,9 @@ async def get_reservation_by_id_controller(reservation_id: int, db: AsyncSession
 async def get_reservations_by_user_controller(user_id: int, db: AsyncSession):
     logger.debug(f"Fetching reservations for user ID: {user_id}")
     result = await db.execute(select(Reservation).where(Reservation.user_id == user_id))
+    reservations = result.scalars().all()
     logger.info(f"Found {len(reservations)} reservations for user ID {user_id}")
-    return result.scalars().all()
+    return reservations
 
 async def get_reservations_by_service_controller(service_id: int, db: AsyncSession):
     logger.debug(f"Fetching reservations for service ID: {service_id}")
