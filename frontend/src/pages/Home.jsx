@@ -163,9 +163,11 @@ const Home = () => {
                     <img 
                         src={perritosImage} 
                         alt="PetLand Home" 
-                        className="w-64 h-64 mx-auto mb-4 animate-pulse"
+                        className="w-64 h-64 mx-auto animate-pulse"
                     />
-                    <p className="text-gray-600 text-lg">Cargando dashboard...</p>
+                    <h1 className="text-6xl font-bold text-gray-800 mt-6">
+                        PETLAND F5
+                    </h1>
                 </div>
             </div>
         );

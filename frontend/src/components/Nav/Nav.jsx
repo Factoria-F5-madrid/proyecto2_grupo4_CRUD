@@ -3,7 +3,7 @@ import { useNavigate } from "react-router-dom";
 import {
   FaUserAlt, FaCog, FaCalendarAlt, FaBars, FaTimes,
   FaMoneyCheckAlt, FaStethoscope, FaFileInvoice,
-  FaDog, FaClipboardList, FaSignOutAlt, FaUsers, FaUserTie, FaClipboard,
+  FaDog, FaClipboardList, FaUsers, FaUserTie, FaClipboard,
   FaEnvelope, FaSignInAlt
 } from "react-icons/fa";
 import Modal from "./Modal";
@@ -75,33 +75,6 @@ export default function Nav() {
             />
           ))}
         </nav>
-      </div>
-
-    
-      <div className="flex items-center gap-3 px-6 py-4 bg-gray-800">
-        <img
-          src="https://placehold.co/40x40"
-          className="rounded-full border border-gray-500"
-          alt="User"
-        />
-        {isOpen && (
-          <div className="flex-1">
-            <p className="text-sm text-gray-300">
-              {user?.role === 'admin' ? 'Administrador' : 
-               user?.role === 'employee' ? 'Empleado' : 'Usuario'}
-            </p>
-            <p className="text-lg font-semibold text-white">
-              {user ? `${user.first_name || user.email} ${user.last_name || ''}` : 'Guest'}
-            </p>
-            <button
-              onClick={logout}
-              className="flex items-center gap-2 text-sm text-gray-400 hover:text-white mt-1"
-            >
-              <FaSignOutAlt size={12} />
-              Logout
-            </button>
-          </div>
-        )}
       </div>
     </div>
   );
