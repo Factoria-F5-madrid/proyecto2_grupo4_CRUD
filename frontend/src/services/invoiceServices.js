@@ -44,7 +44,7 @@ export const createInvoice = async (invoiceData) => {
 };
 
 // Eliminar una factura por ID
-export const deleteVideo = async (invoice_id) => {
+export const deleteInvoice = async (invoice_id) => {
   const token = localStorage.getItem("token"); 
 
   try {
