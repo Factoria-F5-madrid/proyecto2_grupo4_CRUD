@@ -15,6 +15,7 @@ import Login from "../pages/Login";
 import Register from "../pages/Register";
 import Users from "../pages/Users";
 import Employees from "../pages/Employees";
+import Services from "../pages/Services";
 
 
 export const router = createBrowserRouter([
@@ -70,6 +71,10 @@ export const router = createBrowserRouter([
       {
         path: "invoices", // /invoice
         element: <Invoice />,
+      },
+      {
+        path: "services", // /services
+        element: <Services />,
       },
       {
         path: "account", // /account
