@@ -45,6 +45,15 @@ const Pets = () => {
     <div className="p-8">
       <div className="flex justify-between items-center mb-6">
         <h1 className="text-3xl text-[#1c1f26] font-bold">Mascotas registradas</h1>
+        {isUser() && (
+          <button
+            onClick={() => setShowForm(true)}
+            className="bg-indigo-600 text-white px-6 py-3 rounded-lg hover:bg-indigo-700 flex items-center gap-2 transition duration-300 ease-in-out"
+          >
+            <FaPlus />
+            Añadir Mascota
+          </button>
+        )}
       </div>
       
       {error && <p className="text-red-500 mb-4">{error}</p>}
@@ -64,10 +73,10 @@ const Pets = () => {
           {isUser() && (
             <button
               onClick={() => setShowForm(true)}
-              className="bg-indigo-600 text-white px-6 py-3 rounded-lg hover:bg-indigo-700 flex items-center gap-2 mx-auto"
+              className="bg-indigo-600 text-white px-6 py-3 rounded-lg hover:bg-indigo-700 flex items-center gap-2 mx-auto transition duration-300 ease-in-out"
             >
               <FaPlus />
-              Añadir mascota
+              Registrar mi primera mascota
             </button>
           )}
         </div>
