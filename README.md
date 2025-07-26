@@ -428,17 +428,34 @@ El navbar se adapta automáticamente según los permisos del usuario:
 // Configuración de navegación basada en roles
 const navigationItems = [
   { label: "Dashboard", show: true },           // Siempre visible
-  { label: "Usuarios", show: hasRouteAccess('users') },
-  { label: "Empleados", show: hasRouteAccess('employees') },
-  { label: "Mascotas", show: hasRouteAccess('pets') },
-  { label: "Reservas", show: hasRouteAccess('reservations') },
-  { label: "Historial Médico", show: hasRouteAccess('medical_history') },
-  { label: "Pagos", show: hasRouteAccess('payments') },
-  { label: "Facturas", show: hasRouteAccess('invoices') },
+  { label: "Usuarios", show: hasRouteAccess('users') && isAdmin() },      // Solo admin
+  { label: "Empleados", show: hasRouteAccess('employees') && isAdmin() },  // Solo admin
+  { label: "Mascotas", show: hasRouteAccess('pets') },                     // Admin y empleados
+  { label: "Reservas", show: hasRouteAccess('reservations') },             // Admin y empleados
+  { label: "Historial Médico", show: hasRouteAccess('medical_history') },  // Admin y empleados
+  { label: "Pagos", show: hasRouteAccess('payments') },                    // Admin y empleados
+  { label: "Facturas", show: hasRouteAccess('invoices') },                 // Admin y empleados
   { label: "Cuenta", show: true },              // Siempre visible
-  { label: "Configuración", show: hasRouteAccess('settings') }
+  { label: "Configuración", show: hasRouteAccess('settings') && isAdmin() } // Solo admin
 ];
 ```
+
+#### **👥 Roles y Navegación**
+
+**👑 Administrador:**
+- **Panel**: "Admin Panel"
+- **Enlaces**: Todos los enlaces disponibles
+- **Funcionalidades**: Acceso completo a todas las secciones
+
+**👨‍💼 Empleado:**
+- **Panel**: "Employee Panel" 
+- **Enlaces**: Mascotas, Reservas, Historial Médico, Pagos, Facturas, Cuenta
+- **Funcionalidades**: Gestión de mascotas, reservas, historial médico, pagos y facturas (sin acceso a administración)
+
+**👤 Usuario Regular:**
+- **Panel**: "Your Pets"
+- **Enlaces**: Solo mascotas, reservas, pagos y cuenta
+- **Funcionalidades**: Gestión de sus propias mascotas y reservas
 
 #### **🎨 Elementos del Navbar**
 - **Logo de PetLand** con colapso/expansión
@@ -514,6 +531,30 @@ const {
 ```
 
 ### 🚀 **Cómo Probar el Dashboard**
+
+#### **🧪 Verificación de Navegación por Roles**
+
+**Pruebas realizadas exitosamente:**
+
+1. **👑 Administrador** (`superadmin@petland.com` / `admin123`)
+   - ✅ **Rol**: `admin`
+   - ✅ **Rutas disponibles**: `users: true, employees: true, pets: true, reservations: true, medical_history: true, invoices: true, payments: true, settings: true`
+   - ✅ **Panel**: "Admin Panel"
+   - ✅ **Enlaces visibles**: Todos los enlaces
+
+2. **👨‍💼 Empleado** (`user2@example.com` / `test123`)
+   - ✅ **Rol**: `employee`
+   - ✅ **Rutas disponibles**: `pets: true, reservations: true, medical_history: true, invoices: true, payments: true`
+   - ✅ **Rutas NO disponibles**: `users: false, employees: false, settings: false`
+   - ✅ **Panel**: "Employee Panel"
+   - ✅ **Enlaces visibles**: Solo gestión (sin administración)
+
+3. **👤 Usuario Regular** (`usuario3@example.com` / `test123`)
+   - ✅ **Rol**: `user`
+   - ✅ **Rutas disponibles**: `pets: true, reservations: true, payments: true`
+   - ✅ **Rutas NO disponibles**: `users: false, employees: false, medical_history: false, invoices: false, settings: false`
+   - ✅ **Panel**: "Your Pets"
+   - ✅ **Enlaces visibles**: Solo funcionalidades básicas
 
 #### **👑 Como Administrador**
 1. **Login**: `superadmin@petland.com` / `admin123`

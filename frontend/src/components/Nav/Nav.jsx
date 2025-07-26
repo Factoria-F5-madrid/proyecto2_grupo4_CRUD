@@ -11,7 +11,7 @@ import { useAuth } from "../../context/AuthContext";
 export default function Nav() {
   const [isOpen, setIsOpen] = useState(true);
   const navigate = useNavigate();
-  const { user, logout, hasRouteAccess, isAdmin } = useAuth();
+  const { user, logout, hasRouteAccess, isAdmin, isEmployee } = useAuth();
 
   // Configuración de navegación basada en roles
   const getNavigationItems = () => {
@@ -26,43 +26,43 @@ export default function Nav() {
         icon: <FaUsers />,
         label: "Usuarios",
         to: "/users",
-        show: hasRouteAccess('users')
+        show: hasRouteAccess('users') && isAdmin() // Solo admin puede ver usuarios
       },
       {
         icon: <FaUserTie />,
         label: "Empleados",
         to: "/employees",
-        show: hasRouteAccess('employees')
+        show: hasRouteAccess('employees') && isAdmin() // Solo admin puede ver empleados
       },
       {
         icon: <FaDog />,
         label: "Mascotas",
         to: "/pets",
-        show: hasRouteAccess('pets')
+        show: hasRouteAccess('pets') // Empleados y admin pueden ver mascotas
       },
       {
         icon: <FaCalendarAlt />,
         label: "Reservas",
         to: "/reservations",
-        show: hasRouteAccess('reservations')
+        show: hasRouteAccess('reservations') // Empleados y admin pueden ver reservas
       },
       {
         icon: <FaStethoscope />,
         label: "Historial Médico",
         to: "/medicalhistory",
-        show: hasRouteAccess('medical_history')
+        show: hasRouteAccess('medical_history') // Empleados y admin pueden ver historial médico
       },
       {
         icon: <FaMoneyCheckAlt />,
         label: "Pagos",
         to: "/payments",
-        show: hasRouteAccess('payments')
+        show: hasRouteAccess('payments') // Empleados y admin pueden ver pagos
       },
       {
         icon: <FaFileInvoice />,
         label: "Facturas",
         to: "/invoices",
-        show: hasRouteAccess('invoices')
+        show: hasRouteAccess('invoices') // Empleados y admin pueden ver facturas
       },
       {
         icon: <FaUserAlt />,
@@ -74,7 +74,7 @@ export default function Nav() {
         icon: <FaCog />,
         label: "Configuración",
         to: "/settings",
-        show: hasRouteAccess('settings')
+        show: hasRouteAccess('settings') && isAdmin() // Solo admin puede ver configuración
       }
     ];
 
@@ -98,7 +98,8 @@ export default function Nav() {
         
         <div className="px-6 mb-6">
           <p className="text-sm text-gray-300 mb-2">
-            {isAdmin() ? "Admin Panel" : "Your Pets"}
+            {isAdmin() ? "Admin Panel" : 
+             isEmployee() ? "Employee Panel" : "Your Pets"}
           </p>
         </div>
 
