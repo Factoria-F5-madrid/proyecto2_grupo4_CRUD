@@ -1,21 +1,89 @@
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import {
-  FaUserAlt, FaCog, FaCalendarAlt, FaBars, FaTimes, FaPlus,
-  FaMoneyCheckAlt, FaStethoscope, FaFileInvoice, FaEnvelope,
-  FaDog, FaClipboardList, FaSignOutAlt
+  FaUserAlt, FaCog, FaCalendarAlt, FaBars, FaTimes,
+  FaMoneyCheckAlt, FaStethoscope, FaFileInvoice,
+  FaDog, FaClipboardList, FaSignOutAlt, FaUsers, FaUserTie
 } from "react-icons/fa";
 import Modal from "./Modal";
 import { useAuth } from "../../context/AuthContext"; 
 
 export default function Nav() {
   const [isOpen, setIsOpen] = useState(true);
-  const [showModal, setShowModal] = useState(false);
   const navigate = useNavigate();
-  const { user, logout } = useAuth();
+  const { user, logout, hasRouteAccess, isAdmin } = useAuth();
+
+  // Configuración de navegación basada en roles
+  const getNavigationItems = () => {
+    const items = [
+      {
+        icon: <FaClipboardList />,
+        label: "Dashboard",
+        to: "/home",
+        show: true // Siempre visible
+      },
+      {
+        icon: <FaUsers />,
+        label: "Usuarios",
+        to: "/users",
+        show: hasRouteAccess('users')
+      },
+      {
+        icon: <FaUserTie />,
+        label: "Empleados",
+        to: "/employees",
+        show: hasRouteAccess('employees')
+      },
+      {
+        icon: <FaDog />,
+        label: "Mascotas",
+        to: "/pets",
+        show: hasRouteAccess('pets')
+      },
+      {
+        icon: <FaCalendarAlt />,
+        label: "Reservas",
+        to: "/reservations",
+        show: hasRouteAccess('reservations')
+      },
+      {
+        icon: <FaStethoscope />,
+        label: "Historial Médico",
+        to: "/medicalhistory",
+        show: hasRouteAccess('medical_history')
+      },
+      {
+        icon: <FaMoneyCheckAlt />,
+        label: "Pagos",
+        to: "/payments",
+        show: hasRouteAccess('payments')
+      },
+      {
+        icon: <FaFileInvoice />,
+        label: "Facturas",
+        to: "/invoices",
+        show: hasRouteAccess('invoices')
+      },
+      {
+        icon: <FaUserAlt />,
+        label: "Cuenta",
+        to: "/account",
+        show: true // Siempre visible
+      },
+      {
+        icon: <FaCog />,
+        label: "Configuración",
+        to: "/settings",
+        show: hasRouteAccess('settings')
+      }
+    ];
+
+    return items.filter(item => item.show);
+  };
+
+  const navigationItems = getNavigationItems();
 
   return (
-    <>
     <div className={`${isOpen ? "w-72" : "w-20"} bg-[#1c1f26] text-white duration-300 flex flex-col justify-between`}>
 
     
@@ -29,25 +97,23 @@ export default function Nav() {
 
         
         <div className="px-6 mb-6">
-          <p className="text-sm text-gray-300 mb-2">Your Pets</p>
-          <button 
-          onClick={() => setShowModal(true)}
-          className="w-full py-2 bg-gray-700 rounded-lg flex items-center justify-center gap-2 hover:bg-gray-600">
-            <FaPlus /> {isOpen && "Add new"}
-          </button>
+          <p className="text-sm text-gray-300 mb-2">
+            {isAdmin() ? "Admin Panel" : "Your Pets"}
+          </p>
         </div>
 
         
         <nav className="flex flex-col gap-2 px-6">
-          <SidebarLink icon={<FaClipboardList />} label="Dashboard" to="/home" isOpen={isOpen} navigate={navigate} />
-          <SidebarLink icon={<FaEnvelope />} label="Contact Us" to="/contact" isOpen={isOpen} navigate={navigate} />
-          <SidebarLink icon={<FaCalendarAlt />} label="Reservations" to="/reservations" isOpen={isOpen} navigate={navigate} />
-          <SidebarLink icon={<FaDog />} label="Pets" to="/pets" isOpen={isOpen} navigate={navigate} />
-          <SidebarLink icon={<FaStethoscope />} label="Medical History" to="/medicalhistory" isOpen={isOpen} navigate={navigate} />
-          <SidebarLink icon={<FaMoneyCheckAlt />} label="Payments" to="/payments" isOpen={isOpen} navigate={navigate} />
-          <SidebarLink icon={<FaFileInvoice />} label="Invoices" to="/invoices" isOpen={isOpen} navigate={navigate} />
-          <SidebarLink icon={<FaUserAlt />} label="Account" to="/account" isOpen={isOpen} navigate={navigate} />
-          <SidebarLink icon={<FaCog />} label="Settings" to="/settings" isOpen={isOpen} navigate={navigate} />
+          {navigationItems.map((item, index) => (
+            <SidebarLink 
+              key={index}
+              icon={item.icon} 
+              label={item.label} 
+              to={item.to} 
+              isOpen={isOpen} 
+              navigate={navigate} 
+            />
+          ))}
         </nav>
       </div>
 
@@ -60,9 +126,12 @@ export default function Nav() {
         />
         {isOpen && (
           <div className="flex-1">
-            <p className="text-sm text-gray-300">Hello</p>
+            <p className="text-sm text-gray-300">
+              {user?.role === 'admin' ? 'Administrador' : 
+               user?.role === 'employee' ? 'Empleado' : 'Usuario'}
+            </p>
             <p className="text-lg font-semibold text-white">
-              {user ? `${user.first_name} ${user.last_name}` : 'Guest'}
+              {user ? `${user.first_name || user.email} ${user.last_name || ''}` : 'Guest'}
             </p>
             <button
               onClick={logout}
@@ -75,9 +144,6 @@ export default function Nav() {
         )}
       </div>
     </div>
-      {showModal && <Modal onClose={() => setShowModal(false)} /> }
-        </>
-
   );
 }
 

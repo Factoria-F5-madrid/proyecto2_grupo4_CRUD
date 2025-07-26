@@ -13,6 +13,8 @@ import Account from "../pages/Account";
 import Settings from "../pages/Settings";
 import Login from "../pages/Login";
 import Register from "../pages/Register";
+import Users from "../pages/Users";
+import Employees from "../pages/Employees";
 
 
 export const router = createBrowserRouter([
@@ -36,6 +38,14 @@ export const router = createBrowserRouter([
       {
         path: "home", // /home
         element: <Home />,
+      },
+      {
+        path: "users", // /users
+        element: <Users />,
+      },
+      {
+        path: "employees", // /employees
+        element: <Employees />,
       },
       {
         path: "contact", // /contact-us

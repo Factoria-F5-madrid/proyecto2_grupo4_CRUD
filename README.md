@@ -396,3 +396,140 @@ Rutas: Acceso solo a sus propios datos
 5. **📈 Escalabilidad**: Fácil agregar nuevos roles y permisos
 6. **🔄 Flexibilidad**: Cambio de roles en tiempo real
 7. **📊 Transparencia**: Información completa de permisos en cada respuesta
+
+## 🖥️ **DASHBOARD DEL ADMINISTRADOR**
+
+### 🎛️ **Panel de Control Dinámico**
+
+El sistema incluye un dashboard completamente dinámico que se adapta automáticamente según el rol del usuario autenticado.
+
+#### **👑 Dashboard de Administrador**
+- **Estadísticas completas** del sistema
+- **Tarjetas interactivas** para cada sección
+- **Acciones rápidas** para todas las funcionalidades
+- **Gestión total** del sistema PetLand
+
+#### **👨‍💼 Dashboard de Empleado**
+- **Estadísticas de gestión** (sin datos administrativos)
+- **Acceso a herramientas** de gestión de mascotas y reservas
+- **Sin acceso** a configuración del sistema
+
+#### **👤 Dashboard de Usuario**
+- **Mensaje de bienvenida** personalizado
+- **Acceso limitado** a sus propias funcionalidades
+- **Interfaz simplificada** y amigable
+
+### 🧭 **Navegación Dinámica**
+
+#### **📋 Menú de Navegación**
+El navbar se adapta automáticamente según los permisos del usuario:
+
+```javascript
+// Configuración de navegación basada en roles
+const navigationItems = [
+  { label: "Dashboard", show: true },           // Siempre visible
+  { label: "Usuarios", show: hasRouteAccess('users') },
+  { label: "Empleados", show: hasRouteAccess('employees') },
+  { label: "Mascotas", show: hasRouteAccess('pets') },
+  { label: "Reservas", show: hasRouteAccess('reservations') },
+  { label: "Historial Médico", show: hasRouteAccess('medical_history') },
+  { label: "Pagos", show: hasRouteAccess('payments') },
+  { label: "Facturas", show: hasRouteAccess('invoices') },
+  { label: "Cuenta", show: true },              // Siempre visible
+  { label: "Configuración", show: hasRouteAccess('settings') }
+];
+```
+
+#### **🎨 Elementos del Navbar**
+- **Logo de PetLand** con colapso/expansión
+- **Enlaces dinámicos** según permisos del usuario
+- **Información del usuario** con rol mostrado
+- **Botón de logout** funcional
+- **Interfaz en español** para mejor UX
+
+### 📊 **Páginas de Administración**
+
+#### **👥 Gestión de Usuarios (`/users`)**
+- **Tabla completa** con todos los usuarios del sistema
+- **Búsqueda avanzada** por nombre, email, rol
+- **Estadísticas** de distribución de roles
+- **Acciones CRUD** protegidas por permisos
+- **Iconos visuales** para identificar roles
+
+#### **👨‍💼 Gestión de Empleados (`/employees`)**
+- **Lista completa** del personal de PetLand
+- **Información de contacto** (email, teléfono)
+- **Posición y departamento** de cada empleado
+- **Estadísticas** de empleados activos
+- **Gestión completa** del personal
+
+### 🎯 **Características del Dashboard**
+
+#### **📈 Estadísticas Adaptativas**
+```javascript
+// Estadísticas que se muestran según el rol
+const dashboardCards = [
+  { title: "Usuarios", show: hasRouteAccess('users') },
+  { title: "Empleados", show: hasRouteAccess('employees') },
+  { title: "Mascotas", show: hasRouteAccess('pets') },
+  { title: "Reservas", show: hasRouteAccess('reservations') },
+  { title: "Pagos", show: hasRouteAccess('payments') },
+  { title: "Facturas", show: hasRouteAccess('invoices') }
+];
+```
+
+#### **⚡ Acciones Rápidas**
+- **Añadir Mascota** - Acceso directo al formulario
+- **Nueva Reserva** - Navegación a reservas
+- **Historial Médico** - Acceso al historial
+- **Configuración** - Panel de configuración
+
+#### **🎨 Interfaz Responsiva**
+- **Diseño adaptativo** para diferentes pantallas
+- **Colores temáticos** por sección
+- **Iconos intuitivos** para cada funcionalidad
+- **Transiciones suaves** entre estados
+
+### 🔧 **Componentes Frontend Implementados**
+
+#### **📁 Archivos Creados/Modificados**
+- `frontend/src/context/AuthContext.jsx` - Contexto con funciones de autorización
+- `frontend/src/components/Nav/Nav.jsx` - Navbar dinámico
+- `frontend/src/pages/Home.jsx` - Dashboard adaptativo
+- `frontend/src/pages/Users.jsx` - Gestión de usuarios
+- `frontend/src/pages/Employees.jsx` - Gestión de empleados
+- `frontend/src/services/employeeServices.js` - Servicios de empleados
+- `frontend/src/routes/Routes.jsx` - Rutas actualizadas
+
+#### **🎛️ Funciones de Autorización**
+```javascript
+// Funciones disponibles en el contexto de autenticación
+const { 
+  hasPermission,      // Verificar permiso específico
+  hasRouteAccess,     // Verificar acceso a ruta
+  isAdmin,           // Verificar si es administrador
+  isEmployee,        // Verificar si es empleado
+  isUser             // Verificar si es usuario normal
+} = useAuth();
+```
+
+### 🚀 **Cómo Probar el Dashboard**
+
+#### **👑 Como Administrador**
+1. **Login**: `superadmin@petland.com` / `admin123`
+2. **Ver dashboard** con todas las estadísticas
+3. **Navegar** por todas las secciones disponibles
+4. **Gestionar** usuarios y empleados
+5. **Acceder** a configuración del sistema
+
+#### **👨‍💼 Como Empleado**
+1. **Login**: `user2@example.com` / `test123` (después del cambio de rol)
+2. **Ver dashboard** con estadísticas de gestión
+3. **Acceder** a mascotas, reservas, historial médico
+4. **Sin acceso** a usuarios ni configuración
+
+#### **👤 Como Usuario Normal**
+1. **Login**: `user2@example.com` / `test123` (antes del cambio)
+2. **Ver dashboard** simple con mensaje de bienvenida
+3. **Acceso limitado** a sus propias funcionalidades
+4. **Interfaz simplificada** y amigable

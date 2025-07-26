@@ -1,5 +1,5 @@
 import React, { createContext, useContext, useState, useEffect } from 'react';
-import { loginUser, registerUser, getUserByID } from '../services/userServices';
+import { loginUser, registerUser, getCurrentUser } from '../services/userServices';
 
 // Crear el contexto
 const AuthContext = createContext();
@@ -29,7 +29,7 @@ export const AuthProvider = ({ children }) => {
         if (savedUser && savedToken) {
           const userData = JSON.parse(savedUser);
           // Verificar que el token sea válido obteniendo datos del usuario
-          const currentUser = await getUserByID(userData.user_id);
+          const currentUser = await getCurrentUser();
           setUser(currentUser);
         }
       } catch (error) {
@@ -54,10 +54,10 @@ export const AuthProvider = ({ children }) => {
       const response = await loginUser({ email, password });
       
       // Guardar datos en localStorage
-      localStorage.setItem('user', JSON.stringify(response.user));
-      localStorage.setItem('token', response.token);
+      localStorage.setItem('user', JSON.stringify(response));
+      localStorage.setItem('token', response.access_token);
       
-      setUser(response.user);
+      setUser(response);
       return { success: true };
     } catch (error) {
       setError(error.response?.data?.detail || 'Error al iniciar sesión');
@@ -76,10 +76,10 @@ export const AuthProvider = ({ children }) => {
       const response = await registerUser(userData);
       
       // Guardar datos en localStorage
-      localStorage.setItem('user', JSON.stringify(response.user));
-      localStorage.setItem('token', response.token);
+      localStorage.setItem('user', JSON.stringify(response));
+      localStorage.setItem('token', response.access_token);
       
-      setUser(response.user);
+      setUser(response);
       return { success: true };
     } catch (error) {
       setError(error.response?.data?.detail || 'Error al registrar usuario');
@@ -108,6 +108,33 @@ export const AuthProvider = ({ children }) => {
     setError(null);
   };
 
+  // Función para verificar si el usuario tiene un permiso específico
+  const hasPermission = (permission) => {
+    if (!user || !user.permissions) return false;
+    return user.permissions.includes(permission);
+  };
+
+  // Función para verificar si el usuario tiene acceso a una ruta
+  const hasRouteAccess = (route) => {
+    if (!user || !user.available_routes) return false;
+    return user.available_routes[route] === true;
+  };
+
+  // Función para verificar si el usuario es administrador
+  const isAdmin = () => {
+    return user?.role === 'admin';
+  };
+
+  // Función para verificar si el usuario es empleado
+  const isEmployee = () => {
+    return user?.role === 'employee';
+  };
+
+  // Función para verificar si el usuario es cliente
+  const isUser = () => {
+    return user?.role === 'user';
+  };
+
   // Valor del contexto
   const value = {
     user,
@@ -118,6 +145,11 @@ export const AuthProvider = ({ children }) => {
     logout,
     updateUser,
     clearError,
+    hasPermission,
+    hasRouteAccess,
+    isAdmin,
+    isEmployee,
+    isUser,
     isAuthenticated: !!user
   };
 
