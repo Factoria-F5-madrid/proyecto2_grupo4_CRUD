@@ -153,85 +153,312 @@ Este proyecto es parte del bootcamp de IA de Factoría F5.
 
 ## 🛡️ **SISTEMA DE ROLES Y PERMISOS (RBAC)**
 
-### 🎭 **Roles Implementados**
+### **🎯 Descripción General**
+Sistema completo de control de acceso basado en roles que permite gestionar permisos de manera granular y segura.
 
-#### **1. 👑 ADMIN (Administrador)**
+### **👥 Roles Definidos**
+
+#### **🔴 Administrador (Admin)**
 - **Acceso completo** a todas las funcionalidades del sistema
-- **CRUD completo** de empleados y usuarios
-- **Gestión de roles** y permisos de otros usuarios
-- **Configuración del sistema** y logs
-- **Exportación de datos** y reportes
-- **35 permisos** totales
-
-#### **2. 👨‍💼 EMPLOYEE (Empleado)**
-- **CRUD de mascotas** (crear, editar, ver)
-- **CRUD de reservas** (gestionar reservas)
-- **CRUD de servicios** (ver y actualizar)
-- **CRUD de historial médico** (crear y editar)
-- **CRUD de facturas** (crear y gestionar)
-- **CRUD de pagos** (registrar pagos)
+- **Gestión de usuarios** y empleados
+- **Configuración del sistema**
+- **Visualización de logs** y estadísticas
 - **Exportación de datos**
-- **18 permisos** totales
 
-#### **3. 👤 USER (Cliente/Usuario)**
-- **Ver sus propias mascotas** y crear nuevas
-- **Crear/editar sus reservas**
-- **Ver servicios** disponibles
-- **Ver sus facturas y pagos**
-- **Ver historial médico** de sus mascotas
-- **Crear pagos**
-- **11 permisos** totales
+#### **🟡 Empleado (Employee)**
+- **Gestión de mascotas** y reservas
+- **Acceso a historial médico**
+- **Gestión de pagos** y facturas
+- **Sin acceso** a configuración del sistema
 
-### 🔐 **Sistema de Autorización Implementado**
+#### **🟢 Usuario Regular (User)**
+- **Solo sus propias mascotas**
+- **Solo sus reservas**
+- **Solo su historial médico**
+- **Solo sus facturas** y pagos
+- **Sin acceso** a gestión de empleados
 
-#### **📋 Permisos Granulares**
+### **🔐 Permisos Granulares**
+
 ```python
-# Permisos de Usuarios
-CREATE_USER, READ_USER, UPDATE_USER, DELETE_USER
-
-# Permisos de Empleados  
-CREATE_EMPLOYEE, READ_EMPLOYEE, UPDATE_EMPLOYEE, DELETE_EMPLOYEE
-
-# Permisos de Mascotas
-CREATE_PET, READ_PET, UPDATE_PET, DELETE_PET
-
-# Permisos de Reservas
-CREATE_RESERVATION, READ_RESERVATION, UPDATE_RESERVATION, DELETE_RESERVATION
-
-# Permisos de Servicios
-CREATE_SERVICE, READ_SERVICE, UPDATE_SERVICE, DELETE_SERVICE
-
-# Permisos de Historial Médico
-CREATE_MEDICAL_HISTORY, READ_MEDICAL_HISTORY, UPDATE_MEDICAL_HISTORY, DELETE_MEDICAL_HISTORY
-
-# Permisos de Facturas
-CREATE_INVOICE, READ_INVOICE, UPDATE_INVOICE, DELETE_INVOICE
-
-# Permisos de Pagos
-CREATE_PAYMENT, READ_PAYMENT, UPDATE_PAYMENT, DELETE_PAYMENT
-
-# Permisos del Sistema
-EXPORT_DATA, MANAGE_ROLES, VIEW_LOGS, SYSTEM_CONFIG
+# Ejemplo de permisos por rol
+ROLE_PERMISSIONS = {
+    UserRole.ADMIN: [
+        Permission.CREATE_USER, Permission.READ_USER, Permission.UPDATE_USER, Permission.DELETE_USER,
+        Permission.CREATE_EMPLOYEE, Permission.READ_EMPLOYEE, Permission.UPDATE_EMPLOYEE, Permission.DELETE_EMPLOYEE,
+        Permission.CREATE_PET, Permission.READ_PET, Permission.UPDATE_PET, Permission.DELETE_PET,
+        Permission.CREATE_RESERVATION, Permission.READ_RESERVATION, Permission.UPDATE_RESERVATION, Permission.DELETE_RESERVATION,
+        Permission.CREATE_SERVICE, Permission.READ_SERVICE, Permission.UPDATE_SERVICE, Permission.DELETE_SERVICE,
+        Permission.CREATE_MEDICAL_HISTORY, Permission.READ_MEDICAL_HISTORY, Permission.UPDATE_MEDICAL_HISTORY, Permission.DELETE_MEDICAL_HISTORY,
+        Permission.CREATE_INVOICE, Permission.READ_INVOICE, Permission.UPDATE_INVOICE, Permission.DELETE_INVOICE,
+        Permission.CREATE_PAYMENT, Permission.READ_PAYMENT, Permission.UPDATE_PAYMENT, Permission.DELETE_PAYMENT,
+        Permission.EXPORT_DATA, Permission.MANAGE_ROLES, Permission.VIEW_LOGS, Permission.SYSTEM_CONFIG
+    ],
+    UserRole.EMPLOYEE: [
+        Permission.READ_USER, Permission.READ_EMPLOYEE,
+        Permission.CREATE_PET, Permission.READ_PET, Permission.UPDATE_PET, Permission.DELETE_PET,
+        Permission.CREATE_RESERVATION, Permission.READ_RESERVATION, Permission.UPDATE_RESERVATION, Permission.DELETE_RESERVATION,
+        Permission.CREATE_SERVICE, Permission.READ_SERVICE, Permission.UPDATE_SERVICE, Permission.DELETE_SERVICE,
+        Permission.CREATE_MEDICAL_HISTORY, Permission.READ_MEDICAL_HISTORY, Permission.UPDATE_MEDICAL_HISTORY, Permission.DELETE_MEDICAL_HISTORY,
+        Permission.CREATE_INVOICE, Permission.READ_INVOICE, Permission.UPDATE_INVOICE, Permission.DELETE_INVOICE,
+        Permission.CREATE_PAYMENT, Permission.READ_PAYMENT, Permission.UPDATE_PAYMENT, Permission.DELETE_PAYMENT
+    ],
+    UserRole.USER: [
+        Permission.CREATE_PET, Permission.READ_PET, Permission.UPDATE_PET,
+        Permission.CREATE_RESERVATION, Permission.READ_RESERVATION, Permission.UPDATE_RESERVATION,
+        Permission.READ_SERVICE, Permission.READ_MEDICAL_HISTORY, Permission.READ_INVOICE, Permission.READ_PAYMENT, Permission.CREATE_PAYMENT
+    ]
+}
 ```
 
-#### **🛡️ Protección de Endpoints**
+### **🔒 Protección de Endpoints**
+
 ```python
-# Protección por rol específico
-@router.get("/users")
-async def get_users(current_user = Depends(require_admin())):
-    # Solo administradores
+# Ejemplo de protección de endpoints
+@router.get("/users/", response_model=List[UserOut])
+async def get_all_users(
+    current_user: dict = Depends(require_admin())  # Solo admin
+):
+    return await get_all_users_controller(db)
 
-# Protección por permiso específico
-@router.get("/pets")
-async def get_pets(current_user = Depends(require_permission(Permission.READ_PET))):
-    # Cualquiera con permiso de lectura de mascotas
+@router.get("/pets/", response_model=List[PetOut])
+async def get_all_pets(
+    current_user: dict = Depends(get_current_user)  # Todos los usuarios autenticados
+):
+    user_role = UserRole(current_user["role"])
+    
+    if user_role in [UserRole.ADMIN, UserRole.EMPLOYEE]:
+        return await get_all_pets_controller(db)  # Admin/Employee ven todas
+    else:
+        user_id = current_user["user_id"]
+        return await get_pets_by_user_controller(user_id, db)  # User solo sus mascotas
+```
 
-# Protección por múltiples permisos
-@router.post("/reservations")
-async def create_reservation(current_user = Depends(require_any_permission([
-    Permission.CREATE_RESERVATION, Permission.ADMIN_ACCESS
-]))):
-    # Cualquiera con permiso de crear reservas o acceso admin
+### **🎨 Navegación Dinámica**
+
+#### **Admin Panel**
+- Dashboard
+- Usuarios
+- Empleados
+- Mascotas (todas)
+- Reservas (todas)
+- Historial Médico (todos)
+- Pagos (todos)
+- Facturas (todas)
+- Cuenta
+- Configuración
+
+#### **Employee Panel**
+- Dashboard
+- Mascotas (todas)
+- Reservas (todas)
+- Historial Médico (todos)
+- Pagos (todos)
+- Facturas (todas)
+- Cuenta
+
+#### **User Panel**
+- Mascotas (solo las suyas)
+- Historial Médico (solo de sus mascotas)
+- Facturas (solo las suyas)
+- Servicios (solo los contratados)
+- Cuenta
+
+### **🔧 Implementación Técnica**
+
+#### **Backend**
+- **Enums**: `UserRole` y `Permission` para roles y permisos
+- **AuthorizationService**: Clase para verificación de permisos
+- **Dependencies**: Funciones para proteger endpoints
+- **Filtrado de datos**: Por `user_id` según el rol
+
+#### **Frontend**
+- **AuthContext**: Contexto con información de usuario y permisos
+- **Helper functions**: `hasPermission()`, `hasRouteAccess()`, `isAdmin()`, etc.
+- **Navegación dinámica**: Links que aparecen según el rol
+- **Filtrado automático**: Datos filtrados por usuario
+
+## 🎯 **IMPLEMENTACIÓN DE SERVICIOS CON FILTRADO POR USUARIO**
+
+### **📋 Descripción**
+Sistema completo de servicios que permite a los usuarios ver solo los servicios que han contratado a través de reservas, mientras que administradores y empleados ven todos los servicios disponibles.
+
+### **🔧 Arquitectura Backend**
+
+#### **Modelo de Datos**
+```python
+# Relación entre usuarios, reservas y servicios
+User (1) ←→ (N) Reservation (N) ←→ (1) Service
+```
+
+#### **Controlador de Servicios**
+```python
+@cache_response("services:by_user", ttl=600)
+async def get_services_by_user_controller(user_id: int, db: AsyncSession):
+    """
+    Obtiene todos los servicios que un usuario ha contratado a través de sus reservas
+    """
+    # Obtener servicios únicos que el usuario ha contratado
+    result = await db.execute(
+        select(Service)
+        .join(Reservation, Service.service_id == Reservation.service_id)
+        .where(Reservation.user_id == user_id)
+        .distinct()
+    )
+    services = result.scalars().all()
+    return services
+```
+
+#### **Rutas con Filtrado por Rol**
+```python
+@router.get("/", response_model=List[ServiceOut])
+async def get_all_services(
+    db: AsyncSession = Depends(get_db),
+    current_user: dict = Depends(get_current_user)
+):
+    user_role = UserRole(current_user["role"])
+    
+    if user_role in [UserRole.ADMIN, UserRole.EMPLOYEE]:
+        return await get_all_services_controller(db)  # Todos los servicios
+    else:
+        user_id = current_user["user_id"]
+        return await get_services_by_user_controller(user_id, db)  # Solo contratados
+```
+
+### **🎨 Frontend - Página de Servicios**
+
+#### **Características**
+- **Diseño moderno** con cards y hover effects
+- **Iconos específicos** para cada tipo de servicio
+- **Estados de carga** con spinner animado
+- **Manejo de errores** con alertas visuales
+- **Responsive design** con grid adaptativo
+- **Formateo profesional** de precios y fechas
+
+#### **Tipos de Servicios**
+- **Guardería** 🏠 (icono: cama)
+- **Transporte** 🚗 (icono: carro)
+- **Comida** 🍽️ (icono: utensilios)
+- **Otros** 📋 (icono: clipboard)
+
+#### **Información Mostrada**
+- Tipo de servicio con icono
+- Precio formateado en euros
+- Duración del servicio
+- Servicios adicionales
+- Notas del servicio
+- Indicador de alojamiento incluido
+- Fecha de creación
+
+#### **Estados de la Página**
+```javascript
+// Estados manejados
+const [services, setServices] = useState([]);
+const [loading, setLoading] = useState(true);
+const [error, setError] = useState("");
+
+// Estados de UI
+- Loading: Spinner con mensaje
+- Error: Alerta roja con mensaje
+- Empty: Mensaje contextual según rol
+- Success: Grid de servicios
+```
+
+### **🔐 Autenticación y Autorización**
+
+#### **Interceptor de Axios**
+```javascript
+// Configuración automática de token
+const apiClient = axios.create({
+  baseURL: "http://127.0.0.1:8000/services",
+});
+
+apiClient.interceptors.request.use(
+  (config) => {
+    const token = localStorage.getItem('token');
+    if (token) {
+      config.headers.Authorization = `Bearer ${token}`;
+    }
+    return config;
+  }
+);
+```
+
+#### **Verificación de Permisos**
+```javascript
+// En el componente
+const { user, isAdmin, isEmployee, isUser } = useAuth();
+
+// Renderizado condicional
+{isAdmin() || isEmployee() ? 'Servicios Disponibles' : 'Mis Servicios Contratados'}
+```
+
+### **📊 Datos de Ejemplo**
+
+#### **Servicio Contratado**
+```json
+{
+  "service_id": 1,
+  "service_type": "Otros",
+  "other_service": "Prueba3",
+  "notes": null,
+  "base_price": 50.0,
+  "duration": "01:30:00",
+  "lodging": true,
+  "created_at": "2025-07-19T20:21:49.848058"
+}
+```
+
+#### **Reserva Asociada**
+```json
+{
+  "reservation_id": 11,
+  "user_id": 44,
+  "service_id": 1,
+  "status": "PENDING",
+  "checkin_date": "2025-08-02",
+  "checkout_date": "2025-08-04"
+}
+```
+
+### **🧪 Testing y Debugging**
+
+#### **Scripts de Prueba**
+- **Debug completo**: Verificación de base de datos, controlador y API
+- **Serialización**: Prueba de conversión de modelos SQLAlchemy a Pydantic
+- **Autenticación**: Verificación de tokens y permisos
+
+#### **Logs de Debug**
+```python
+logger.info(f"Endpoint /services/ llamado por usuario: {current_user['email']} con rol: {current_user['role']}")
+logger.info(f"Usuario regular - buscando servicios para user_id: {user_id}")
+logger.info(f"Servicios encontrados para usuario {user_id}: {len(services)}")
+```
+
+### **🔧 Correcciones Implementadas**
+
+#### **Schema Pydantic v2**
+```python
+# Antes (Pydantic v1)
+class Config:
+    model_config = {"from_attributes": True}
+
+# Después (Pydantic v2)
+model_config = ConfigDict(from_attributes=True)
+```
+
+#### **Importaciones de Controladores**
+```python
+# Antes
+from backend.controllers import medical_history_controller
+
+# Después
+from backend.controllers.medical_history_controller import (
+    create_medical_history,
+    get_all_medical_histories,
+    get_medical_histories_by_user,
+    # ...
+)
 ```
 
 ### 🔑 **Autenticación y Respuestas**
@@ -549,7 +776,7 @@ const {
    - ✅ **Panel**: "Employee Panel"
    - ✅ **Enlaces visibles**: Solo gestión (sin administración)
 
-3. **👤 Usuario Regular** (`usuario3@example.com` / `test123`)
+3. **👤 Usuario Regular** (`usuario3@example.com` / `password123`)
    - ✅ **Rol**: `user`
    - ✅ **Rutas disponibles**: `pets: true, reservations: true, payments: true`
    - ✅ **Rutas NO disponibles**: `users: false, employees: false, medical_history: false, invoices: false, settings: false`
