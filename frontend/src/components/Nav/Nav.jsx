@@ -56,7 +56,7 @@ export default function Nav() {
         icon: <FaMoneyCheckAlt />,
         label: "Pagos",
         to: "/payments",
-        show: hasRouteAccess('payments') && (isAdmin() || isEmployee()) // Solo admin y employee ven pagos
+        show: hasRouteAccess('payments') && isAdmin() // Solo admin ve pagos
       },
       {
         icon: <FaFileInvoice />,
