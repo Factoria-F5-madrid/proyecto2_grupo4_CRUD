@@ -3,49 +3,55 @@ import { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { 
   FaUsers, FaUserTie, FaDog, FaCalendarAlt, FaMoneyCheckAlt, 
-  FaFileInvoice, FaStethoscope, FaChartBar, FaPlus, FaCog 
+  FaFileInvoice, FaStethoscope, FaChartBar, FaPlus, FaCog, FaSpinner, FaClipboard
 } from 'react-icons/fa';
 import perritosImage from '../assets/PetHome.svg';
 import petImage from '../assets/petLand-logo-letra-azul.png';
 import Modal from '../components/Nav/Modal';
 import { useAuth } from '../context/AuthContext';
+import { getDashboardStats, getAdminStats } from '../services/dashboardServices';
 
 const Home = () => {
     const [showModal, setShowModal] = useState(false);
     const [stats, setStats] = useState({});
+    const [loading, setLoading] = useState(true);
+    const [error, setError] = useState("");
     const navigate = useNavigate();
     const { user, isAdmin, isEmployee, hasRouteAccess } = useAuth();
 
     useEffect(() => {
-        // Aquí se cargarían las estadísticas desde el backend
-        setStats({
-            totalUsers: 150,
-            totalEmployees: 25,
-            totalPets: 300,
-            totalReservations: 45,
-            totalPayments: 120,
-            totalInvoices: 89
-        });
-    }, []);
+        const fetchStats = async () => {
+            try {
+                setLoading(true);
+                console.log("🔍 Iniciando fetchStats en Home...");
+                console.log("👤 Usuario actual:", user);
+                
+                // Usar diferentes servicios según el rol
+                let data;
+                if (isAdmin() || isEmployee()) {
+                    data = await getAdminStats(); // Para admin/employee: reservas
+                } else {
+                    data = await getDashboardStats(); // Para usuarios: servicios
+                }
+                
+                console.log("✅ Estadísticas obtenidas:", data);
+                
+                setStats(data);
+            } catch (error) {
+                console.error("❌ Error obteniendo estadísticas:", error);
+                setError("Error al cargar las estadísticas");
+            } finally {
+                setLoading(false);
+            }
+        };
+
+        if (user) {
+            fetchStats();
+        }
+    }, [user, isAdmin, isEmployee]);
 
     const getDashboardCards = () => {
         const cards = [
-            {
-                title: "Usuarios",
-                value: stats.totalUsers || 0,
-                icon: <FaUsers className="text-blue-500" />,
-                color: "bg-blue-50 border-blue-200",
-                route: "/users",
-                show: hasRouteAccess('users')
-            },
-            {
-                title: "Empleados",
-                value: stats.totalEmployees || 0,
-                icon: <FaUserTie className="text-green-500" />,
-                color: "bg-green-50 border-green-200",
-                route: "/employees",
-                show: hasRouteAccess('employees')
-            },
             {
                 title: "Mascotas",
                 value: stats.totalPets || 0,
@@ -55,20 +61,12 @@ const Home = () => {
                 show: hasRouteAccess('pets')
             },
             {
-                title: "Reservas",
-                value: stats.totalReservations || 0,
-                icon: <FaCalendarAlt className="text-orange-500" />,
-                color: "bg-orange-50 border-orange-200",
-                route: "/reservations",
-                show: hasRouteAccess('reservations')
-            },
-            {
-                title: "Pagos",
-                value: stats.totalPayments || 0,
-                icon: <FaMoneyCheckAlt className="text-green-500" />,
-                color: "bg-green-50 border-green-200",
-                route: "/payments",
-                show: hasRouteAccess('payments')
+                title: isAdmin() || isEmployee() ? "Reservas" : "Servicios",
+                value: isAdmin() || isEmployee() ? (stats.totalReservations || 0) : (stats.totalServices || 0),
+                icon: isAdmin() || isEmployee() ? <FaCalendarAlt className="text-orange-500" /> : <FaClipboard className="text-green-500" />,
+                color: isAdmin() || isEmployee() ? "bg-orange-50 border-orange-200" : "bg-green-50 border-green-200",
+                route: isAdmin() || isEmployee() ? "/reservations" : "/services",
+                show: isAdmin() || isEmployee() ? hasRouteAccess('reservations') : hasRouteAccess('services')
             },
             {
                 title: "Facturas",
@@ -77,6 +75,14 @@ const Home = () => {
                 color: "bg-red-50 border-red-200",
                 route: "/invoices",
                 show: hasRouteAccess('invoices')
+            },
+            {
+                title: "Historial Médico",
+                value: stats.totalMedicalHistory || 0,
+                icon: <FaStethoscope className="text-blue-500" />,
+                color: "bg-blue-50 border-blue-200",
+                route: "/medicalhistory",
+                show: hasRouteAccess('medical_history')
             }
         ];
 
@@ -92,10 +98,10 @@ const Home = () => {
                 show: hasRouteAccess('pets')
             },
             {
-                title: "Nueva Reserva",
-                icon: <FaCalendarAlt />,
-                action: () => navigate('/reservations'),
-                show: hasRouteAccess('reservations')
+                title: isAdmin() || isEmployee() ? "Nueva Reserva" : "Ver Servicios",
+                icon: isAdmin() || isEmployee() ? <FaCalendarAlt /> : <FaClipboard />,
+                action: () => navigate(isAdmin() || isEmployee() ? '/reservations' : '/services'),
+                show: isAdmin() || isEmployee() ? hasRouteAccess('reservations') : hasRouteAccess('services')
             },
             {
                 title: "Historial Médico",
@@ -116,6 +122,17 @@ const Home = () => {
 
     const dashboardCards = getDashboardCards();
     const quickActions = getQuickActions();
+
+    if (loading) {
+        return (
+            <div className="flex-1 p-6 bg-gray-50 flex items-center justify-center">
+                <div className="text-center">
+                    <FaSpinner className="animate-spin text-4xl text-blue-500 mx-auto mb-4" />
+                    <p className="text-gray-600">Cargando dashboard...</p>
+                </div>
+            </div>
+        );
+    }
 
     return (
         <div className="flex-1 p-6 bg-gray-50">
@@ -141,6 +158,12 @@ const Home = () => {
                 </div>
             </div>
 
+            {error && (
+                <div className="mb-6 bg-red-50 border border-red-200 text-red-700 px-4 py-3 rounded-lg">
+                    <p>{error}</p>
+                </div>
+            )}
+
             {/* Estadísticas */}
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 mb-8">
                 {dashboardCards.map((card, index) => (
@@ -163,23 +186,25 @@ const Home = () => {
             </div>
 
             {/* Acciones Rápidas */}
-            <div className="mb-8">
-                <h2 className="text-xl font-semibold text-gray-800 mb-4">Acciones Rápidas</h2>
-                <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
-                    {quickActions.map((action, index) => (
-                        <button
-                            key={index}
-                            onClick={action.action}
-                            className="p-4 bg-white rounded-lg border border-gray-200 hover:border-blue-300 hover:shadow-md transition-all flex items-center gap-3"
-                        >
-                            <div className="text-blue-500 text-xl">
-                                {action.icon}
-                            </div>
-                            <span className="font-medium text-gray-700">{action.title}</span>
-                        </button>
-                    ))}
+            {quickActions.length > 0 && (
+                <div className="mb-8">
+                    <h2 className="text-xl font-semibold text-gray-800 mb-4">Acciones Rápidas</h2>
+                    <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
+                        {quickActions.map((action, index) => (
+                            <button
+                                key={index}
+                                onClick={action.action}
+                                className="p-4 bg-white rounded-lg border border-gray-200 hover:border-blue-300 hover:shadow-md transition-all flex items-center gap-3"
+                            >
+                                <div className="text-blue-500 text-xl">
+                                    {action.icon}
+                                </div>
+                                <span className="font-medium text-gray-700">{action.title}</span>
+                            </button>
+                        ))}
+                    </div>
                 </div>
-            </div>
+            )}
 
             {/* Mensaje de bienvenida para usuarios normales */}
             {!isAdmin() && !isEmployee() && (

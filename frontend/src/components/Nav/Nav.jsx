@@ -20,7 +20,7 @@ export default function Nav() {
         icon: <FaClipboardList />,
         label: "Dashboard",
         to: "/home",
-        show: isAdmin() || isEmployee() // Solo admin y employee ven dashboard
+        show: true // Todos los roles pueden ver dashboard
       },
       {
         icon: <FaUsers />,
