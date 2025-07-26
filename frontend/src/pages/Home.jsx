@@ -6,7 +6,6 @@ import {
   FaFileInvoice, FaStethoscope, FaChartBar, FaPlus, FaCog, FaSpinner, FaClipboard
 } from 'react-icons/fa';
 import perritosImage from '../assets/PetHome.svg';
-import petImage from '../assets/petLand-logo-letra-azul.png';
 import Modal from '../components/Nav/Modal';
 import { useAuth } from '../context/AuthContext';
 import { getDashboardStats, getAdminStats } from '../services/dashboardServices';
@@ -190,7 +189,7 @@ const Home = () => {
                         </p>
                     </div>
       <img
-        src={petImage}
+        src="https://res.cloudinary.com/dxxc4p0ro/image/upload/v1700000000000/petland-logo-letra-azul.png"
                         alt="PetLand Logo"
                         className="w-32 h-12 object-contain"
                     />
