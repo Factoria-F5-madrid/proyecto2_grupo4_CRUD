@@ -150,3 +150,249 @@ Los logs se almacenan en `backend/logs/app.log`
 ## 📄 Licencia
 
 Este proyecto es parte del bootcamp de IA de Factoría F5.
+
+## 🛡️ **SISTEMA DE ROLES Y PERMISOS (RBAC)**
+
+### 🎭 **Roles Implementados**
+
+#### **1. 👑 ADMIN (Administrador)**
+- **Acceso completo** a todas las funcionalidades del sistema
+- **CRUD completo** de empleados y usuarios
+- **Gestión de roles** y permisos de otros usuarios
+- **Configuración del sistema** y logs
+- **Exportación de datos** y reportes
+- **35 permisos** totales
+
+#### **2. 👨‍💼 EMPLOYEE (Empleado)**
+- **CRUD de mascotas** (crear, editar, ver)
+- **CRUD de reservas** (gestionar reservas)
+- **CRUD de servicios** (ver y actualizar)
+- **CRUD de historial médico** (crear y editar)
+- **CRUD de facturas** (crear y gestionar)
+- **CRUD de pagos** (registrar pagos)
+- **Exportación de datos**
+- **18 permisos** totales
+
+#### **3. 👤 USER (Cliente/Usuario)**
+- **Ver sus propias mascotas** y crear nuevas
+- **Crear/editar sus reservas**
+- **Ver servicios** disponibles
+- **Ver sus facturas y pagos**
+- **Ver historial médico** de sus mascotas
+- **Crear pagos**
+- **11 permisos** totales
+
+### 🔐 **Sistema de Autorización Implementado**
+
+#### **📋 Permisos Granulares**
+```python
+# Permisos de Usuarios
+CREATE_USER, READ_USER, UPDATE_USER, DELETE_USER
+
+# Permisos de Empleados  
+CREATE_EMPLOYEE, READ_EMPLOYEE, UPDATE_EMPLOYEE, DELETE_EMPLOYEE
+
+# Permisos de Mascotas
+CREATE_PET, READ_PET, UPDATE_PET, DELETE_PET
+
+# Permisos de Reservas
+CREATE_RESERVATION, READ_RESERVATION, UPDATE_RESERVATION, DELETE_RESERVATION
+
+# Permisos de Servicios
+CREATE_SERVICE, READ_SERVICE, UPDATE_SERVICE, DELETE_SERVICE
+
+# Permisos de Historial Médico
+CREATE_MEDICAL_HISTORY, READ_MEDICAL_HISTORY, UPDATE_MEDICAL_HISTORY, DELETE_MEDICAL_HISTORY
+
+# Permisos de Facturas
+CREATE_INVOICE, READ_INVOICE, UPDATE_INVOICE, DELETE_INVOICE
+
+# Permisos de Pagos
+CREATE_PAYMENT, READ_PAYMENT, UPDATE_PAYMENT, DELETE_PAYMENT
+
+# Permisos del Sistema
+EXPORT_DATA, MANAGE_ROLES, VIEW_LOGS, SYSTEM_CONFIG
+```
+
+#### **🛡️ Protección de Endpoints**
+```python
+# Protección por rol específico
+@router.get("/users")
+async def get_users(current_user = Depends(require_admin())):
+    # Solo administradores
+
+# Protección por permiso específico
+@router.get("/pets")
+async def get_pets(current_user = Depends(require_permission(Permission.READ_PET))):
+    # Cualquiera con permiso de lectura de mascotas
+
+# Protección por múltiples permisos
+@router.post("/reservations")
+async def create_reservation(current_user = Depends(require_any_permission([
+    Permission.CREATE_RESERVATION, Permission.ADMIN_ACCESS
+]))):
+    # Cualquiera con permiso de crear reservas o acceso admin
+```
+
+### 🔑 **Autenticación y Respuestas**
+
+#### **📝 Login/Registro**
+```json
+POST /auth/login
+{
+  "email": "usuario@example.com",
+  "password": "password123"
+}
+
+// Respuesta con información de roles:
+{
+  "access_token": "jwt_token_here",
+  "token_type": "bearer",
+  "user_id": 1,
+  "email": "usuario@example.com",
+  "role": "user",
+  "permissions": ["read_pet", "create_pet", "update_pet", ...],
+  "available_routes": {
+    "dashboard": true,
+    "users": false,
+    "employees": false,
+    "pets": true,
+    "reservations": true,
+    "services": true,
+    "medical_history": true,
+    "invoices": true,
+    "payments": true,
+    "exports": false,
+    "admin": false,
+    "logs": false,
+    "settings": false
+  }
+}
+```
+
+#### **👤 Información del Usuario**
+```json
+GET /auth/me
+Authorization: Bearer <token>
+
+// Respuesta completa:
+{
+  "user_id": 1,
+  "email": "usuario@example.com",
+  "first_name": "Juan",
+  "last_name": "Pérez",
+  "role": "user",
+  "permissions": ["read_pet", "create_pet", ...],
+  "available_routes": {
+    "dashboard": true,
+    "pets": true,
+    "reservations": true,
+    // ... etc
+  }
+}
+```
+
+#### **🔄 Gestión de Roles (Solo Admin)**
+```json
+PUT /auth/users/{user_id}/role
+Authorization: Bearer <admin_token>
+{
+  "role": "employee"
+}
+
+// Respuesta:
+{
+  "message": "Rol de usuario actualizado exitosamente a UserRole.EMPLOYEE",
+  "user_id": 41,
+  "new_role": "employee"
+}
+```
+
+### 📱 **Integración con Frontend**
+
+#### **🎯 Navegación Dinámica**
+```javascript
+// Después del login, el frontend recibe:
+const userInfo = {
+  role: "admin", // o "user", "employee"
+  permissions: ["create_user", "read_user", ...],
+  available_routes: {
+    dashboard: true,
+    users: true,
+    employees: true,
+    pets: true,
+    // ... etc
+  }
+}
+
+// Mostrar solo las rutas disponibles
+const navigationItems = Object.entries(userInfo.available_routes)
+  .filter(([route, available]) => available)
+  .map(([route]) => route)
+```
+
+#### **🔒 Protección de Componentes**
+```javascript
+// Verificar permisos antes de mostrar acciones
+const canCreateUser = userInfo.permissions.includes('create_user');
+const canDeletePet = userInfo.permissions.includes('delete_pet');
+
+// Mostrar/ocultar botones según permisos
+{canCreateUser && <Button>Crear Usuario</Button>}
+{canDeletePet && <Button>Eliminar Mascota</Button>}
+```
+
+### 🧪 **Pruebas del Sistema**
+
+#### **👑 Usuario Administrador**
+```
+Email: superadmin@petland.com
+Password: admin123
+Rol: admin
+Permisos: 35 permisos completos
+Rutas: Acceso total a todas las funcionalidades
+```
+
+#### **👨‍💼 Usuario Empleado**
+```
+Email: user2@example.com (cambiado de user a employee)
+Password: test123
+Rol: employee
+Permisos: 18 permisos de gestión
+Rutas: Acceso a gestión sin administración
+```
+
+#### **👤 Usuario Normal**
+```
+Email: user2@example.com (antes del cambio)
+Password: test123
+Rol: user
+Permisos: 11 permisos limitados
+Rutas: Acceso solo a sus propios datos
+```
+
+### 🏗️ **Arquitectura Técnica**
+
+#### **📁 Archivos Implementados**
+- `backend/models/enums.py` - Definición de roles y permisos
+- `backend/utils/authorization.py` - Sistema de autorización
+- `backend/schema/auth_schema.py` - Schemas de autenticación
+- `backend/controllers/auth_controller.py` - Controlador de auth
+- `backend/routes/auth_routes.py` - Rutas de autenticación
+
+#### **🔧 Componentes Clave**
+- **`AuthorizationService`** - Servicio estático para verificación de permisos
+- **`require_admin()`** - Dependencia para endpoints solo de admin
+- **`require_permission()`** - Dependencia para permisos específicos
+- **`get_user_permissions()`** - Utilidad para obtener permisos de un rol
+- **`get_available_routes()`** - Utilidad para obtener rutas disponibles
+
+### 🎯 **Beneficios del Sistema**
+
+1. **🛡️ Seguridad Granular**: Control preciso de permisos por endpoint
+2. **🎭 Roles Claros**: ADMIN, EMPLOYEE, USER bien definidos
+3. **📱 Frontend Dinámico**: Navegación adaptativa según rol
+4. **🔧 Fácil Mantenimiento**: Permisos centralizados y organizados
+5. **📈 Escalabilidad**: Fácil agregar nuevos roles y permisos
+6. **🔄 Flexibilidad**: Cambio de roles en tiempo real
+7. **📊 Transparencia**: Información completa de permisos en cada respuesta
