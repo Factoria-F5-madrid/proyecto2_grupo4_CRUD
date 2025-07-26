@@ -101,9 +101,12 @@ async def update_pet_controller(pet_id: int, pet_data: PetUpdate, db: AsyncSessi
     pet_dict = {
         "pet_id": pet.pet_id,
         "name": pet.name,
-        "species": pet.species,
+        "species": pet.species.value if pet.species else None,  # Convertir enum a string
         "breed": pet.breed,
-        "age": pet.age,
+        "birth_date": pet.birth_date.isoformat() if pet.birth_date else None,  # Convertir fecha a string
+        "allergies": pet.allergies,
+        "special_needs": pet.special_needs,
+        "img_url": pet.img_url,
         "user_id": pet.user_id
     }
     await notification_service.send_pet_update("updated", pet_dict)
