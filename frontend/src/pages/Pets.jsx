@@ -3,6 +3,7 @@ import { getAllPets, deletePet } from "../services/petServices";
 import PetCard from "../components/Cards/PetCard";
 import FormsAddNewPet from "../components/Forms/FormsAddNewPet";
 import FormsEditPet from "../components/Forms/FormsEditPet";
+import FormViewPet from "../components/Forms/FormViewPet";
 import { useAuth } from "../context/AuthContext";
 import { FaPlus } from "react-icons/fa";
 
@@ -11,6 +12,7 @@ const Pets = () => {
   const [error, setError] = useState("");
   const [showForm, setShowForm] = useState(false);
   const [showEditForm, setShowEditForm] = useState(false);
+  const [showViewForm, setShowViewForm] = useState(false);
   const [selectedPet, setSelectedPet] = useState(null);
   const [loading, setLoading] = useState(false);
   const { user, isUser } = useAuth();
@@ -38,6 +40,12 @@ const Pets = () => {
   const handlePetCreated = () => {
     // Recargar la lista de mascotas después de crear una nueva
     window.location.reload();
+  };
+
+  const handleViewClick = (pet) => {
+    console.log("👁️ Viendo detalles de mascota:", pet);
+    setSelectedPet(pet);
+    setShowViewForm(true);
   };
 
   const handleEditClick = (pet) => {
@@ -113,6 +121,7 @@ const Pets = () => {
             <PetCard 
               key={pet.pet_id} 
               pet={pet} 
+              onViewClick={handleViewClick}
               onEditClick={handleEditClick}
               onDeleteClick={handleDeleteClick}
             />
@@ -164,6 +173,17 @@ const Pets = () => {
             />
           </div>
         </div>
+      )}
+
+      {/* Modal para ver detalles de la mascota */}
+      {showViewForm && selectedPet && (
+        <FormViewPet 
+          pet={selectedPet}
+          onClose={() => {
+            setShowViewForm(false);
+            setSelectedPet(null);
+          }}
+        />
       )}
     </div>
   );

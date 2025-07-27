@@ -1,7 +1,7 @@
 import React from "react";
-import { FaEdit, FaTrash } from "react-icons/fa";
+import { FaEdit, FaTrash, FaEye } from "react-icons/fa";
 
-const PetCard = ({ pet, onEditClick, onDeleteClick }) => {
+const PetCard = ({ pet, onEditClick, onDeleteClick, onViewClick }) => {
   const { name, species, breed, birth_date, img_url } = pet;
 
   const getAge = (dateString) => {
@@ -21,6 +21,11 @@ const PetCard = ({ pet, onEditClick, onDeleteClick }) => {
       return;
     }
     onEditClick(pet);
+  };
+
+  const handleViewClick = (e) => {
+    e.stopPropagation();
+    onViewClick(pet);
   };
 
   const handleDeleteClick = (e) => {
@@ -43,6 +48,13 @@ const PetCard = ({ pet, onEditClick, onDeleteClick }) => {
       
       {/* Botones de acción */}
       <div className="absolute top-2 right-2 flex gap-2 opacity-0 group-hover:opacity-100 transition-opacity duration-300">
+        <button
+          className="action-button bg-white bg-opacity-90 hover:bg-opacity-100 p-2 rounded-full shadow-md"
+          onClick={handleViewClick}
+          title="Ver detalles de la mascota"
+        >
+          <FaEye className="text-blue-600" />
+        </button>
         <button
           className="action-button bg-white bg-opacity-90 hover:bg-opacity-100 p-2 rounded-full shadow-md"
           onClick={(e) => {
