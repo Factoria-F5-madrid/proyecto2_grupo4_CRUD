@@ -213,7 +213,7 @@ function SidebarLink({ icon, label, to, isOpen, navigate, isActive }) {
       onClick={() => navigate(to)}
       className={`flex items-center gap-3 text-sm py-2 px-3 rounded transition w-full text-left ${
         isActive 
-          ? 'bg-blue-600 text-white' 
+          ? 'bg-yellow-500 text-white' 
           : 'hover:bg-gray-700 text-gray-300 hover:text-white'
       }`}
     >

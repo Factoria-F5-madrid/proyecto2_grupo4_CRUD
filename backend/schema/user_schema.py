@@ -28,8 +28,8 @@ class UserOut(UserBase):
     user_id: int
     registration_date: Optional[datetime] = None
     last_update: Optional[datetime] = None
-    updated_by: Optional[str] = None
     update_date: Optional[datetime] = None
+    updated_by: Optional[str] = None
     
 
     class Config:
