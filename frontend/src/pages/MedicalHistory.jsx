@@ -1,13 +1,15 @@
 import React, { useEffect, useState } from 'react';
 import { getAllMedicalHistories, deleteMedicalHistory } from '../services/medicalHistoryServices';
 import { useAuth } from '../context/AuthContext';
-import { FaPlus, FaStethoscope, FaSearch, FaEdit, FaTrash, FaEye } from 'react-icons/fa';
+import { FaPlus, FaStethoscope, FaSearch, FaEdit, FaTrash, FaEye, FaTimes, FaCalendar, FaUser, FaPaw } from 'react-icons/fa';
 
 const MedicalHistory = () => {
   const [histories, setHistories] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState("");
   const [showModal, setShowModal] = useState(false);
+  const [showDetailModal, setShowDetailModal] = useState(false);
+  const [selectedHistory, setSelectedHistory] = useState(null);
   const [searchTerm, setSearchTerm] = useState("");
   const { user, isAdmin, isEmployee, isUser } = useAuth();
 
@@ -38,6 +40,11 @@ const MedicalHistory = () => {
         alert('Error al eliminar el historial médico');
       }
     }
+  };
+
+  const handleViewDetails = (history) => {
+    setSelectedHistory(history);
+    setShowDetailModal(true);
   };
 
   const filteredHistories = histories.filter(history =>
@@ -204,7 +211,7 @@ const MedicalHistory = () => {
                       <td className="px-6 py-4 whitespace-nowrap text-sm font-medium">
                         <div className="flex items-center gap-2">
                           <button
-                            onClick={() => {/* Ver detalles */}}
+                            onClick={() => handleViewDetails(history)}
                             className="text-blue-600 hover:text-blue-900 p-1"
                             title="Ver detalles"
                           >
@@ -279,6 +286,144 @@ const MedicalHistory = () => {
               <button
                 onClick={() => setShowModal(false)}
                 className="bg-[#EEAD05] text-white px-4 py-2 rounded hover:bg-yellow-600"
+              >
+                Cerrar
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
+
+      {/* Modal de detalles del historial médico */}
+      {showDetailModal && selectedHistory && (
+        <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 p-4">
+          <div className="bg-white rounded-lg max-w-2xl w-full max-h-[90vh] overflow-y-auto">
+            {/* Header del modal */}
+            <div className="flex items-center justify-between p-6 border-b border-gray-200">
+              <div className="flex items-center gap-3">
+                <div className="p-2 bg-blue-100 rounded-lg">
+                  <FaStethoscope className="text-blue-600 text-xl" />
+                </div>
+                <div>
+                  <h2 className="text-xl font-semibold text-gray-900">
+                    Informe Médico Detallado
+                  </h2>
+                  <p className="text-sm text-gray-500">
+                    ID: mh-{selectedHistory.medical_history_id}
+                  </p>
+                </div>
+              </div>
+              <button
+                onClick={() => setShowDetailModal(false)}
+                className="text-gray-400 hover:text-gray-600 p-1"
+              >
+                <FaTimes className="text-xl" />
+              </button>
+            </div>
+
+            {/* Contenido del modal */}
+            <div className="p-6 space-y-6">
+              {/* Información de la mascota */}
+              <div className="bg-gray-50 rounded-lg p-4">
+                <div className="flex items-center gap-3 mb-3">
+                  <FaPaw className="text-orange-500" />
+                  <h3 className="font-semibold text-gray-900">Información de la Mascota</h3>
+                </div>
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                  <div>
+                    <p className="text-sm text-gray-600">ID de Mascota</p>
+                    <p className="font-medium text-gray-900">#{selectedHistory.pet_id}</p>
+                  </div>
+                  <div>
+                    <p className="text-sm text-gray-600">Tipo de Historial</p>
+                    <span className={`inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium border ${getTypeColor(selectedHistory.type)}`}>
+                      <FaStethoscope className="mr-1" />
+                      {selectedHistory.type || 'Sin tipo'}
+                    </span>
+                  </div>
+                </div>
+              </div>
+
+              {/* Detalles del historial */}
+              <div>
+                <h3 className="font-semibold text-gray-900 mb-3">Descripción del Tratamiento</h3>
+                <div className="bg-white border border-gray-200 rounded-lg p-4">
+                  <p className="text-gray-700 leading-relaxed">
+                    {selectedHistory.description || 'No hay descripción disponible para este historial médico.'}
+                  </p>
+                </div>
+              </div>
+
+              {/* Información adicional */}
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                <div>
+                  <h3 className="font-semibold text-gray-900 mb-3 flex items-center gap-2">
+                    <FaCalendar className="text-gray-500" />
+                    Fechas
+                  </h3>
+                  <div className="space-y-2">
+                    <div>
+                      <p className="text-sm text-gray-600">Fecha de Creación</p>
+                      <p className="font-medium text-gray-900">
+                        {selectedHistory.created_at ? new Date(selectedHistory.created_at).toLocaleDateString('es-ES', {
+                          year: 'numeric',
+                          month: 'long',
+                          day: 'numeric'
+                        }) : 'N/A'}
+                      </p>
+                    </div>
+                    {selectedHistory.updated_at && (
+                      <div>
+                        <p className="text-sm text-gray-600">Última Actualización</p>
+                        <p className="font-medium text-gray-900">
+                          {new Date(selectedHistory.updated_at).toLocaleDateString('es-ES', {
+                            year: 'numeric',
+                            month: 'long',
+                            day: 'numeric'
+                          })}
+                        </p>
+                      </div>
+                    )}
+                  </div>
+                </div>
+
+                <div>
+                  <h3 className="font-semibold text-gray-900 mb-3 flex items-center gap-2">
+                    <FaUser className="text-gray-500" />
+                    Estado
+                  </h3>
+                  <div className="space-y-2">
+                    <div>
+                      <p className="text-sm text-gray-600">Estado Actual</p>
+                      <span className={`inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium border ${getStatusColor(selectedHistory.status)}`}>
+                        <div className="w-2 h-2 rounded-full bg-current mr-2"></div>
+                        {selectedHistory.status || 'ACTIVO'}
+                      </span>
+                    </div>
+                    {selectedHistory.notes && (
+                      <div>
+                        <p className="text-sm text-gray-600">Notas Adicionales</p>
+                        <p className="font-medium text-gray-900">{selectedHistory.notes}</p>
+                      </div>
+                    )}
+                  </div>
+                </div>
+              </div>
+
+              {/* Información del veterinario (si está disponible) */}
+              {selectedHistory.veterinarian && (
+                <div className="bg-blue-50 rounded-lg p-4">
+                  <h3 className="font-semibold text-gray-900 mb-2">Veterinario Responsable</h3>
+                  <p className="text-gray-700">{selectedHistory.veterinarian}</p>
+                </div>
+              )}
+            </div>
+
+            {/* Footer del modal */}
+            <div className="flex justify-end p-6 border-t border-gray-200">
+              <button
+                onClick={() => setShowDetailModal(false)}
+                className="px-4 py-2 text-gray-600 hover:text-gray-800 font-medium"
               >
                 Cerrar
               </button>
