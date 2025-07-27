@@ -23,6 +23,7 @@ const MedicalHistory = () => {
     try {
       setLoading(true);
       const data = await getAllMedicalHistories();
+      console.log('Datos cargados del backend:', data);
       setHistories(data);
     } catch (error) {
       console.error("Error al cargar historiales médicos:", error);
