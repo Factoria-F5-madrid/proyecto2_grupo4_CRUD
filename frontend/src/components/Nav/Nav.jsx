@@ -48,7 +48,7 @@ export default function Nav() {
     
       <div>
         <div className="flex items-center justify-between p-6">
-          {isOpen && <img src="../../src/assets/petLand-sinFondo.png" alt="Logo" className="h-8" />}
+          {isOpen && <img src="/src/assets/petLand-sinFondo.png" alt="Logo" className="h-8" />}
           <button onClick={() => setIsOpen(!isOpen)} className="text-white">
             {isOpen ? <FaTimes size={20} /> : <FaBars size={20} />}
           </button>
