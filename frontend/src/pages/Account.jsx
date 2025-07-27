@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { getUserByID, createUser, updateUser } from '../services/userServices';
-import Modal from './Modal';
+import Modal from '../components/Nav/ModalUser';
 
 const Account = () => {
   const [user, setUser] = useState(null);
