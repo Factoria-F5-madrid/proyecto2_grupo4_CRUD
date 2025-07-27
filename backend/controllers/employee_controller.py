@@ -1,8 +1,10 @@
 from sqlalchemy.ext.asyncio import AsyncSession
 from sqlalchemy.future import select
+from sqlalchemy import join
 from backend.exceptions.custom_exceptions import NotFoundException, BadRequestException
 
 from backend.models.employee_models import Employee
+from backend.models.user_models import User
 from backend.schema.employee_schema import EmployeeCreate, EmployeeUpdate
 
 from backend.logger.logger import logger

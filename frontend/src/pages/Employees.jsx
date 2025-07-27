@@ -43,7 +43,8 @@ export default function Employees() {
     employee.first_name?.toLowerCase().includes(searchTerm.toLowerCase()) ||
     employee.last_name?.toLowerCase().includes(searchTerm.toLowerCase()) ||
     employee.email?.toLowerCase().includes(searchTerm.toLowerCase()) ||
-    employee.position?.toLowerCase().includes(searchTerm.toLowerCase())
+    employee.phone_number?.toString().includes(searchTerm) ||
+    employee.specialty?.toLowerCase().includes(searchTerm.toLowerCase())
   );
 
   if (loading) {
@@ -91,8 +92,8 @@ export default function Employees() {
           <thead className="bg-gray-50 text-gray-500 uppercase text-xs font-semibold">
             <tr>
               <th className="px-6 py-3 text-left">Empleado</th>
-              <th className="px-6 py-3 text-left">Contacto</th>
-              <th className="px-6 py-3 text-left">Posición</th>
+              <th className="px-6 py-3 text-left">Teléfono</th>
+              <th className="px-6 py-3 text-left">Email</th>
               <th className="px-6 py-3 text-left">Departamento</th>
               <th className="px-6 py-3 text-left">Acciones</th>
             </tr>
@@ -112,17 +113,18 @@ export default function Employees() {
                   </div>
                 </td>
                 <td className="px-6 py-4 text-gray-700">
-                  <div className="flex items-center mb-1">
-                    <FaEnvelope className="text-gray-400 mr-2" />
-                    {employee.email}
-                  </div>
                   <div className="flex items-center">
                     <FaPhone className="text-gray-400 mr-2" />
                     {employee.phone_number}
                   </div>
                 </td>
-                <td className="px-6 py-4 text-gray-700">{employee.position}</td>
-                <td className="px-6 py-4 text-gray-700">{employee.department}</td>
+                <td className="px-6 py-4 text-gray-700">
+                  <div className="flex items-center">
+                    <FaEnvelope className="text-gray-400 mr-2" />
+                    {employee.email}
+                  </div>
+                </td>
+                <td className="px-6 py-4 text-gray-700">{employee.specialty || 'No asignado'}</td>
                 <td className="px-6 py-4">
                   <div className="flex gap-2">
                     {hasPermission('update_employee') && (
@@ -175,9 +177,9 @@ export default function Employees() {
         <div className="bg-white p-4 rounded-xl shadow flex items-center">
           <FaUser className="text-yellow-500 text-2xl" />
           <div className="ml-3">
-            <p className="text-xs text-gray-500">Departamentos</p>
+            <p className="text-xs text-gray-500">Especialidades</p>
             <p className="text-lg font-semibold text-gray-800">
-              {new Set(employees.map(e => e.department)).size}
+              {new Set(employees.map(e => e.specialty).filter(Boolean)).size}
             </p>
           </div>
         </div>

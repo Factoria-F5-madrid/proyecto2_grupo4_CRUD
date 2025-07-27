@@ -15,6 +15,7 @@ export default function FormNewUsers({ onClose, onSuccess, userToEdit }) {
     address: userToEdit?.address || '',
     password: '',
     role: userToEdit?.role || 'user',
+    specialty: userToEdit?.specialty || '',
   });
 
   const [successMessage, setSuccessMessage] = useState('');
@@ -38,6 +39,11 @@ export default function FormNewUsers({ onClose, onSuccess, userToEdit }) {
       role: formData.role,
     };
 
+    // Agregar especialidad si el rol es employee
+    if (formData.role === 'employee' && formData.specialty) {
+      cleanPayload.specialty = formData.specialty;
+    }
+
     if (isEditing) {
       const userId = userToEdit.user_id.replace('usr-', '');
       await updateUser(userId, cleanPayload);
@@ -53,6 +59,7 @@ export default function FormNewUsers({ onClose, onSuccess, userToEdit }) {
         address: '',
         password: '',
         role: 'user',
+        specialty: '',
       });
     }
 
@@ -135,6 +142,25 @@ export default function FormNewUsers({ onClose, onSuccess, userToEdit }) {
           <option value="user">Usuario</option>
           <option value="employee">Empleado</option>
           <option value="admin">Administrador</option>
+        </select>
+      )}
+
+      {/* Campo de especialidad - Solo visible cuando se selecciona empleado */}
+      {formData.role === 'employee' && (
+        <select
+          name="specialty"
+          value={formData.specialty}
+          onChange={handleChange}
+          required
+          className="w-full border rounded px-3 py-2 bg-white"
+        >
+          <option value="">Selecciona especialidad</option>
+          <option value="Veterinario">Veterinario</option>
+          <option value="Cuidador">Cuidador</option>
+          <option value="Peluquero">Peluquero</option>
+          <option value="Recepcionista">Recepcionista</option>
+          <option value="Administrativo">Administrativo</option>
+          <option value="Otro">Otro</option>
         </select>
       )}
 
