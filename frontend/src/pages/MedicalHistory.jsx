@@ -386,22 +386,17 @@ const MedicalHistory = () => {
                 <div>
                   <h3 className="font-semibold text-gray-900 mb-3 flex items-center gap-2">
                     <FaUser className="text-gray-500" />
-                    Estado
+                    Información
                   </h3>
                   <div className="space-y-2">
                     <div>
-                      <p className="text-sm text-gray-600">Estado Actual</p>
-                      <span className={`inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium border ${getStatusColor(selectedHistory.status)}`}>
-                        <div className="w-2 h-2 rounded-full bg-current mr-2"></div>
-                        {selectedHistory.status || 'ACTIVO'}
-                      </span>
+                      <p className="text-sm text-gray-600">ID del Historial</p>
+                      <p className="font-medium text-gray-900">mh-{selectedHistory.id}</p>
                     </div>
-                    {selectedHistory.notes && (
-                      <div>
-                        <p className="text-sm text-gray-600">Notas Adicionales</p>
-                        <p className="font-medium text-gray-900">{selectedHistory.notes}</p>
-                      </div>
-                    )}
+                    <div>
+                      <p className="text-sm text-gray-600">ID de la Mascota</p>
+                      <p className="font-medium text-gray-900">#{selectedHistory.pet_id}</p>
+                    </div>
                   </div>
                 </div>
               </div>
