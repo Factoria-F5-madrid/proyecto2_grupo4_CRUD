@@ -11,7 +11,5 @@ class MedicalHistory(Base):
     created_at = Column(DateTime(timezone=True), server_default=func.now())
     type = Column(String(100), nullable=False)
     description = Column(Text, nullable=False)
-    status = Column(String(50), nullable=True, default="activo")
-    notes = Column(Text, nullable=True)
 
     pet = relationship("Pet", back_populates="medical_histories")

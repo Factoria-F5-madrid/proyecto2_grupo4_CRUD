@@ -67,19 +67,7 @@ const MedicalHistory = () => {
     history.pet_id?.toString().includes(searchTerm)
   );
 
-  const getStatusColor = (status) => {
-    switch (status?.toLowerCase()) {
-      case 'activo':
-      case 'completado':
-        return 'bg-green-100 text-green-800 border-green-200';
-      case 'pendiente':
-        return 'bg-yellow-100 text-yellow-800 border-yellow-200';
-      case 'cancelado':
-        return 'bg-red-100 text-red-800 border-red-200';
-      default:
-        return 'bg-green-100 text-green-800 border-green-200';
-    }
-  };
+
 
   const getTypeColor = (type) => {
     switch (type?.toLowerCase()) {
@@ -172,9 +160,7 @@ const MedicalHistory = () => {
                     <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
                       FECHA
                     </th>
-                    <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                      ESTADO
-                    </th>
+
                     <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
                       ACCIONES
                     </th>
@@ -216,12 +202,7 @@ const MedicalHistory = () => {
                       <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
                         {history.created_at ? new Date(history.created_at).toLocaleDateString('es-ES') : 'N/A'}
                       </td>
-                      <td className="px-6 py-4 whitespace-nowrap">
-                        <span className={`inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium border ${getStatusColor(history.status)}`}>
-                          <div className="w-2 h-2 rounded-full bg-current mr-2"></div>
-                          {history.status || 'ACTIVO'}
-                        </span>
-                      </td>
+
                       <td className="px-6 py-4 whitespace-nowrap text-sm font-medium">
                         <div className="flex items-center gap-2">
                           <button

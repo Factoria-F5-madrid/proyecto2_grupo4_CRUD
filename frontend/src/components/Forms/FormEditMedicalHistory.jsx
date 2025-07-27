@@ -5,9 +5,7 @@ import { FaStethoscope, FaTimes } from 'react-icons/fa';
 export default function FormEditMedicalHistory({ medicalHistory, onClose, onSuccess }) {
   const [formData, setFormData] = useState({
     type: '',
-    description: '',
-    status: '',
-    notes: ''
+    description: ''
   });
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState('');
@@ -16,9 +14,7 @@ export default function FormEditMedicalHistory({ medicalHistory, onClose, onSucc
     if (medicalHistory) {
       setFormData({
         type: medicalHistory.type || '',
-        description: medicalHistory.description || '',
-        status: medicalHistory.status || 'activo',
-        notes: medicalHistory.notes || ''
+        description: medicalHistory.description || ''
       });
     }
   }, [medicalHistory]);
@@ -43,9 +39,7 @@ export default function FormEditMedicalHistory({ medicalHistory, onClose, onSucc
     try {
       const cleanPayload = {
         type: formData.type,
-        description: formData.description,
-        status: formData.status,
-        notes: formData.notes
+        description: formData.description
       };
 
       console.log('Actualizando historial médico:', {
@@ -133,40 +127,6 @@ export default function FormEditMedicalHistory({ medicalHistory, onClose, onSucc
               required
               rows={4}
               placeholder="Describe el tratamiento, diagnóstico o procedimiento realizado..."
-              className="w-full border border-gray-300 rounded-lg px-3 py-2 focus:ring-2 focus:ring-[#EEAD05] focus:border-transparent resize-none"
-            />
-          </div>
-
-          {/* Estado */}
-          <div>
-            <label className="block text-sm font-medium text-gray-700 mb-2">
-              Estado
-            </label>
-            <select
-              name="status"
-              value={formData.status}
-              onChange={handleChange}
-              required
-              className="w-full border border-gray-300 rounded-lg px-3 py-2 focus:ring-2 focus:ring-[#EEAD05] focus:border-transparent"
-            >
-              <option value="activo">Activo</option>
-              <option value="completado">Completado</option>
-              <option value="pendiente">Pendiente</option>
-              <option value="cancelado">Cancelado</option>
-            </select>
-          </div>
-
-          {/* Notas adicionales */}
-          <div>
-            <label className="block text-sm font-medium text-gray-700 mb-2">
-              Notas Adicionales
-            </label>
-            <textarea
-              name="notes"
-              value={formData.notes}
-              onChange={handleChange}
-              rows={3}
-              placeholder="Notas adicionales, observaciones o recomendaciones..."
               className="w-full border border-gray-300 rounded-lg px-3 py-2 focus:ring-2 focus:ring-[#EEAD05] focus:border-transparent resize-none"
             />
           </div>
