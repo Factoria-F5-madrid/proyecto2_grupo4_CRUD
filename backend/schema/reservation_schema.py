@@ -1,6 +1,6 @@
-from pydantic import BaseModel
+from pydantic import BaseModel, validator
 from datetime import datetime
-from typing import Optional
+from typing import Optional, Union
 from backend.models.enums import ReservationStatusEnum
 
 class ReservationBase(BaseModel):
@@ -19,8 +19,19 @@ class ReservationUpdate(BaseModel):
     service_id: Optional[int] = None
     checkin_date: Optional[datetime] = None
     checkout_date: Optional[datetime] = None
-    status: Optional[ReservationStatusEnum] = None
+    status: Optional[Union[ReservationStatusEnum, str]] = None
     internal_notes: Optional[str] = None
+
+    @validator('status', pre=True)
+    def validate_status(cls, v):
+        if v is None:
+            return v
+        if isinstance(v, str):
+            try:
+                return ReservationStatusEnum(v)
+            except ValueError:
+                raise ValueError(f"Invalid status: {v}. Must be one of: {[e.value for e in ReservationStatusEnum]}")
+        return v
 
 class ReservationOut(ReservationBase):
     reservation_id: int

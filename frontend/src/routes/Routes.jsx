@@ -6,6 +6,7 @@ import Home from "../pages/Home";
 import ContactUs from "../pages/ContactUs";
 import Reservations from "../pages/Reservations";
 import ReservationDetail from "../pages/ReservationDetail";
+import ReservationEdit from "../pages/ReservationEdit";
 import Pets from "../pages/Pets";
 import MedicalHistory from "../pages/MedicalHistory";
 import Payments from "../pages/Payments";
@@ -60,6 +61,10 @@ export const router = createBrowserRouter([
       {
         path: "reservations/:reservationId", // /reservations/:id
         element: <ReservationDetail />,
+      },
+      {
+        path: "reservations/:reservationId/edit", // /reservations/:id/edit
+        element: <ReservationEdit />,
       },
       {
         path: "pets", // /pets

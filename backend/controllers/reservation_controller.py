@@ -134,35 +134,46 @@ async def update_reservation_controller(reservation_id: int, reservation_data: R
         logger.warning(f"Reservation with ID {reservation_id} not found")
         raise NotFoundException("Reservation not found")
     
-  
-    if reservation_data.user_id is not None:
-        user_result = await db.execute(select(User).where(User.user_id == reservation_data.user_id))
+    # Solo validar campos que se están actualizando
+    update_data = reservation_data.dict(exclude_unset=True)
+    logger.debug(f"Update data: {update_data}")
+    
+    # Validar usuario solo si se está actualizando
+    if 'user_id' in update_data and update_data['user_id'] is not None:
+        user_result = await db.execute(select(User).where(User.user_id == update_data['user_id']))
         user = user_result.scalar_one_or_none()
         if not user:
-            logger.warning(f"User with ID {reservation_data.user_id} not found")
-            raise NotFoundException("Reservation not found")
+            logger.warning(f"User with ID {update_data['user_id']} not found")
+            raise NotFoundException("User not found")
     
-
-    if reservation_data.service_id is not None:
-        service_result = await db.execute(select(Service).where(Service.service_id == reservation_data.service_id))
+    # Validar servicio solo si se está actualizando
+    if 'service_id' in update_data and update_data['service_id'] is not None:
+        service_result = await db.execute(select(Service).where(Service.service_id == update_data['service_id']))
         service = service_result.scalar_one_or_none()
         if not service:
-            logger.warning(f"Service with ID {reservation_data.service_id} not found")
-            raise NotFoundException("Reservation not found")
+            logger.warning(f"Service with ID {update_data['service_id']} not found")
+            raise NotFoundException("Service not found")
     
-   
-    if reservation_data.checkin_date is not None and reservation_data.checkout_date is not None:
-        if reservation_data.checkin_date >= reservation_data.checkout_date:
-            logger.warning("Invalid reservation dates: check-in is not before check-out")
-            raise BadRequestException(detail="Check-in date must be before check-out date")
+    # Validar fechas solo si ambas se están actualizando
+    if 'checkin_date' in update_data and 'checkout_date' in update_data:
+        if update_data['checkin_date'] is not None and update_data['checkout_date'] is not None:
+            if update_data['checkin_date'] >= update_data['checkout_date']:
+                logger.warning("Invalid reservation dates: check-in is not before check-out")
+                raise BadRequestException(detail="Check-in date must be before check-out date")
     
-   
-    for field, value in reservation_data.dict(exclude_unset=True).items():
+    # Actualizar solo los campos que se envían
+    for field, value in update_data.items():
+        logger.debug(f"Setting {field} = {value} (type: {type(value)})")
         setattr(reservation, field, value)
     
-    await db.commit()
-    await db.refresh(reservation)
-    logger.info(f"Reservation with ID {reservation_id} updated successfully")
+    try:
+        await db.commit()
+        await db.refresh(reservation)
+        logger.info(f"Reservation with ID {reservation_id} updated successfully")
+    except Exception as e:
+        logger.error(f"Error updating reservation: {e}")
+        await db.rollback()
+        raise e
     
     # Enviar notificación en tiempo real
     reservation_dict = {
