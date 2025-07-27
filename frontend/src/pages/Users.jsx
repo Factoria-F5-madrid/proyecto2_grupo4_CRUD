@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { FaPlus, FaEdit, FaTrash, FaSearch, FaUserTie, FaUser } from 'react-icons/fa';
+import { FaPlus, FaEdit, FaTrash, FaSearch, FaUserTie, FaUser, FaEye } from 'react-icons/fa';
 import {
   getAllUsers,
   getUserByID,
@@ -13,6 +13,7 @@ import {
 import { useAuth } from '../context/AuthContext';
 import ModalUsers from '../components/Nav/ModalUsers';
 import ModalEmployee from '../components/Nav/ModalEmployee';
+import FormViewUser from '../components/Forms/FormViewUser';
 
 export default function Users() {
   const [users, setUsers] = useState([]);
@@ -20,6 +21,7 @@ export default function Users() {
   const [searchTerm, setSearchTerm] = useState('');
   const [showModalUser, setShowModalUser] = useState(false);
   const [showModalEmployee, setShowModalEmployee] = useState(false);
+  const [showViewModal, setShowViewModal] = useState(false);
   const [selectedUser, setSelectedUser] = useState(null);
   const { hasPermission } = useAuth();
 
@@ -54,6 +56,27 @@ export default function Users() {
       console.error('Error al cargar usuarios y empleados:', error);
     } finally {
       setLoading(false);
+    }
+  };
+
+  const handleView = async (user) => {
+    const realId = parseInt(user.user_id.replace(/^(usr|emp)-/, ''));
+
+    try {
+      const data =
+        user.type === 'employee'
+          ? await getEmployeeByID(realId)
+          : await getUserByID(realId);
+
+      setSelectedUser({
+        ...data,
+        user_id: user.user_id,
+        type: user.type,
+      });
+
+      setShowViewModal(true);
+    } catch (error) {
+      console.error('Error al obtener datos para ver:', error);
     }
   };
 
@@ -177,7 +200,6 @@ export default function Users() {
               <th className="px-6 py-3 text-left">Email</th>
               <th className="px-6 py-3 text-left">Teléfono</th>
               <th className="px-6 py-3 text-left">Rol</th>
-              <th className="px-6 py-3 text-left">Estado</th>
               <th className="px-6 py-3 text-left">Acciones</th>
             </tr>
           </thead>
@@ -199,10 +221,15 @@ export default function Users() {
                 <td className="px-6 py-4 text-gray-700">{user.phone_number}</td>
                 <td className="px-6 py-4">{getRoleBadge(user.role)}</td>
                 <td className="px-6 py-4">
-                  <span className="text-green-600 text-sm font-medium">● ACTIVO</span>
-                </td>
-                <td className="px-6 py-4">
                   <div className="flex gap-2">
+                    {hasPermission('read_user') && (
+                      <button
+                        onClick={() => handleView(user)}
+                        className="text-purple-600 hover:text-purple-800"
+                      >
+                        <FaEye />
+                      </button>
+                    )}
                     {hasPermission('update_user') && (
                       <button
                         onClick={() => handleEdit(user)}
@@ -248,6 +275,17 @@ export default function Users() {
         onSuccess={loadUsers}
         selectedUser={selectedUser?.type === 'employee' ? selectedUser : null}
       />
+
+      {/* Modal para ver detalles */}
+      {showViewModal && selectedUser && (
+        <FormViewUser
+          user={selectedUser}
+          onClose={() => {
+            setShowViewModal(false);
+            setSelectedUser(null);
+          }}
+        />
+      )}
     </div>
   );
 }
