@@ -3,12 +3,13 @@ import { getAllMedicalHistories, deleteMedicalHistory } from '../services/medica
 import { useAuth } from '../context/AuthContext';
 import { FaPlus, FaStethoscope, FaSearch, FaEdit, FaTrash, FaEye, FaTimes, FaCalendar, FaUser, FaPaw } from 'react-icons/fa';
 import FormEditMedicalHistory from '../components/Forms/FormEditMedicalHistory';
+import FormCreateMedicalHistory from '../components/Forms/FormCreateMedicalHistory';
 
 const MedicalHistory = () => {
   const [histories, setHistories] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState("");
-  const [showModal, setShowModal] = useState(false);
+  const [showCreateModal, setShowCreateModal] = useState(false);
   const [showDetailModal, setShowDetailModal] = useState(false);
   const [showEditModal, setShowEditModal] = useState(false);
   const [selectedHistory, setSelectedHistory] = useState(null);
@@ -60,6 +61,11 @@ const MedicalHistory = () => {
     loadHistories();
     setShowEditModal(false);
     setSelectedHistory(null);
+  };
+
+  const handleCreateSuccess = () => {
+    loadHistories();
+    setShowCreateModal(false);
   };
 
   const filteredHistories = histories.filter(history =>
@@ -126,7 +132,7 @@ const MedicalHistory = () => {
           {/* Botón de nuevo historial */}
           {(isAdmin() || isEmployee()) && (
             <button
-              onClick={() => setShowModal(true)}
+              onClick={() => setShowCreateModal(true)}
               className="bg-[#EEAD05] text-white px-6 py-2 rounded-lg hover:bg-yellow-600 transition-colors flex items-center gap-2 font-medium"
             >
               <FaPlus />
@@ -253,7 +259,7 @@ const MedicalHistory = () => {
             </p>
             {(isAdmin() || isEmployee()) && (
               <button
-                onClick={() => setShowModal(true)}
+                onClick={() => setShowCreateModal(true)}
                 className="bg-[#EEAD05] text-white px-6 py-3 rounded-lg hover:bg-yellow-600 transition-colors flex items-center gap-2 mx-auto"
               >
                 <FaPlus />
@@ -265,29 +271,11 @@ const MedicalHistory = () => {
       </div>
 
       {/* Modal para crear/editar historial */}
-      {showModal && (
-        <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
-          <div className="bg-white rounded-lg p-6 max-w-md w-full mx-4">
-            <h2 className="text-xl font-semibold mb-4">Nuevo Historial Médico</h2>
-            <p className="text-gray-600 mb-4">
-              Esta funcionalidad estará disponible próximamente.
-            </p>
-            <div className="flex justify-end gap-2">
-              <button
-                onClick={() => setShowModal(false)}
-                className="text-gray-600 hover:text-gray-800 px-4 py-2"
-              >
-                Cancelar
-              </button>
-              <button
-                onClick={() => setShowModal(false)}
-                className="bg-[#EEAD05] text-white px-4 py-2 rounded hover:bg-yellow-600"
-              >
-                Cerrar
-              </button>
-            </div>
-          </div>
-        </div>
+      {showCreateModal && (
+        <FormCreateMedicalHistory
+          onClose={() => setShowCreateModal(false)}
+          onSuccess={handleCreateSuccess}
+        />
       )}
 
       {/* Modal de detalles del historial médico */}
