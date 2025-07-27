@@ -1,35 +1,55 @@
 import React, { useState, useEffect } from 'react';
-import { getAllReservations } from '../services/reservationServices';
+import { FaCalendarAlt, FaClock, FaUser, FaDog, FaClipboard, FaUserTie, FaSearch, FaEye, FaEdit, FaTrash, FaPlus } from 'react-icons/fa';
+import { getAllReservations, deleteReservation } from '../services/reservationServices';
 import { useAuth } from '../context/AuthContext';
-import { FaCalendarAlt, FaClock, FaUser, FaDog, FaClipboard, FaUserTie } from 'react-icons/fa';
+import { useNavigate } from 'react-router-dom';
 
 const Reservations = () => {
   const [reservations, setReservations] = useState([]);
   const [loading, setLoading] = useState(true);
+  const [searchTerm, setSearchTerm] = useState('');
   const [error, setError] = useState('');
-  const { user, isAdmin, isEmployee } = useAuth();
+  const { user, hasPermission } = useAuth();
+  const navigate = useNavigate();
 
   useEffect(() => {
-    const fetchReservations = async () => {
-      try {
-        console.log("🔍 Iniciando fetchReservations...");
-        console.log("👤 Usuario actual:", user);
-        
-        const data = await getAllReservations();
-        console.log("✅ Datos de reservas recibidos:", data);
-        console.log("📊 Número de reservas:", data.length);
-        
-        setReservations(data);
-      } catch (error) {
-        console.error("❌ Error al cargar reservas:", error);
-        setError("Error al cargar las reservas: " + error.message);
-      } finally {
-        setLoading(false);
-      }
-    };
+    loadReservations();
+  }, []);
 
-    fetchReservations();
-  }, [user]);
+  const loadReservations = async () => {
+    try {
+      setLoading(true);
+      console.log("🔍 Cargando reservas...");
+      const data = await getAllReservations();
+      console.log("✅ Datos de reservas recibidos:", data);
+      setReservations(data);
+    } catch (error) {
+      console.error("❌ Error al cargar reservas:", error);
+      setError("Error al cargar las reservas: " + error.message);
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  const handleDelete = async (reservationId) => {
+    if (window.confirm('¿Estás seguro de que quieres eliminar esta reserva?')) {
+      try {
+        await deleteReservation(reservationId);
+        loadReservations();
+      } catch (error) {
+        console.error('Error eliminando reserva:', error);
+        setError("Error al eliminar la reserva");
+      }
+    }
+  };
+
+  const handleView = (reservationId) => {
+    navigate(`/reservations/${reservationId}`);
+  };
+
+  const handleEdit = (reservationId) => {
+    navigate(`/reservations/${reservationId}/edit`);
+  };
 
   const getStatusColor = (status) => {
     switch (status?.toLowerCase()) {
@@ -61,141 +81,167 @@ const Reservations = () => {
     return timeString.substring(0, 5); // Solo HH:MM
   };
 
+  const filteredReservations = reservations.filter(reservation =>
+    reservation.reservation_id?.toString().includes(searchTerm) ||
+    reservation.user_id?.toString().includes(searchTerm) ||
+    reservation.pet_id?.toString().includes(searchTerm) ||
+    reservation.service_id?.toString().includes(searchTerm) ||
+    reservation.status?.toLowerCase().includes(searchTerm.toLowerCase())
+  );
+
   if (loading) {
     return (
-      <div className="flex-1 p-6 bg-gray-50 flex items-center justify-center">
-        <div className="text-center">
-          <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-indigo-600 mx-auto mb-4"></div>
-          <p className="text-gray-600">Cargando reservas...</p>
-        </div>
+      <div className="flex items-center justify-center h-screen">
+        <div className="animate-spin rounded-full h-16 w-16 border-b-2 border-yellow-500"></div>
       </div>
     );
   }
 
   return (
-    <div className="p-8">
-      <div className="mb-8">
-        <h1 className="text-3xl text-[#1c1f26] font-bold mb-2">
-          {isAdmin() ? 'Gestión de Reservas' : isEmployee() ? 'Reservas del Sistema' : 'Mis Reservas'}
-        </h1>
-        <p className="text-gray-600">
-          {isAdmin() || isEmployee() 
-            ? 'Gestiona todas las reservas del sistema' 
-            : 'Consulta el estado de tus reservas'
-          }
-        </p>
+    <div className="p-6 bg-gray-100 min-h-screen">
+      {/* Header */}
+      <div className="bg-[#edad06] rounded-xl p-6 mb-6 shadow-md text-white">
+        <h1 className="text-4xl font-bold mb-1">Gestión de Reservas</h1>
+        <p className="text-sm">Administra todas las reservas de PetLand</p>
       </div>
 
+      {/* Barra de búsqueda y botón */}
+      <div className="flex flex-col sm:flex-row sm:items-center justify-between mb-4 gap-4">
+        <div className="relative w-full sm:w-1/2">
+          <FaSearch className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400" />
+          <input
+            type="text"
+            placeholder="Buscar reservas..."
+            value={searchTerm}
+            onChange={(e) => setSearchTerm(e.target.value)}
+            className="pl-10 pr-4 py-2 w-full border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+          />
+        </div>
+
+        {hasPermission('create_reservation') && (
+          <button
+            onClick={() => navigate('/reservations/new')}
+            className="bg-[#edad06] hover:bg-yellow-400 text-white px-4 py-2 rounded-xl flex items-center gap-2 shadow"
+          >
+            <FaPlus /> Nueva Reserva
+          </button>
+        )}
+      </div>
+
+      {/* Mensaje de error */}
       {error && (
         <div className="mb-6 bg-red-50 border border-red-200 text-red-700 px-4 py-3 rounded-lg">
           <p>{error}</p>
         </div>
       )}
 
-      {reservations.length > 0 ? (
-        <div className="grid gap-6">
-          {reservations.map((reservation) => (
-            <div
-              key={reservation.reservation_id}
-              className="bg-white rounded-lg border border-gray-200 p-6 hover:shadow-md transition-shadow"
-            >
-              <div className="flex items-start justify-between">
-                <div className="flex-1">
-                  <div className="flex items-center gap-4 mb-4">
-                    <div className="flex items-center gap-2 text-indigo-600">
+      {/* Tabla de reservas */}
+      <div className="bg-white rounded-xl shadow-md overflow-x-auto">
+        <table className="min-w-full divide-y divide-gray-200 text-sm">
+          <thead className="bg-gray-50 text-gray-500 uppercase text-xs font-semibold">
+            <tr>
+              <th className="px-6 py-3 text-left">Reserva</th>
+              <th className="px-6 py-3 text-left">Usuario</th>
+              <th className="px-6 py-3 text-left">Mascota</th>
+              <th className="px-6 py-3 text-left">Servicio</th>
+              <th className="px-6 py-3 text-left">Fecha</th>
+              <th className="px-6 py-3 text-left">Estado</th>
+              <th className="px-6 py-3 text-left">Acciones</th>
+            </tr>
+          </thead>
+          <tbody className="bg-white divide-y divide-gray-100">
+            {filteredReservations.map((reservation) => (
+              <tr key={reservation.reservation_id} className="hover:bg-gray-50">
+                <td className="px-6 py-4 whitespace-nowrap">
+                  <div className="flex items-center gap-3">
+                    <div className="h-10 w-10 bg-[#edad06] text-white flex items-center justify-center rounded-full font-bold">
                       <FaCalendarAlt />
-                      <span className="font-semibold">Reserva #{reservation.reservation_id}</span>
                     </div>
-                    <span className={`px-3 py-1 rounded-full text-sm font-medium border ${getStatusColor(reservation.status)}`}>
-                      {reservation.status || 'Pendiente'}
-                    </span>
-                  </div>
-
-                  <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-5 gap-4">
-                    <div className="flex items-center gap-2">
-                      <FaUser className="text-gray-400" />
-                      <div>
-                        <p className="text-sm text-gray-500">Usuario</p>
-                        <p className="font-medium">ID: {reservation.user_id}</p>
+                    <div>
+                      <div className="font-semibold text-gray-800">
+                        Reserva #{reservation.reservation_id}
                       </div>
-                    </div>
-
-                    <div className="flex items-center gap-2">
-                      <FaDog className="text-gray-400" />
-                      <div>
-                        <p className="text-sm text-gray-500">Mascota</p>
-                        <p className="font-medium">ID: {reservation.pet_id}</p>
-                      </div>
-                    </div>
-
-                    <div className="flex items-center gap-2">
-                      <FaClipboard className="text-gray-400" />
-                      <div>
-                        <p className="text-sm text-gray-500">Servicio</p>
-                        <p className="font-medium">ID: {reservation.service_id}</p>
-                      </div>
-                    </div>
-
-                    <div className="flex items-center gap-2">
-                      <FaClock className="text-gray-400" />
-                      <div>
-                        <p className="text-sm text-gray-500">Fecha</p>
-                        <p className="font-medium">{formatDate(reservation.checkin_date)}</p>
-                      </div>
-                    </div>
-
-                    <div className="flex items-center gap-2">
-                      <FaUserTie className="text-gray-400" />
-                      <div>
-                        <p className="text-sm text-gray-500">Empleado Asignado</p>
-                        {reservation.assigned_employee ? (
-                          <div>
-                            <p className="font-medium">
-                              {reservation.assigned_employee.first_name} {reservation.assigned_employee.last_name}
-                            </p>
-                            <p className="text-xs text-gray-500">
-                              {reservation.assigned_employee.specialty}
-                            </p>
-                          </div>
-                        ) : (
-                          <p className="text-gray-400 text-sm">Sin asignar</p>
-                        )}
+                      <div className="text-xs text-gray-500">
+                        {formatDate(reservation.checkin_date)}
                       </div>
                     </div>
                   </div>
+                </td>
+                <td className="px-6 py-4 text-gray-700">
+                  <div className="flex items-center">
+                    <FaUser className="text-gray-400 mr-2" />
+                    ID: {reservation.user_id}
+                  </div>
+                </td>
+                <td className="px-6 py-4 text-gray-700">
+                  <div className="flex items-center">
+                    <FaDog className="text-gray-400 mr-2" />
+                    ID: {reservation.pet_id || 'N/A'}
+                  </div>
+                </td>
+                <td className="px-6 py-4 text-gray-700">
+                  <div className="flex items-center">
+                    <FaClipboard className="text-gray-400 mr-2" />
+                    ID: {reservation.service_id}
+                  </div>
+                </td>
+                <td className="px-6 py-4 text-gray-700">
+                  <div className="flex items-center">
+                    <FaClock className="text-gray-400 mr-2" />
+                    {formatDate(reservation.checkin_date)}
+                  </div>
+                </td>
+                <td className="px-6 py-4">
+                  <span className={`px-3 py-1 rounded-full text-xs font-medium border ${getStatusColor(reservation.status)}`}>
+                    {reservation.status || 'Pendiente'}
+                  </span>
+                </td>
+                <td className="px-6 py-4">
+                  <div className="flex gap-2">
+                    {hasPermission('read_reservation') && (
+                      <button
+                        onClick={() => handleView(reservation.reservation_id)}
+                        className="text-blue-600 hover:text-blue-800"
+                        title="Ver detalles"
+                      >
+                        <FaEye />
+                      </button>
+                    )}
+                    {hasPermission('update_reservation') && (
+                      <button
+                        onClick={() => handleEdit(reservation.reservation_id)}
+                        className="text-green-600 hover:text-green-800"
+                        title="Editar"
+                      >
+                        <FaEdit />
+                      </button>
+                    )}
+                    {hasPermission('delete_reservation') && (
+                      <button
+                        onClick={() => handleDelete(reservation.reservation_id)}
+                        className="text-red-600 hover:text-red-800"
+                        title="Eliminar"
+                      >
+                        <FaTrash />
+                      </button>
+                    )}
+                  </div>
+                </td>
+              </tr>
+            ))}
+          </tbody>
+        </table>
+      </div>
 
-                  {reservation.checkin_date && reservation.checkout_date && (
-                    <div className="mt-4 flex items-center gap-2">
-                      <FaClock className="text-gray-400" />
-                      <span className="text-sm text-gray-600">
-                        {formatTime(reservation.checkin_date)} - {formatTime(reservation.checkout_date)}
-                      </span>
-                    </div>
-                  )}
-
-                  {reservation.internal_notes && (
-                    <div className="mt-4 p-3 bg-gray-50 rounded-lg">
-                      <p className="text-sm text-gray-700">
-                        <strong>Notas:</strong> {reservation.internal_notes}
-                      </p>
-                    </div>
-                  )}
-                </div>
-              </div>
-            </div>
-          ))}
-        </div>
-      ) : (
+      {/* Mensaje cuando no hay reservas */}
+      {filteredReservations.length === 0 && !loading && (
         <div className="text-center py-12">
           <FaCalendarAlt className="text-6xl text-gray-300 mx-auto mb-4" />
           <h3 className="text-xl font-semibold text-gray-600 mb-2">
-            {isAdmin() || isEmployee() ? 'No hay reservas en el sistema' : 'No tienes reservas'}
+            No hay reservas
           </h3>
           <p className="text-gray-500">
-            {isAdmin() || isEmployee() 
-              ? 'Las reservas aparecerán aquí cuando los usuarios las creen.' 
-              : 'Crea tu primera reserva para empezar.'
-            }
+            Las reservas aparecerán aquí cuando se creen.
           </p>
         </div>
       )}

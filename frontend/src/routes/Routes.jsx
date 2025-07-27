@@ -5,6 +5,7 @@ import Layout from "../layout/Layout";
 import Home from "../pages/Home";
 import ContactUs from "../pages/ContactUs";
 import Reservations from "../pages/Reservations";
+import ReservationDetail from "../pages/ReservationDetail";
 import Pets from "../pages/Pets";
 import MedicalHistory from "../pages/MedicalHistory";
 import Payments from "../pages/Payments";
@@ -55,6 +56,10 @@ export const router = createBrowserRouter([
       {
         path: "reservations", // /reservations
         element: <Reservations />,
+      },
+      {
+        path: "reservations/:reservationId", // /reservations/:id
+        element: <ReservationDetail />,
       },
       {
         path: "pets", // /pets
