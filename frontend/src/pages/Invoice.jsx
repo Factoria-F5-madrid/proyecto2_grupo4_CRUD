@@ -17,19 +17,19 @@ const Invoice = () => {
   }, []);
 
   const loadInvoices = async () => {
-    try {
-      setLoading(true);
+      try {
+        setLoading(true);
       console.log("🔍 Cargando facturas...");
-      const data = await getAllInvoices();
+        const data = await getAllInvoices();
       console.log("✅ Datos de facturas recibidos:", data);
-      setInvoices(data);
-    } catch (error) {
-      console.error("❌ Error al cargar facturas:", error);
-      setError("Error al cargar las facturas: " + error.message);
-    } finally {
-      setLoading(false);
-    }
-  };
+        setInvoices(data);
+      } catch (error) {
+        console.error("❌ Error al cargar facturas:", error);
+        setError("Error al cargar las facturas: " + error.message);
+      } finally {
+        setLoading(false);
+      }
+    };
 
   const handleDelete = async (invoiceId) => {
     if (window.confirm('¿Estás seguro de que quieres eliminar esta factura?')) {
@@ -143,14 +143,14 @@ const Invoice = () => {
           </button>
         )}
       </div>
-
+      
       {/* Mensaje de error */}
       {error && (
         <div className="mb-6 bg-red-50 border border-red-200 text-red-700 px-4 py-3 rounded-lg">
           <p>{error}</p>
         </div>
       )}
-
+      
       {/* Tabla de facturas */}
       <div className="bg-white rounded-xl shadow-md overflow-x-auto">
         <table className="min-w-full divide-y divide-gray-200 text-sm">
@@ -169,7 +169,7 @@ const Invoice = () => {
             {filteredInvoices.map((invoice) => (
               <tr key={invoice.invoice_id} className="hover:bg-gray-50">
                 <td className="px-6 py-4 whitespace-nowrap">
-                  <div className="flex items-center gap-3">
+                <div className="flex items-center gap-3">
                     <div className="h-10 w-10 bg-[#edad06] text-white flex items-center justify-center rounded-full font-bold">
                       <FaFileInvoice />
                     </div>
@@ -198,7 +198,7 @@ const Invoice = () => {
                   <div className="flex items-center">
                     <FaPercent className="text-green-500 mr-2" />
                     {invoice.vat}%
-                  </div>
+                </div>
                 </td>
                 <td className="px-6 py-4 text-gray-700">
                   {invoice.additional_price && parseFloat(invoice.additional_price) > 0 ? (
@@ -210,14 +210,14 @@ const Invoice = () => {
                   )}
                 </td>
                 <td className="px-6 py-4">
-                  <div className="flex items-center gap-2">
-                    {getStatusIcon(invoice.completed)}
+                <div className="flex items-center gap-2">
+                  {getStatusIcon(invoice.completed)}
                     <span className={`text-xs font-medium ${
-                      invoice.completed ? 'text-green-600' : 'text-red-600'
-                    }`}>
-                      {getStatusLabel(invoice.completed)}
-                    </span>
-                  </div>
+                    invoice.completed ? 'text-green-600' : 'text-red-600'
+                  }`}>
+                    {getStatusLabel(invoice.completed)}
+                  </span>
+                </div>
                 </td>
                 <td className="px-6 py-4">
                   <div className="flex gap-2">
@@ -254,7 +254,7 @@ const Invoice = () => {
             ))}
           </tbody>
         </table>
-      </div>
+        </div>
 
       {/* Mensaje cuando no hay facturas */}
       {filteredInvoices.length === 0 && !loading && (
