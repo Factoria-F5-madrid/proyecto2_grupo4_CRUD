@@ -7,6 +7,7 @@ import ContactUs from "../pages/ContactUs";
 import Reservations from "../pages/Reservations";
 import ReservationDetail from "../pages/ReservationDetail";
 import ReservationEdit from "../pages/ReservationEdit";
+import InvoiceDetail from "../pages/InvoiceDetail";
 import Pets from "../pages/Pets";
 import MedicalHistory from "../pages/MedicalHistory";
 import Payments from "../pages/Payments";
@@ -81,6 +82,10 @@ export const router = createBrowserRouter([
       {
         path: "invoices", // /invoice
         element: <Invoice />,
+      },
+      {
+        path: "invoices/:invoiceId", // /invoices/:id
+        element: <InvoiceDetail />,
       },
       {
         path: "services", // /services
