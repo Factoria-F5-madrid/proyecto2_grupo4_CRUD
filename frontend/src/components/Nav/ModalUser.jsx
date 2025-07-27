@@ -1,5 +1,5 @@
 import React from 'react';
-import Form from './Form';
+import Form from '../Forms/FormAddNewUser';
 
 const Modal = ({ onClose, userId, onSave, user }) => {
   return (
