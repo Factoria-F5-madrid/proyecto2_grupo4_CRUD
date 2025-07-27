@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { FaPlus, FaEdit, FaTrash, FaSearch, FaUserTie, FaUser, FaEnvelope, FaPhone } from 'react-icons/fa';
+import { FaEdit, FaTrash, FaSearch, FaUserTie, FaUser, FaEnvelope, FaPhone } from 'react-icons/fa';
 import { getAllEmployees, deleteEmployee } from '../services/employeeServices';
 import { useAuth } from '../context/AuthContext';
 import ModalEmployee from '../components/Nav/ModalEmployee';
@@ -63,8 +63,8 @@ export default function Employees() {
         <p className="text-sm">Administra todos los empleados de PetLand</p>
       </div>
 
-      {/* Barra de búsqueda y botón */}
-      <div className="flex flex-col sm:flex-row sm:items-center justify-between mb-4 gap-4">
+      {/* Barra de búsqueda */}
+      <div className="mb-4">
         <div className="relative w-full sm:w-1/2">
           <FaSearch className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400" />
           <input
@@ -75,15 +75,6 @@ export default function Employees() {
             className="pl-10 pr-4 py-2 w-full border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
           />
         </div>
-
-        {hasPermission('create_employee') && (
-          <button
-            onClick={() => setShowModal(true)}
-            className="bg-[#edad06] hover:bg-yellow-400 text-white px-4 py-2 rounded-xl flex items-center gap-2 shadow"
-          >
-            <FaPlus /> Nuevo Empleado
-          </button>
-        )}
       </div>
 
       {/* Tabla de empleados */}
@@ -154,36 +145,7 @@ export default function Employees() {
         </table>
       </div>
 
-      {/* Estadísticas */}
-      <div className="mt-6 grid grid-cols-1 md:grid-cols-3 gap-4">
-        <div className="bg-white p-4 rounded-xl shadow flex items-center">
-          <FaUser className="text-blue-500 text-2xl" />
-          <div className="ml-3">
-            <p className="text-xs text-gray-500">Total Empleados</p>
-            <p className="text-lg font-semibold text-gray-800">{employees.length}</p>
-          </div>
-        </div>
 
-        <div className="bg-white p-4 rounded-xl shadow flex items-center">
-          <FaUserTie className="text-green-500 text-2xl" />
-          <div className="ml-3">
-            <p className="text-xs text-gray-500">Activos</p>
-            <p className="text-lg font-semibold text-gray-800">
-              {employees.filter(e => e.status === 'active').length}
-            </p>
-          </div>
-        </div>
-
-        <div className="bg-white p-4 rounded-xl shadow flex items-center">
-          <FaUser className="text-yellow-500 text-2xl" />
-          <div className="ml-3">
-            <p className="text-xs text-gray-500">Especialidades</p>
-            <p className="text-lg font-semibold text-gray-800">
-              {new Set(employees.map(e => e.specialty).filter(Boolean)).size}
-            </p>
-          </div>
-        </div>
-      </div>
 
       {/* Modal */}
       <ModalEmployee
