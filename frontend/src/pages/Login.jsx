@@ -3,6 +3,7 @@ import { useNavigate, Link } from 'react-router-dom';
 import { useAuth } from '../context/AuthContext';
 import { FaEye, FaEyeSlash, FaEnvelope, FaLock, FaSpinner } from 'react-icons/fa';
 import '../index.css';
+import PetLandHome from '../assets/PetLandHome.png';
 
 const Login = () => {
   const [formData, setFormData] = useState({
@@ -55,7 +56,7 @@ const Login = () => {
         <div className="text-center">
           <div className="mx-auto h-16 w-16 bg-indigo-600 rounded-full flex items-center justify-center">
             <img 
-              src="/src/assets/PetLandHome.png" 
+              src={PetLandHome} 
               alt="PetLand Logo" 
               className="h-12 w-12 object-contain"
             />
