@@ -131,16 +131,16 @@ const MedicalHistory = () => {
 
           {/* Botón de nuevo historial */}
           {(isAdmin() || isEmployee()) && (
-            <button
+          <button
               onClick={() => setShowCreateModal(true)}
               className="bg-[#EEAD05] text-white px-6 py-2 rounded-lg hover:bg-yellow-600 transition-colors flex items-center gap-2 font-medium"
-            >
-              <FaPlus />
+          >
+            <FaPlus />
               Nuevo Historial
-            </button>
-          )}
-        </div>
-
+          </button>
+        )}
+      </div>
+      
         {/* Mensaje de error */}
         {error && (
           <div className="bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded mb-6">
@@ -204,7 +204,7 @@ const MedicalHistory = () => {
                       <td className="px-6 py-4">
                         <div className="text-sm text-gray-900 max-w-xs truncate">
                           {history.description || 'Sin descripción'}
-                        </div>
+              </div>
                       </td>
                       <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
                         {history.created_at ? new Date(history.created_at).toLocaleDateString('es-ES') : 'N/A'}
@@ -237,17 +237,17 @@ const MedicalHistory = () => {
                               </button>
                             </>
                           )}
-                        </div>
+              </div>
                       </td>
                     </tr>
                   ))}
                 </tbody>
               </table>
             </div>
-          </div>
-        ) : (
+        </div>
+      ) : (
           <div className="text-center py-12 bg-white rounded-lg shadow-sm border border-gray-200">
-            <FaStethoscope className="text-gray-400 text-6xl mx-auto mb-4" />
+          <FaStethoscope className="text-gray-400 text-6xl mx-auto mb-4" />
             <h3 className="text-lg font-medium text-gray-900 mb-2">
               No hay historiales médicos
             </h3>
@@ -255,19 +255,19 @@ const MedicalHistory = () => {
               {searchTerm 
                 ? `No se encontraron historiales que coincidan con "${searchTerm}"`
                 : "Aún no hay historiales médicos registrados en el sistema."
-              }
-            </p>
+            }
+          </p>
             {(isAdmin() || isEmployee()) && (
-              <button
+      <button
                 onClick={() => setShowCreateModal(true)}
                 className="bg-[#EEAD05] text-white px-6 py-3 rounded-lg hover:bg-yellow-600 transition-colors flex items-center gap-2 mx-auto"
-              >
-                <FaPlus />
+            >
+              <FaPlus />
                 Crear primer historial
-              </button>
-            )}
-          </div>
-        )}
+            </button>
+          )}
+        </div>
+      )}
       </div>
 
       {/* Modal para crear/editar historial */}
@@ -400,14 +400,14 @@ const MedicalHistory = () => {
 
             {/* Footer del modal */}
             <div className="flex justify-end p-6 border-t border-gray-200">
-              <button
+            <button
                 onClick={() => setShowDetailModal(false)}
                 className="px-4 py-2 text-gray-600 hover:text-gray-800 font-medium"
-              >
-                Cerrar
-              </button>
-            </div>
+            >
+              Cerrar
+      </button>
           </div>
+        </div>
         </div>
       )}
 

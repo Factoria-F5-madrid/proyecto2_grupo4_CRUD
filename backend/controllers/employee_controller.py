@@ -21,68 +21,73 @@ async def create_employee_controller(employee_data: EmployeeCreate, db: AsyncSes
 async def get_all_employees_controller(db: AsyncSession):
     logger.info("Fetching all employees with user data")
     
-    # Hacer JOIN entre Employee y User para obtener datos completos
-    query = select(Employee, User).join(
-        User, 
-        Employee.employee_id == User.user_id
-    ).where(User.role == 'employee')
+    # Primero obtener todos los usuarios con rol 'employee'
+    user_query = select(User).where(User.role == 'employee')
+    user_result = await db.execute(user_query)
+    users = user_result.scalars().all()
     
-    result = await db.execute(query)
-    rows = result.all()
+    # Luego obtener todos los registros de Employee para hacer un mapeo
+    employee_query = select(Employee)
+    employee_result = await db.execute(employee_query)
+    employees = employee_result.scalars().all()
     
-    # Combinar los datos de Employee y User
-    employees = []
-    for employee, user in rows:
+    # Crear un diccionario para mapear employee_id -> employee_data
+    employee_map = {emp.employee_id: emp for emp in employees}
+    
+    # Combinar los datos de User y Employee
+    result = []
+    for user in users:
+        employee_data = employee_map.get(user.user_id)
+        
         employee_dict = {
-            'employee_id': employee.employee_id,
+            'employee_id': user.user_id,  # Usar user_id como employee_id
             'first_name': user.first_name,
             'last_name': user.last_name,
             'email': user.email,
             'phone_number': user.phone_number,
             'address': user.address,
-            'specialty': employee.specialty.value if employee.specialty else None,
-            'is_active': employee.is_active,
-            'created_at': employee.created_at,
-            'updated_at': employee.updated_at
+            'specialty': employee_data.specialty.value if employee_data and employee_data.specialty else 'No asignado',
+            'is_active': employee_data.is_active if employee_data else True,
+            'created_at': user.registration_date,
+            'updated_at': user.last_update
         }
-        employees.append(employee_dict)
+        result.append(employee_dict)
     
-    logger.info(f"Fetched {len(employees)} employees with user data")
-    return employees
+    logger.info(f"Fetched {len(result)} employees with user data")
+    return result
 
 async def get_employee_by_id_controller(employee_id: int, db: AsyncSession):
     logger.info(f"Fetching employee with ID: {employee_id}")
     
-    # Hacer JOIN entre Employee y User para obtener datos completos
-    query = select(Employee, User).join(
-        User, 
-        Employee.employee_id == User.user_id
-    ).where(
-        Employee.employee_id == employee_id,
+    # Primero buscar el usuario con rol 'employee'
+    user_query = select(User).where(
+        User.user_id == employee_id,
         User.role == 'employee'
     )
+    user_result = await db.execute(user_query)
+    user = user_result.scalar_one_or_none()
     
-    result = await db.execute(query)
-    row = result.first()
-    
-    if row is None:
+    if user is None:
         logger.warning(f"Employee with ID {employee_id} not found")
         raise NotFoundException("Employee not found")
     
-    employee, user = row
+    # Luego buscar datos de Employee si existen
+    employee_query = select(Employee).where(Employee.employee_id == employee_id)
+    employee_result = await db.execute(employee_query)
+    employee_data = employee_result.scalar_one_or_none()
     
-    # Combinar los datos de Employee y User
+    # Combinar los datos de User y Employee
     employee_dict = {
-        'employee_id': employee.employee_id,
+        'employee_id': user.user_id,
         'first_name': user.first_name,
         'last_name': user.last_name,
         'email': user.email,
         'phone_number': user.phone_number,
         'address': user.address,
-        'specialty': employee.specialty.value if employee.specialty else None,
-        'is_active': employee.is_active,
-        'created_at': employee.created_at,
-        'updated_at': employee.updated_at
+        'specialty': employee_data.specialty.value if employee_data and employee_data.specialty else 'No asignado',
+        'is_active': employee_data.is_active if employee_data else True,
+        'created_at': user.registration_date,
+        'updated_at': user.last_update
     }
     
     logger.info(f"Found employee with ID: {employee_id}")    
