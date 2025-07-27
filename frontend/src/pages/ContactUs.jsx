@@ -86,14 +86,13 @@ const ContactForm = () => {
           alt="PetImage"
           className="w-48 h-auto object-contain mx-auto mb-4"
         />
+            
 
-        <h1 className="text-[#1c1f26] text-center mb-6">
-        Formulario de contacto 🐾, si tienes alguna pregunta o necesitas ayuda, no dudes en contactarnos. Estamos aquí para ayudarte a cuidar de tus mascotas con amor y dedicación.
-      </h1>
-
-        <h2 className="text-2xl font-bold text-[#1c1f26]">
-          Contacta con nosotros
-        </h2>
+        <div className="bg-[#edad06] rounded-xl p-6 mb-6 shadow-md text-white">
+        <h1 className="text-4xl font-bold mb-1">Contacta con nosotros</h1>
+        
+        <p className="text-sm">Formulario de contacto 🐾, si tienes alguna pregunta o necesitas ayuda, no dudes en contactarnos. Estamos aquí para ayudarte a cuidar de tus mascotas con amor y dedicación. </p>
+      </div>
 
       </div>
 
@@ -113,7 +112,7 @@ const ContactForm = () => {
           ref={form}
           onSubmit={sendEmail}
           noValidate
-          className="flex flex-col gap-4 w-full md:w-1/2 text-left"
+          className="flex flex-col gap-4 w-full md:w-1/2 text-left text-[#1c1f26]"
         >
           <label>Nombre</label>
           <input
@@ -141,7 +140,7 @@ const ContactForm = () => {
           {formSuccess && <p className="text-green-600 text-sm">{formSuccess}</p>}
 
           <button
-            className="bg-blue-600 text-white py-2 px-4 rounded hover:bg-blue-700 transition"
+            className="bg-[#edad06] hover:bg-yellow-400 text-white px-4 py-2 rounded-xl flex items-center gap-2 shadow"
             type="submit"
           >
             Enviar
@@ -150,6 +149,8 @@ const ContactForm = () => {
    
         
       </div>
+
+      
 
       {/*botones redes sociales*/}
 
@@ -183,7 +184,30 @@ const ContactForm = () => {
   >
     <FaWhatsapp size={20} />
   </a>
+
+  {/* Contacto dirreciones */}
+
+
+
 </div>
+
+
+  <div className="flex flex-col md:flex-row gap-6 mb-6">
+  <div className="bg-[#efede8] rounded-xl p-6 shadow-md text-[#1c1f26] w-full md:w-1/2">
+    <h1 className="text-4xl font-bold mb-1">Contacto Madrid</h1>
+    <p className="text-sm">Officina en Madrid Centro </p>
+    <p className="text-sm">Calle Gran Via 55 </p>
+    <p className="text-sm">telefono: +34123456789</p>
+  </div>
+
+  <div className="bg-[#efede8] rounded-xl p-6 shadow-md text-[#1c1f26] w-full md:w-1/2">
+    <h1 className="text-4xl font-bold mb-1">Contacta Internacional</h1>
+    <p className="text-sm">Officina en New York </p>
+    <p className="text-sm">Grand Cannon </p>
+    <p className="text-sm">telefono: +1123456789</p>
+  </div>
+</div>
+
 
     </div>
   );
