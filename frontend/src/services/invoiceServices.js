@@ -19,7 +19,7 @@ export const getInvoiceByID = async (invoice_id) => {
     const response = await axios.get(`${BASE_URL}/${invoice_id}`);
     return response.data;
   } catch (error) {
-    console.error(`Error al obtener la factura con ID ${invoice_idid}:`, error);
+    console.error(`Error al obtener la factura con ID ${invoice_id}:`, error);
     throw error;
   }
 };
