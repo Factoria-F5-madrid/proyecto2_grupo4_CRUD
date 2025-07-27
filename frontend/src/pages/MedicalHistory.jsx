@@ -2,6 +2,7 @@ import React, { useEffect, useState } from 'react';
 import { getAllMedicalHistories, deleteMedicalHistory } from '../services/medicalHistoryServices';
 import { useAuth } from '../context/AuthContext';
 import { FaPlus, FaStethoscope, FaSearch, FaEdit, FaTrash, FaEye, FaTimes, FaCalendar, FaUser, FaPaw } from 'react-icons/fa';
+import FormEditMedicalHistory from '../components/Forms/FormEditMedicalHistory';
 
 const MedicalHistory = () => {
   const [histories, setHistories] = useState([]);
@@ -9,6 +10,7 @@ const MedicalHistory = () => {
   const [error, setError] = useState("");
   const [showModal, setShowModal] = useState(false);
   const [showDetailModal, setShowDetailModal] = useState(false);
+  const [showEditModal, setShowEditModal] = useState(false);
   const [selectedHistory, setSelectedHistory] = useState(null);
   const [searchTerm, setSearchTerm] = useState("");
   const { user, isAdmin, isEmployee, isUser } = useAuth();
@@ -45,6 +47,17 @@ const MedicalHistory = () => {
   const handleViewDetails = (history) => {
     setSelectedHistory(history);
     setShowDetailModal(true);
+  };
+
+  const handleEdit = (history) => {
+    setSelectedHistory(history);
+    setShowEditModal(true);
+  };
+
+  const handleEditSuccess = () => {
+    loadHistories();
+    setShowEditModal(false);
+    setSelectedHistory(null);
   };
 
   const filteredHistories = histories.filter(history =>
@@ -220,7 +233,7 @@ const MedicalHistory = () => {
                           {(isAdmin() || isEmployee()) && (
                             <>
                               <button
-                                onClick={() => {/* Editar */}}
+                                onClick={() => handleEdit(history)}
                                 className="text-blue-600 hover:text-blue-900 p-1"
                                 title="Editar"
                               >
@@ -430,6 +443,18 @@ const MedicalHistory = () => {
             </div>
           </div>
         </div>
+      )}
+
+      {/* Modal de edición */}
+      {showEditModal && selectedHistory && (
+        <FormEditMedicalHistory
+          medicalHistory={selectedHistory}
+          onClose={() => {
+            setShowEditModal(false);
+            setSelectedHistory(null);
+          }}
+          onSuccess={handleEditSuccess}
+        />
       )}
     </div>
   );
