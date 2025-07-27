@@ -1,6 +1,7 @@
 import axios from "axios";
+import { API_ENDPOINTS } from '../config/api.js';
 
-const BASE_URL = "http://127.0.0.1:8000/payment/"; 
+const BASE_URL = API_ENDPOINTS.PAYMENTS;
 
 // Obtener todos los pagos
 export const getAllPayment = async () => {
@@ -28,7 +29,7 @@ export const getPaymentByID = async (payment_id) => {
 export const createPayment = async (paymentData) => {
   try {
     const response = await axios.post(
-      "http://127.0.0.1:8000/payment/",
+      API_ENDPOINTS.PAYMENTS,
       paymentData,
       {
         headers: {

@@ -1,5 +1,7 @@
 import axios from "axios";
-const API_URL = "http://127.0.0.1:8000/pets";
+import { API_ENDPOINTS } from '../config/api.js';
+
+const API_URL = API_ENDPOINTS.PETS;
 
 // Función para obtener el token de autenticación
 const getAuthToken = () => {

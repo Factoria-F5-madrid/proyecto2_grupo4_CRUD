@@ -1,6 +1,8 @@
 //  voy hacer los servicios de activityLog
 import axios from "axios";
-const BASE_URL = "http://127.0.0.1:8000/activitylogs";
+import { API_ENDPOINTS } from '../config/api.js';
+
+const BASE_URL = API_ENDPOINTS.ACTIVITY_LOGS;
 
 // ahora mis servicios con manejo de errores try catch que consumira mi endpoint
 

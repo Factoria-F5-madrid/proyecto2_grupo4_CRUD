@@ -1,8 +1,11 @@
 import axios from 'axios';
 
+// URL del backend - usar la URL de producción directamente
+const API_BASE_URL = 'https://petland-backend-qnss.onrender.com';
+
 // Crear instancia de axios con configuración base
 const apiClient = axios.create({
-  baseURL: 'http://127.0.0.1:8000',
+  baseURL: API_BASE_URL,
   headers: {
     'Content-Type': 'application/json',
     'Accept': 'application/json'

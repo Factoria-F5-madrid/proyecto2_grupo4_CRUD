@@ -1,6 +1,7 @@
 import axios from "axios";
+import { API_ENDPOINTS } from '../config/api.js';
 
-const BASE_URL = "http://127.0.0.1:8000/reservations";
+const BASE_URL = API_ENDPOINTS.RESERVATIONS;
 
 // Función para obtener el token de autenticación
 const getAuthToken = () => {
