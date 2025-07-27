@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
-import { FaFileInvoice, FaMoneyBillWave, FaCheckCircle, FaTimesCircle, FaPercent, FaCalendarAlt, FaArrowLeft, FaEdit, FaTrash } from 'react-icons/fa';
-import { getInvoiceByID, deleteInvoice } from '../services/invoiceServices';
+import { FaFileInvoice, FaMoneyBillWave, FaCheckCircle, FaTimesCircle, FaPercent, FaCalendarAlt, FaArrowLeft } from 'react-icons/fa';
+import { getInvoiceByID } from '../services/invoiceServices';
 import { useAuth } from '../context/AuthContext';
 
 const InvoiceDetail = () => {
@@ -10,7 +10,7 @@ const InvoiceDetail = () => {
   const [error, setError] = useState('');
   const { invoiceId } = useParams();
   const navigate = useNavigate();
-  const { hasPermission } = useAuth();
+
 
   useEffect(() => {
     loadInvoice();
@@ -29,21 +29,7 @@ const InvoiceDetail = () => {
     }
   };
 
-  const handleDelete = async () => {
-    if (window.confirm('¿Estás seguro de que quieres eliminar esta factura?')) {
-      try {
-        await deleteInvoice(invoiceId);
-        navigate('/invoices');
-      } catch (error) {
-        console.error('Error eliminando factura:', error);
-        setError('Error al eliminar la factura');
-      }
-    }
-  };
 
-  const handleEdit = () => {
-    navigate(`/invoices/${invoiceId}/edit`);
-  };
 
   const getStatusIcon = (completed) => {
     return completed ? (
@@ -137,22 +123,6 @@ const InvoiceDetail = () => {
             >
               <FaArrowLeft /> Volver
             </button>
-            {hasPermission('update_invoice') && (
-              <button
-                onClick={handleEdit}
-                className="bg-white bg-opacity-20 hover:bg-opacity-30 text-white px-4 py-2 rounded-xl flex items-center gap-2"
-              >
-                <FaEdit /> Editar
-              </button>
-            )}
-            {hasPermission('delete_invoice') && (
-              <button
-                onClick={handleDelete}
-                className="bg-red-500 hover:bg-red-600 text-white px-4 py-2 rounded-xl flex items-center gap-2"
-              >
-                <FaTrash /> Eliminar
-              </button>
-            )}
           </div>
         </div>
       </div>
