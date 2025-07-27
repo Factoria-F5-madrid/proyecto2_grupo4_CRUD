@@ -18,10 +18,15 @@ async def create_employee_controller(employee_data: EmployeeCreate, db: AsyncSes
 
 async def get_all_employees_controller(db: AsyncSession):
     logger.info("Fetching all employees")
-    result = await db.execute(select(Employee))
-    employees = result.scalars().all()
-    logger.info(f"Fetched {len(employees)} employees")
-    return employees
+    try:
+        result = await db.execute(select(Employee))
+        employees = result.scalars().all()
+        logger.info(f"Fetched {len(employees)} employees")
+        return employees
+    except Exception as e:
+        logger.error(f"Error fetching employees: {e}")
+        # Devolver una lista vacía en caso de error
+        return []
 
 async def get_employee_by_id_controller(employee_id: int, db: AsyncSession):
     logger.info(f"Fetching employee with ID: {employee_id}")

@@ -23,7 +23,12 @@ export default function Users() {
   const [showModalEmployee, setShowModalEmployee] = useState(false);
   const [showViewModal, setShowViewModal] = useState(false);
   const [selectedUser, setSelectedUser] = useState(null);
-  const { hasPermission } = useAuth();
+  const { hasPermission, user } = useAuth();
+
+  console.log('Estado del usuario:', user);
+  console.log('Permisos del usuario:', user?.permissions);
+  console.log('¿Tiene permiso create_user?:', hasPermission('create_user'));
+  console.log('¿Tiene permiso read_user?:', hasPermission('read_user'));
 
   useEffect(() => {
     loadUsers();
@@ -32,10 +37,11 @@ export default function Users() {
   const loadUsers = async () => {
     try {
       setLoading(true);
-      const [userData, employeeData] = await Promise.all([
-        getAllUsers(),
-        getAllEmployees(),
-      ]);
+      console.log('Cargando usuarios y empleados...');
+      
+      // Cargar usuarios primero
+      const userData = await getAllUsers();
+      console.log('Datos de usuarios recibidos:', userData);
 
       const normalizedUsers = userData.map((user) => ({
         ...user,
@@ -44,14 +50,27 @@ export default function Users() {
         type: 'user',
       }));
 
-      const normalizedEmployees = employeeData.map((emp) => ({
-        ...emp,
-        user_id: `emp-${emp.employee_id}`,
-        role: emp.role || 'employee',
-        type: 'employee',
-      }));
+      // Intentar cargar empleados, pero no fallar si hay error
+      let normalizedEmployees = [];
+      try {
+        const employeeData = await getAllEmployees();
+        console.log('Datos de empleados recibidos:', employeeData);
+        
+        normalizedEmployees = employeeData.map((emp) => ({
+          ...emp,
+          user_id: `emp-${emp.employee_id}`,
+          role: emp.role || 'employee',
+          type: 'employee',
+        }));
+      } catch (employeeError) {
+        console.error('Error cargando empleados:', employeeError);
+        // Continuar solo con usuarios si hay error en empleados
+      }
 
-      setUsers([...normalizedUsers, ...normalizedEmployees]);
+      const allUsers = [...normalizedUsers, ...normalizedEmployees];
+      console.log('Usuarios normalizados:', allUsers);
+      
+      setUsers(allUsers);
     } catch (error) {
       console.error('Error al cargar usuarios y empleados:', error);
     } finally {
@@ -204,6 +223,7 @@ export default function Users() {
             </tr>
           </thead>
           <tbody className="bg-white divide-y divide-gray-100">
+            {console.log('Renderizando usuarios filtrados:', filteredUsers)}
             {filteredUsers.map((user) => (
               <tr key={user.user_id} className="hover:bg-gray-50">
                 <td className="px-6 py-4 flex items-center gap-3">
