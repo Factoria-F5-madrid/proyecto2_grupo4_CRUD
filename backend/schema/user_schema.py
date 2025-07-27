@@ -22,7 +22,7 @@ class UserUpdate(BaseModel):
     email: Optional[str] = None
     address: Optional[str] = None
     password: Optional[str] = None 
-    role: Optional[Literal["admin", "staff", "user"]] = None
+    role: Optional[Literal["admin", "employee", "user"]] = None
 
 class UserOut(UserBase):
     user_id: int
