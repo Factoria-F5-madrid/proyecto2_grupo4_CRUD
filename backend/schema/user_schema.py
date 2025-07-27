@@ -8,7 +8,7 @@ class UserBase(BaseModel):
     phone_number: int
     email: str
     address: str
-    role: Literal["admin", "staff", "user", "employee"] = "user"
+    role: Literal["admin", "user", "employee"] = "user"
    
 
 class UserCreate(UserBase):
@@ -22,7 +22,7 @@ class UserUpdate(BaseModel):
     email: Optional[str] = None
     address: Optional[str] = None
     password: Optional[str] = None 
-    role: Optional[Literal["admin", "staff", "user", "employee"]] = None
+    role: Optional[Literal["admin", "user", "employee"]] = None
 
 class UserOut(UserBase):
     user_id: int

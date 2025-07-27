@@ -1,9 +1,11 @@
 // components/Forms/FormNewUsers.jsx
 import React, { useState } from 'react';
 import { createUser, updateUser } from '../../services/userServices';
+import { useAuth } from '../../context/AuthContext';
 
 export default function FormNewUsers({ onClose, onSuccess, userToEdit }) {
   const isEditing = Boolean(userToEdit);
+  const { isAdmin } = useAuth();
 
   const [formData, setFormData] = useState({
     first_name: userToEdit?.first_name || '',
@@ -121,6 +123,21 @@ export default function FormNewUsers({ onClose, onSuccess, userToEdit }) {
         className="w-full border rounded px-3 py-2"
       />
 
+      {/* Selector de rol - Solo visible para administradores */}
+      {isAdmin() && (
+        <select
+          name="role"
+          value={formData.role}
+          onChange={handleChange}
+          required
+          className="w-full border rounded px-3 py-2 bg-white"
+        >
+          <option value="user">Usuario</option>
+          <option value="employee">Empleado</option>
+          <option value="admin">Administrador</option>
+        </select>
+      )}
+
       {!isEditing && (
         <input
           type="password"
@@ -133,8 +150,8 @@ export default function FormNewUsers({ onClose, onSuccess, userToEdit }) {
         />
       )}
 
-      {/* Oculto pero útil si quieres enviar role fijo */}
-      {!isEditing && (
+      {/* Campo oculto para usuarios no-admin (rol fijo como 'user') */}
+      {!isAdmin() && (
         <input type="hidden" name="role" value="user" />
       )}
 
