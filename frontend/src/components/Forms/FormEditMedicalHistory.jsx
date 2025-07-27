@@ -132,42 +132,6 @@ export default function FormEditMedicalHistory({ medicalHistory, onClose, onSucc
             />
           </div>
 
-<<<<<<< HEAD
-=======
-          {/* Estado */}
-          <div>
-            <label className="block text-sm font-medium text-gray-700 mb-2">
-              Estado
-            </label>
-            <select
-              name="status"
-              value={formData.status}
-              onChange={handleChange}
-              required
-              className="w-full border border-gray-300 rounded-lg px-3 py-2 focus:ring-2 focus:ring-[#EEAD05] focus:border-transparent"
-            >
-              <option value="activo">Activo</option>
-              <option value="completado">Completado</option>
-              <option value="cancelado">Cancelado</option>
-            </select>
-          </div>
-
-          {/* Notas adicionales */}
-          <div>
-            <label className="block text-sm font-medium text-gray-700 mb-2">
-              Notas Adicionales
-            </label>
-            <textarea
-              name="notes"
-              value={formData.notes}
-              onChange={handleChange}
-              rows={3}
-              placeholder="Notas adicionales, observaciones o recomendaciones..."
-              className="w-full border border-gray-300 rounded-lg px-3 py-2 focus:ring-2 focus:ring-[#EEAD05] focus:border-transparent resize-none"
-            />
-          </div>
-
->>>>>>> 7e62180ab458d3dd7e8df11d448914be2aaf6c92
           {/* Botones */}
           <div className="flex justify-end gap-3 pt-4 border-t border-gray-200">
             <button
