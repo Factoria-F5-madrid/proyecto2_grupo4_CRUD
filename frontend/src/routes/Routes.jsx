@@ -22,6 +22,7 @@ import Register from "../pages/Register";
 import Users from "../pages/Users";
 import Employees from "../pages/Employees";
 import Services from "../pages/Services";
+import ServiceEdit from "../pages/ServiceEdit";
 
 
 export const router = createBrowserRouter([
@@ -105,6 +106,10 @@ export const router = createBrowserRouter([
       {
         path: "services/:serviceId", // /services/:id
         element: <ServiceDetail />,
+      },
+      {
+        path: "services/:serviceId/edit", // /services/:id/edit
+        element: <ServiceEdit />,
       },
       {
         path: "account", // /account
