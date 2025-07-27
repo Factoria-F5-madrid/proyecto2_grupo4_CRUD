@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 import { getAllService } from '../services/serviceServices';
 import { useAuth } from '../context/AuthContext';
 import { 
@@ -10,7 +11,8 @@ import {
   FaCar, 
   FaUtensils,
   FaPlus,
-  FaSpinner
+  FaSpinner,
+  FaEye
 } from 'react-icons/fa';
 
 const Services = () => {
@@ -18,6 +20,7 @@ const Services = () => {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState("");
   const { user, isAdmin, isEmployee, isUser } = useAuth();
+  const navigate = useNavigate();
 
   useEffect(() => {
     const fetchServices = async () => {
@@ -186,6 +189,13 @@ const Services = () => {
                   <p className="text-xs text-gray-500">
                     Creado: {formatDate(service.created_at)}
                   </p>
+                  <button
+                    onClick={() => navigate(`/services/${service.service_id}`)}
+                    className="mt-3 w-full bg-blue-500 hover:bg-blue-600 text-white px-4 py-2 rounded-lg flex items-center justify-center gap-2 text-sm"
+                  >
+                    <FaEye />
+                    Ver Detalles
+                  </button>
                 </div>
               </div>
             </div>

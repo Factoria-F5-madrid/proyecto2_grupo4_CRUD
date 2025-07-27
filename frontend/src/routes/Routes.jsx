@@ -10,6 +10,7 @@ import ReservationEdit from "../pages/ReservationEdit";
 import InvoiceDetail from "../pages/InvoiceDetail";
 import InvoiceEdit from "../pages/InvoiceEdit";
 import InvoiceCreate from "../pages/InvoiceCreate";
+import ServiceDetail from "../pages/ServiceDetail";
 import Pets from "../pages/Pets";
 import MedicalHistory from "../pages/MedicalHistory";
 import Payments from "../pages/Payments";
@@ -100,6 +101,10 @@ export const router = createBrowserRouter([
       {
         path: "services", // /services
         element: <Services />,
+      },
+      {
+        path: "services/:serviceId", // /services/:id
+        element: <ServiceDetail />,
       },
       {
         path: "account", // /account
