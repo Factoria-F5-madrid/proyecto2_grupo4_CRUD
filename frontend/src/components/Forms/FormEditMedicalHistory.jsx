@@ -53,7 +53,8 @@ export default function FormEditMedicalHistory({ medicalHistory, onClose, onSucc
         payload: cleanPayload
       });
 
-      await updateMedicalHistory(medicalHistory.id, cleanPayload);
+      const response = await updateMedicalHistory(medicalHistory.id, cleanPayload);
+      console.log('Respuesta del backend después de actualizar:', response);
       
       onSuccess();
       onClose();
@@ -151,7 +152,6 @@ export default function FormEditMedicalHistory({ medicalHistory, onClose, onSucc
             >
               <option value="activo">Activo</option>
               <option value="completado">Completado</option>
-              <option value="pendiente">Pendiente</option>
               <option value="cancelado">Cancelado</option>
             </select>
           </div>

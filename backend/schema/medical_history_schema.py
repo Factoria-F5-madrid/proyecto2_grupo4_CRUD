@@ -1,6 +1,7 @@
 from pydantic import BaseModel
-from typing import Optional
+from typing import Optional, Literal
 from datetime import datetime
+from backend.models.enums import MedicalHistoryStatusEnum
 
 class MedicalHistoryBase(BaseModel):
     pet_id: int
@@ -13,13 +14,13 @@ class MedicalHistoryCreate(MedicalHistoryBase):
 class MedicalHistoryUpdate(BaseModel):
     type: Optional[str] = None
     description: Optional[str] = None
-    status: Optional[str] = None
+    status: Optional[Literal["activo", "completado", "cancelado"]] = None
     notes: Optional[str] = None
 
 class MedicalHistoryOut(MedicalHistoryBase):
     id: int
     created_at: datetime
-    status: Optional[str] = None
+    status: Optional[Literal["activo", "completado", "cancelado"]] = None
     notes: Optional[str] = None
 
     class Config:

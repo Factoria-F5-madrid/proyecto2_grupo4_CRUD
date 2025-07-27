@@ -62,6 +62,11 @@ class IncludedServicesEnum(enum.Enum):
     COMPLETO = "Completo"
     PERSONALIZADO = "Personalizado"    
 
+class MedicalHistoryStatusEnum(enum.Enum):
+    ACTIVO = "activo"
+    COMPLETADO = "completado"
+    CANCELADO = "cancelado"
+
 SqlPetTypeEnum = Enum(PetTypeEnum, name="pet_type_enum")    
 SqlServiceTypeEnum = Enum(ServiceTypeEnum, name="service_type_enum")
 SqlReservationStatusEnum = Enum(ReservationStatusEnum, name="reservation_status_enum")
@@ -70,6 +75,7 @@ SqlActivityTypeEnum = Enum(ActivityTypeEnum, name="activity_type_enum")
 SqlPaymentMethodEnum = Enum(PaymentMethodEnum, name="payment_method_enum")
 SqlPaymentStatusEnum = Enum(PaymentStatusEnum, name="payment_status_enum")
 SqlIncludedServicesEnum = Enum(IncludedServicesEnum, name="included_services_enum")
+SqlMedicalHistoryStatusEnum = Enum(MedicalHistoryStatusEnum, name="medical_history_status_enum")
 
 from enum import Enum
 
