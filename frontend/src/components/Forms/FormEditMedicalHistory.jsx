@@ -33,6 +33,13 @@ export default function FormEditMedicalHistory({ medicalHistory, onClose, onSucc
     setLoading(true);
     setError('');
 
+    // Validar que tenemos el ID del historial médico
+    if (!medicalHistory?.id) {
+      setError('Error: No se pudo identificar el historial médico a actualizar.');
+      setLoading(false);
+      return;
+    }
+
     try {
       const cleanPayload = {
         type: formData.type,
@@ -41,7 +48,12 @@ export default function FormEditMedicalHistory({ medicalHistory, onClose, onSucc
         notes: formData.notes
       };
 
-      await updateMedicalHistory(medicalHistory.medical_history_id, cleanPayload);
+      console.log('Actualizando historial médico:', {
+        id: medicalHistory.id,
+        payload: cleanPayload
+      });
+
+      await updateMedicalHistory(medicalHistory.id, cleanPayload);
       
       onSuccess();
       onClose();
@@ -67,7 +79,7 @@ export default function FormEditMedicalHistory({ medicalHistory, onClose, onSucc
                 Editar Historial Médico
               </h2>
               <p className="text-sm text-gray-500">
-                ID: mh-{medicalHistory?.medical_history_id}
+                ID: mh-{medicalHistory?.id}
               </p>
             </div>
           </div>

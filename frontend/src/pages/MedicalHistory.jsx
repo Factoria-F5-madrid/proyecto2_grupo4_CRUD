@@ -50,6 +50,7 @@ const MedicalHistory = () => {
   };
 
   const handleEdit = (history) => {
+    console.log('Historial seleccionado para editar:', history);
     setSelectedHistory(history);
     setShowEditModal(true);
   };
@@ -181,7 +182,7 @@ const MedicalHistory = () => {
                 </thead>
                 <tbody className="bg-white divide-y divide-gray-200">
                   {filteredHistories.map((history) => (
-                    <tr key={history.medical_history_id} className="hover:bg-gray-50">
+                    <tr key={history.id} className="hover:bg-gray-50">
                       <td className="px-6 py-4 whitespace-nowrap">
                         <div className="flex items-center">
                           <div className="flex-shrink-0 h-10 w-10">
@@ -195,9 +196,9 @@ const MedicalHistory = () => {
                             <div className="text-sm font-medium text-gray-900">
                               Mascota #{history.pet_id}
                             </div>
-                            <div className="text-sm text-gray-500">
-                              ID: mh-{history.medical_history_id}
-                            </div>
+                                                         <div className="text-sm text-gray-500">
+                               ID: mh-{history.id}
+                             </div>
                           </div>
                         </div>
                       </td>
@@ -240,7 +241,7 @@ const MedicalHistory = () => {
                                 <FaEdit />
                               </button>
                               <button
-                                onClick={() => handleDelete(history.medical_history_id)}
+                                onClick={() => handleDelete(history.id)}
                                 className="text-red-600 hover:text-red-900 p-1"
                                 title="Eliminar"
                               >
@@ -322,7 +323,7 @@ const MedicalHistory = () => {
                     Informe Médico Detallado
                   </h2>
                   <p className="text-sm text-gray-500">
-                    ID: mh-{selectedHistory.medical_history_id}
+                    ID: mh-{selectedHistory.id}
                   </p>
                 </div>
               </div>

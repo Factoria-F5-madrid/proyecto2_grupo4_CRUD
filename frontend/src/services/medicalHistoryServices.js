@@ -85,6 +85,12 @@ export const deleteMedicalHistory = async (medical_history_id) => {
 // Actualizar el Historial Médical por ID
 export const updateMedicalHistory = async (medical_history_id, updatedData) => {
   try {
+    console.log('Servicio - Actualizando historial médico:', {
+      id: medical_history_id,
+      url: `${BASE_URL}/${medical_history_id}`,
+      data: updatedData
+    });
+    
     const response = await apiClient.put(`/${medical_history_id}`, updatedData);
     return response.data;
   } catch (error) {

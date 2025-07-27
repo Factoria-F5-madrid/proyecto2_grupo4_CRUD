@@ -13,10 +13,14 @@ class MedicalHistoryCreate(MedicalHistoryBase):
 class MedicalHistoryUpdate(BaseModel):
     type: Optional[str] = None
     description: Optional[str] = None
+    status: Optional[str] = None
+    notes: Optional[str] = None
 
 class MedicalHistoryOut(MedicalHistoryBase):
     id: int
     created_at: datetime
+    status: Optional[str] = None
+    notes: Optional[str] = None
 
     class Config:
         from_attributes = True
@@ -26,6 +30,8 @@ class MedicalHistoryOut(MedicalHistoryBase):
                 "pet_id": 3,
                 "type": "Consulta general",
                 "description": "El perro fue tratado por una infección de oído.",
-                "created_at": "2025-07-20T12:34:56"
+                "created_at": "2025-07-20T12:34:56",
+                "status": "activo",
+                "notes": "Notas adicionales del tratamiento"
             }
         }
