@@ -11,6 +11,7 @@ import { FaCalendarAlt, FaInfoCircle, FaClock, FaStar, FaSignInAlt, FaTimes, FaC
 import ModalReservation from '../components/Nav/ModalReservation';
 import FormEditService from '../components/Forms/FormEditService';
 import FormCreateService from '../components/Forms/FormCreateService';
+import { deleteService } from '../services/serviceServices';
 import { useAuth } from '../context/AuthContext';
 
 const Services = () => {
@@ -279,11 +280,23 @@ const Services = () => {
     setShowCreateModal(false);
   };
 
-  const handleDeleteService = (service) => {
+  const handleDeleteService = async (service) => {
     if (window.confirm(`¿Estás seguro de que quieres eliminar el servicio "${service.name}"?`)) {
-      console.log('Eliminando servicio:', service);
-      // Aquí puedes implementar la lógica de eliminación
-      alert('Función de eliminación en desarrollo');
+      try {
+        console.log('Eliminando servicio:', service);
+        await deleteService(service.id);
+        console.log('Servicio eliminado exitosamente');
+        
+        // Remover el servicio de la lista local
+        setServices(prevServices => 
+          prevServices.filter(s => s.id !== service.id)
+        );
+        
+        alert('Servicio eliminado exitosamente');
+      } catch (error) {
+        console.error('Error eliminando servicio:', error);
+        alert('Error al eliminar el servicio: ' + error.message);
+      }
     }
   };
 
