@@ -79,8 +79,14 @@ class ReservationUpdate(BaseModel):
                 raise ValueError(f"Invalid status: {v}. Must be one of: {[e.value for e in ReservationStatusEnum]}")
         return v
 
-class ReservationOut(ReservationBase):
+class ReservationOut(BaseModel):
     reservation_id: int
+    user_id: int
+    service_id: int
+    checkin_date: datetime
+    checkout_date: datetime
+    status: ReservationStatusEnum
+    internal_notes: Optional[str] = None
     created_at: datetime
 
     class Config:
