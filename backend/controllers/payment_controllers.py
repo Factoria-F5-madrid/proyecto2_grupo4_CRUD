@@ -4,6 +4,7 @@ from backend.exceptions.custom_exceptions import NotFoundException, BadRequestEx
 
 
 from backend.models.payment_models import Payment
+from backend.models.invoice_models import Invoice
 from backend.schema.payment_schema import PaymentCreate, PaymentUpdate
 
 
@@ -11,12 +12,28 @@ from backend.logger.logger import logger
 
 async def create_payment_controller(payment_data: PaymentCreate, db: AsyncSession):
     logger.debug(f"Creating payment with data: {payment_data}")
-    new_payment = Payment(**payment_data.dict())
-    db.add(new_payment)
-    await db.commit()
-    await db.refresh(new_payment)
-    logger.info(f"Payment created with ID: {new_payment.payment_id}")
-    return new_payment
+    
+    # Verificar que la factura existe
+    result = await db.execute(select(Invoice).where(Invoice.invoice_id == payment_data.invoice_id))
+    invoice = result.scalar_one_or_none()
+    if not invoice:
+        logger.error(f"Invoice with ID {payment_data.invoice_id} not found")
+        raise BadRequestException(f"Invoice with ID {payment_data.invoice_id} not found")
+    
+    logger.debug(f"Found invoice: {invoice.invoice_id}")
+    
+    try:
+        new_payment = Payment(**payment_data.dict())
+        logger.debug(f"Created payment object: {new_payment}")
+        db.add(new_payment)
+        await db.commit()
+        await db.refresh(new_payment)
+        logger.info(f"Payment created with ID: {new_payment.payment_id}")
+        return new_payment
+    except Exception as e:
+        logger.error(f"Error creating payment: {str(e)}")
+        await db.rollback()
+        raise BadRequestException(f"Error creating payment: {str(e)}")
 
 async def get_all_payments_controller(db: AsyncSession):
     logger.debug("Fetching all payments")
