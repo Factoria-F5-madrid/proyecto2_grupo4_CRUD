@@ -329,7 +329,7 @@ const Services = () => {
               <FaPlus />
               Crear Servicio
             </button>
-          </div>
+      </div>
         )}
 
         {/* Grid de servicios */}
