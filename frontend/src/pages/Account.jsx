@@ -281,7 +281,7 @@ const Account = () => {
                   </div>
 
                   <div>
-                    <label className="block text-sm font-medium text-gray-700 mb-2 flex items-center gap-2">
+                    <label className=" black text-sm font-medium text-gray-700 mb-2 flex items-center gap-2">
                       <FaEnvelope className="text-gray-500" />
                       Email
                     </label>
@@ -300,7 +300,7 @@ const Account = () => {
                   </div>
 
                   <div>
-                    <label className="block text-sm font-medium text-gray-700 mb-2 flex items-center gap-2">
+                    <label className="black text-sm font-medium text-gray-700 mb-2 flex items-center gap-2">
                       <FaPhone className="text-gray-500" />
                       Teléfono
                     </label>

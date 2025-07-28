@@ -19,6 +19,7 @@ from backend.websockets.routes import router as websocket_router
 
 from backend.db.database import AsyncSessionLocal
 from backend.utils.cache import cache_service
+from backend.utils.auth_jwt import get_current_user
 
 from backend.models.user_models import User
 from backend.models.service_models import Service
