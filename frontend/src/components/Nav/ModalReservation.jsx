@@ -6,11 +6,19 @@ import { FaCalendarAlt, FaClock, FaTimes, FaSpinner, FaCheck } from 'react-icons
 const ModalReservation = ({ onClose, serviceName }) => {
   const { user } = useAuth();
   const [formData, setFormData] = useState({
-    checkin_date: '',
+    service_type: '',
     internal_notes: ''
   });
   const [loading, setLoading] = useState(false);
   const [message, setMessage] = useState({ type: '', text: '' });
+
+  // Opciones de servicios disponibles
+  const serviceOptions = [
+    { value: 'Guarderia', label: 'Guardería' },
+    { value: 'Transporte', label: 'Transporte' },
+    { value: 'Comida', label: 'Comida' },
+    { value: 'Otros', label: 'Otros Servicios' }
+  ];
 
   // Mapeo de servicios a service_type
   const getServiceType = (serviceName) => {
@@ -54,8 +62,12 @@ const ModalReservation = ({ onClose, serviceName }) => {
         throw new Error('No se pudo obtener el ID del usuario');
       }
 
-      // Crear la fecha de entrada
-      const checkinDate = new Date(formData.checkin_date);
+      if (!formData.service_type) {
+        throw new Error('Por favor, selecciona un tipo de servicio');
+      }
+
+      // Usar fecha actual como fecha de entrada por defecto
+      const checkinDate = new Date();
       
       // Calcular automáticamente la fecha de salida (1 día después)
       const checkoutDate = new Date(checkinDate);
@@ -63,7 +75,7 @@ const ModalReservation = ({ onClose, serviceName }) => {
 
       const cleanPayload = {
         user_id: parseInt(userId),
-        service_type: getServiceType(serviceName),
+        service_type: formData.service_type,
         checkin_date: checkinDate.toISOString().slice(0, 19), // Formato: 2025-01-30T10:00:00
         checkout_date: checkoutDate.toISOString().slice(0, 19), // Formato: 2025-01-30T10:00:00
         internal_notes: formData.internal_notes || ''
@@ -176,21 +188,42 @@ const ModalReservation = ({ onClose, serviceName }) => {
             </p>
           </div>
 
-          {/* Fecha de entrada */}
+          {/* Tipo de Servicio */}
           <div>
             <label className="block text-sm font-medium text-gray-700 mb-2">
-              Fecha y Hora de Entrada
+              Tipo de Servicio
             </label>
-            <input
-              type="datetime-local"
-              name="checkin_date"
-              value={formData.checkin_date}
+            <select
+              name="service_type"
+              value={formData.service_type}
               onChange={handleChange}
               required
               className="w-full border border-gray-300 rounded-lg px-3 py-2 focus:ring-2 focus:ring-[#EEAD05] focus:border-transparent"
+            >
+              <option value="">Selecciona un servicio</option>
+              {serviceOptions.map((option) => (
+                <option key={option.value} value={option.value}>
+                  {option.label}
+                </option>
+              ))}
+            </select>
+          </div>
+
+          {/* Notas */}
+          <div>
+            <label className="block text-sm font-medium text-gray-700 mb-2">
+              Notas Adicionales (Opcional)
+            </label>
+            <textarea
+              name="internal_notes"
+              value={formData.internal_notes}
+              onChange={handleChange}
+              placeholder="Especifica fecha, hora y cualquier detalle adicional..."
+              rows="3"
+              className="w-full border border-gray-300 rounded-lg px-3 py-2 focus:ring-2 focus:ring-[#EEAD05] focus:border-transparent resize-none"
             />
             <p className="text-xs text-gray-500 mt-1">
-              La fecha de salida se calculará automáticamente (1 día después)
+              Incluye fecha, hora y cualquier información relevante para tu reserva
             </p>
           </div>
 
