@@ -28,10 +28,6 @@ import MyReservations from "../pages/MyReservations";
 
 
 export const router = createBrowserRouter([
-  {
-    path: "/", 
-    element: <Spinner />,
-  },
   // Rutas de autenticación (sin layout)
   {
     path: "/login",
@@ -46,7 +42,11 @@ export const router = createBrowserRouter([
     element: <Layout />,
     children: [
       {
-        path: "home", // /home
+        path: "", // / (página principal)
+        element: <Home />,
+      },
+      {
+        path: "home", // /home (redirección)
         element: <Home />,
       },
       {
