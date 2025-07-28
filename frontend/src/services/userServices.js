@@ -1,8 +1,5 @@
-// Servicios de usuario y autenticación
 import apiClient from "../config/axios";
 import { API_ENDPOINTS } from "../config/api";
-
-// ahora mis servicios con manejo de errores try catch que consumira mi endpoint
 
 export const getAllUsers = async () => {
     try {
@@ -54,8 +51,6 @@ export const deleteUser = async (user_id) => {
         throw error;
     }
 };
-
-// ===== SERVICIOS DE AUTENTICACIÓN =====
 
 export const loginUser = async (loginData) => {
     try {

@@ -14,7 +14,6 @@ const apiClient = axios.create({
   },
 });
 
-// Interceptor para agregar el token de autenticación
 apiClient.interceptors.request.use(
   (config) => {
     const token = getAuthToken();
@@ -28,7 +27,6 @@ apiClient.interceptors.request.use(
   }
 );
 
-// Obtener todos los servicios
 export const getAllServices = async () => {
   try {
     const response = await apiClient.get("/");
@@ -39,7 +37,6 @@ export const getAllServices = async () => {
   }
 };
 
-// Obtener un servicio por ID
 export const getServiceById = async (serviceId) => {
   try {
     const response = await apiClient.get(`/${serviceId}`);
@@ -50,7 +47,6 @@ export const getServiceById = async (serviceId) => {
   }
 };
 
-// Crear un nuevo servicio
 export const createService = async (serviceData) => {
   try {
     const response = await apiClient.post("/", serviceData);
@@ -61,7 +57,6 @@ export const createService = async (serviceData) => {
   }
 };
 
-// Actualizar un servicio
 export const updateService = async (serviceId, serviceData) => {
   try {
     console.log('Actualizando servicio:', serviceId, serviceData);
@@ -74,7 +69,6 @@ export const updateService = async (serviceId, serviceData) => {
   }
 };
 
-// Eliminar un servicio
 export const deleteService = async (serviceId) => {
   try {
     const response = await apiClient.delete(`/${serviceId}`);

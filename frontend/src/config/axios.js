@@ -1,9 +1,7 @@
 import axios from 'axios';
 
-// URL del backend - usar la URL de producción directamente
-const API_BASE_URL = 'https://petland-backend-qnss.onrender.com';
+const API_BASE_URL = import.meta.env.VITE_API_URL || 'https://petland-backend.onrender.com';
 
-// Crear instancia de axios con configuración base
 const apiClient = axios.create({
   baseURL: API_BASE_URL,
   headers: {
@@ -13,7 +11,6 @@ const apiClient = axios.create({
   timeout: 10000,
 });
 
-// Interceptor para agregar token automáticamente a las peticiones
 apiClient.interceptors.request.use(
   (config) => {
     const token = localStorage.getItem('token');
@@ -27,20 +24,17 @@ apiClient.interceptors.request.use(
   }
 );
 
-// Interceptor para manejar respuestas y errores
 apiClient.interceptors.response.use(
   (response) => {
     return response;
   },
   (error) => {
-    // Si el token expiró o es inválido, redirigir al login
     if (error.response?.status === 401) {
       localStorage.removeItem('token');
       localStorage.removeItem('user');
       window.location.href = '/login';
     }
     
-    // Manejar otros errores
     if (error.response?.status === 0) {
       console.error('Error de CORS o conexión:', error);
     } else if (error.response?.status === 403) {
