@@ -23,10 +23,14 @@ async def create_reservation_controller(reservation_data: ReservationCreate, db:
     
     logger.debug(f"Fetching service with type {reservation_data.service_type.value}")
     service_result = await db.execute(select(Service).where(Service.service_type == reservation_data.service_type))
-    service = service_result.scalar_one_or_none()
-    if not service:
+    services = service_result.scalars().all()
+    if not services:
         logger.warning(f"Service with type {reservation_data.service_type.value} not found")
         raise NotFoundException("Service not found")
+    
+    # Tomar el primer servicio encontrado (puede haber múltiples con el mismo tipo)
+    service = services[0]
+    logger.info(f"Using service_id {service.service_id} for service_type {reservation_data.service_type.value}")
     
     logger.debug(f"Validating reservation dates")
     if reservation_data.checkin_date >= reservation_data.checkout_date:
