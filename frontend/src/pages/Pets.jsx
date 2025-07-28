@@ -5,6 +5,7 @@ import FormsAddNewPet from "../components/Forms/FormsAddNewPet";
 import FormsEditPet from "../components/Forms/FormsEditPet";
 import FormViewPet from "../components/Forms/FormViewPet";
 import { useAuth } from "../context/AuthContext";
+import { useLocation, useNavigate } from "react-router-dom";
 import { FaPlus } from "react-icons/fa";
 
 const Pets = () => {
@@ -16,26 +17,39 @@ const Pets = () => {
   const [selectedPet, setSelectedPet] = useState(null);
   const [loading, setLoading] = useState(false);
   const { user, isUser } = useAuth();
+  const location = useLocation();
+  const navigate = useNavigate();
+
+  const fetchPets = async () => {
+    try {
+      console.log("🔍 Iniciando fetchPets...");
+      console.log("👤 Usuario actual:", user);
+      
+      const data = await getAllPets();
+      console.log("✅ Datos recibidos:", data);
+      console.log("📊 Número de mascotas:", data.length);
+      
+      setPets(data);
+    } catch (error) {
+      console.error("❌ Error al cargar mascotas:", error);
+      setError("Error al cargar las mascotas: " + error.message);
+    }
+  };
 
   useEffect(() => {
-    const fetchPets = async () => {
-      try {
-        console.log("🔍 Iniciando fetchPets...");
-        console.log("👤 Usuario actual:", user);
-        
-        const data = await getAllPets();
-        console.log("✅ Datos recibidos:", data);
-        console.log("📊 Número de mascotas:", data.length);
-        
-        setPets(data);
-      } catch (error) {
-        console.error("❌ Error al cargar mascotas:", error);
-        setError("Error al cargar las mascotas: " + error.message);
-      }
-    };
-
     fetchPets();
   }, [user]);
+
+  // Detectar si venimos de crear una mascota y limpiar la URL
+  useEffect(() => {
+    const searchParams = new URLSearchParams(location.search);
+    if (searchParams.get('refresh') === 'true') {
+      // Recargar los datos
+      fetchPets();
+      // Limpiar el parámetro de la URL
+      navigate('/pets', { replace: true });
+    }
+  }, [location.search, navigate]);
 
   const handlePetCreated = () => {
     // Recargar la lista de mascotas después de crear una nueva

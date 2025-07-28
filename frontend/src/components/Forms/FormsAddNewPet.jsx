@@ -82,9 +82,9 @@ const Form = ({ onClose, userId }) => {
 
     try {
       await createPet(petData);
-      // Cerrar el modal y navegar a la vista de mascotas
+      // Cerrar el modal y navegar a la vista de mascotas con parámetro de recarga
       onClose();
-      navigate('/pets');
+      navigate('/pets?refresh=true');
     } catch (error) {
       console.error("Error al crear el pet:", error);
     }
