@@ -11,6 +11,7 @@ import Payments from "../pages/Payments";
 import Invoice from "../pages/Invoice";
 import Account from "../pages/Account";
 import Settings from "../pages/Settings";
+import Services from "../pages/Serv";
 
 
 export const router = createBrowserRouter([
@@ -57,6 +58,10 @@ export const router = createBrowserRouter([
       {
         path: "settings", // /settings
         element: <Settings />,
+      },
+      {
+        path: "serv", // /services
+        element: <Services />,
       },
       // aqui se agregan mas rutas chicos :) 
     ],
