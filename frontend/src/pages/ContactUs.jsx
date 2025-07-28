@@ -1,7 +1,7 @@
 import { useState, useRef } from 'react';
 import emailjs from '@emailjs/browser';
 import petImage from '../assets/petland-logo-letra-azul.png';
-import petHomeImage from '../assets/PetLandHome.png';
+import mascotasImage from '../assets/mascotas.jpg';
 import { FaFacebookF, FaInstagram, FaWhatsapp, FaMapMarkerAlt, FaPhone, FaEnvelope } from 'react-icons/fa';
 
 const ContactUs = () => {
@@ -102,8 +102,8 @@ const ContactUs = () => {
           {/* Imagen a la izquierda */}
           <div className="flex justify-center items-center">
             <img
-              src={petHomeImage}
-              alt="PetLand Home"
+              src={mascotasImage}
+              alt="Mascotas"
               className="w-full max-w-md h-auto object-contain rounded-lg shadow-lg"
             />
           </div>
