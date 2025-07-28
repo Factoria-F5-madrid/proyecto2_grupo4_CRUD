@@ -11,6 +11,18 @@ class ReservationBase(BaseModel):
     status: Optional[ReservationStatusEnum] = ReservationStatusEnum.PENDING
     internal_notes: Optional[str] = None
 
+    @validator('checkin_date', 'checkout_date', pre=True)
+    def parse_dates(cls, v):
+        if isinstance(v, str):
+            try:
+                return datetime.fromisoformat(v.replace('Z', '+00:00'))
+            except ValueError:
+                try:
+                    return datetime.fromisoformat(v)
+                except ValueError:
+                    raise ValueError(f"Invalid date format: {v}")
+        return v
+
 class ReservationCreate(ReservationBase):
     pass
 
@@ -21,6 +33,20 @@ class ReservationUpdate(BaseModel):
     checkout_date: Optional[datetime] = None
     status: Optional[Union[ReservationStatusEnum, str]] = None
     internal_notes: Optional[str] = None
+
+    @validator('checkin_date', 'checkout_date', pre=True)
+    def parse_dates(cls, v):
+        if v is None:
+            return v
+        if isinstance(v, str):
+            try:
+                return datetime.fromisoformat(v.replace('Z', '+00:00'))
+            except ValueError:
+                try:
+                    return datetime.fromisoformat(v)
+                except ValueError:
+                    raise ValueError(f"Invalid date format: {v}")
+        return v
 
     @validator('status', pre=True)
     def validate_status(cls, v):

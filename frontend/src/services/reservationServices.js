@@ -8,6 +8,33 @@ const getAuthToken = () => {
   return localStorage.getItem('token');
 };
 
+// Función para verificar si el token es válido
+const verifyToken = async () => {
+  try {
+    const token = getAuthToken();
+    if (!token) {
+      throw new Error('No hay token disponible');
+    }
+    
+    // Verificar el token haciendo una petición al endpoint /auth/me
+    const response = await axios.get(`${API_ENDPOINTS.AUTH.ME}`, {
+      headers: {
+        'Authorization': `Bearer ${token}`,
+        'Content-Type': 'application/json'
+      }
+    });
+    
+    console.log('Token válido, usuario:', response.data);
+    return true;
+  } catch (error) {
+    console.error('Token inválido o expirado:', error);
+    // Limpiar token inválido
+    localStorage.removeItem('token');
+    localStorage.removeItem('user');
+    throw new Error('Token inválido o expirado. Por favor, inicia sesión nuevamente.');
+  }
+};
+
 // Configuración de axios con interceptor para incluir el token
 const apiClient = axios.create({
   baseURL: BASE_URL,
@@ -74,6 +101,9 @@ export const getReservationByService = async (service_id) => {
 // Crear una nueva reserva
 export const createReservation = async (reservationData) => {
   try {
+    // Verificar que el token sea válido antes de hacer la petición
+    await verifyToken();
+    
     console.log('Token de autenticación:', getAuthToken());
     console.log('URL de la petición:', `${BASE_URL}/`);
     console.log('Datos a enviar:', reservationData);

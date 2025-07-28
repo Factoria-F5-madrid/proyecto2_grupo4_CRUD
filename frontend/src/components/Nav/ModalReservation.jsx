@@ -64,8 +64,8 @@ const ModalReservation = ({ onClose, serviceName }) => {
       const cleanPayload = {
         user_id: parseInt(userId),
         service_id: getServiceId(serviceName),
-        checkin_date: checkinDate.toISOString(),
-        checkout_date: checkoutDate.toISOString(),
+        checkin_date: checkinDate.toISOString().slice(0, 19), // Formato: 2025-01-30T10:00:00
+        checkout_date: checkoutDate.toISOString().slice(0, 19), // Formato: 2025-01-30T10:00:00
         internal_notes: formData.internal_notes || ''
       };
 
@@ -85,24 +85,22 @@ const ModalReservation = ({ onClose, serviceName }) => {
       console.error('Error al crear reserva:', error);
       
       let errorMessage = 'Error al crear la reserva.';
+      let shouldRedirect = false;
       
-      if (error.message.includes('token') || error.message.includes('autenticación')) {
+      if (error.message.includes('token') || error.message.includes('autenticación') || error.message.includes('inválido')) {
         errorMessage = 'Sesión expirada. Por favor, inicia sesión nuevamente.';
-        // Redirigir al login después de un breve delay
-        setTimeout(() => {
-          window.location.href = '/login';
-        }, 2000);
+        shouldRedirect = true;
       } else if (error.response?.status === 401) {
         errorMessage = 'No autorizado. Por favor, inicia sesión nuevamente.';
-        setTimeout(() => {
-          window.location.href = '/login';
-        }, 2000);
+        shouldRedirect = true;
       } else if (error.response?.status === 403) {
         errorMessage = 'No tienes permisos para crear esta reserva.';
       } else if (error.response?.status === 422) {
         errorMessage = 'Datos inválidos. Verifica la información ingresada.';
       } else if (error.response?.status === 500) {
         errorMessage = 'Error del servidor. Intenta nuevamente más tarde.';
+      } else if (error.message === 'Network Error') {
+        errorMessage = 'Error de conexión. Verifica tu conexión a internet e intenta nuevamente.';
       } else if (error.message) {
         errorMessage = error.message;
       }
@@ -111,6 +109,13 @@ const ModalReservation = ({ onClose, serviceName }) => {
         type: 'error', 
         text: errorMessage
       });
+
+      // Redirigir al login si es necesario
+      if (shouldRedirect) {
+        setTimeout(() => {
+          window.location.href = '/login';
+        }, 3000);
+      }
     } finally {
       setLoading(false);
     }
@@ -162,6 +167,12 @@ const ModalReservation = ({ onClose, serviceName }) => {
             </p>
             <p className="text-sm text-gray-600">
               <strong>Email:</strong> {user?.email}
+            </p>
+            <p className="text-sm text-gray-600">
+              <strong>User ID:</strong> {user?.user_id}
+            </p>
+            <p className="text-sm text-gray-600">
+              <strong>Token:</strong> {localStorage.getItem('token') ? '✅ Presente' : '❌ Ausente'}
             </p>
           </div>
 

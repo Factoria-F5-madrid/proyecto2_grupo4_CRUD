@@ -58,6 +58,14 @@ async def shutdown_event():
 def read_root():
     return {"message": "¡Funciona!"}
 
+@app.get("/health")
+def health_check():
+    return {"status": "healthy", "message": "Backend funcionando correctamente"}
+
+@app.get("/test-auth")
+async def test_auth(current_user: dict = Depends(get_current_user)):
+    return {"message": "Autenticación funcionando", "user": current_user}
+
 async def get_db():
     async with AsyncSessionLocal() as session:
         try:
