@@ -7,6 +7,8 @@ const ModalReservation = ({ onClose, serviceName }) => {
   const { user } = useAuth();
   const [formData, setFormData] = useState({
     service_type: '',
+    date: '',
+    time: '',
     internal_notes: ''
   });
   const [loading, setLoading] = useState(false);
@@ -66,19 +68,40 @@ const ModalReservation = ({ onClose, serviceName }) => {
         throw new Error('Por favor, selecciona un tipo de servicio');
       }
 
-      // Usar fecha actual como fecha de entrada por defecto
-      const checkinDate = new Date();
+      if (!formData.date) {
+        throw new Error('Por favor, selecciona una fecha');
+      }
+
+      if (!formData.time) {
+        throw new Error('Por favor, selecciona una hora');
+      }
+
+      // Crear fecha y hora combinadas
+      let checkinDate;
+      if (formData.date && formData.time) {
+        const [year, month, day] = formData.date.split('-');
+        const [hour, minute] = formData.time.split(':');
+        checkinDate = new Date(year, month - 1, day, hour, minute);
+      } else {
+        // Usar fecha y hora actual como fallback
+        checkinDate = new Date();
+      }
       
       // Calcular automáticamente la fecha de salida (1 día después)
       const checkoutDate = new Date(checkinDate);
       checkoutDate.setDate(checkoutDate.getDate() + 1);
+
+      // Crear notas con fecha y hora
+      const notesWithDateTime = formData.date && formData.time 
+        ? `Fecha: ${formData.date} - Hora: ${formData.time}${formData.internal_notes ? ` - ${formData.internal_notes}` : ''}`
+        : formData.internal_notes || '';
 
       const cleanPayload = {
         user_id: parseInt(userId),
         service_type: formData.service_type,
         checkin_date: checkinDate.toISOString().slice(0, 19), // Formato: 2025-01-30T10:00:00
         checkout_date: checkoutDate.toISOString().slice(0, 19), // Formato: 2025-01-30T10:00:00
-        internal_notes: formData.internal_notes || ''
+        internal_notes: notesWithDateTime
       };
 
       console.log('Token:', token);
@@ -171,26 +194,10 @@ const ModalReservation = ({ onClose, serviceName }) => {
             </div>
           )}
 
-          {/* Información del usuario */}
-          <div className="bg-gray-50 p-4 rounded-lg">
-            <h3 className="font-medium text-gray-800 mb-2">Información del Usuario</h3>
-            <p className="text-sm text-gray-600">
-              <strong>Usuario:</strong> {user?.first_name} {user?.last_name}
-            </p>
-            <p className="text-sm text-gray-600">
-              <strong>Email:</strong> {user?.email}
-            </p>
-            <p className="text-sm text-gray-600">
-              <strong>User ID:</strong> {user?.user_id}
-            </p>
-            <p className="text-sm text-gray-600">
-              <strong>Token:</strong> {localStorage.getItem('token') ? '✅ Presente' : '❌ Ausente'}
-            </p>
-          </div>
-
           {/* Tipo de Servicio */}
           <div>
             <label className="block text-sm font-medium text-gray-700 mb-2">
+              <FaCalendarAlt className="inline mr-2" />
               Tipo de Servicio
             </label>
             <select
@@ -209,7 +216,40 @@ const ModalReservation = ({ onClose, serviceName }) => {
             </select>
           </div>
 
-          {/* Notas */}
+          {/* Fecha */}
+          <div>
+            <label className="block text-sm font-medium text-gray-700 mb-2">
+              <FaCalendarAlt className="inline mr-2" />
+              Fecha de Reserva
+            </label>
+            <input
+              type="date"
+              name="date"
+              value={formData.date}
+              onChange={handleChange}
+              required
+              min={new Date().toISOString().split('T')[0]}
+              className="w-full border border-gray-300 rounded-lg px-3 py-2 focus:ring-2 focus:ring-[#EEAD05] focus:border-transparent"
+            />
+          </div>
+
+          {/* Hora */}
+          <div>
+            <label className="block text-sm font-medium text-gray-700 mb-2">
+              <FaClock className="inline mr-2" />
+              Hora de Reserva
+            </label>
+            <input
+              type="time"
+              name="time"
+              value={formData.time}
+              onChange={handleChange}
+              required
+              className="w-full border border-gray-300 rounded-lg px-3 py-2 focus:ring-2 focus:ring-[#EEAD05] focus:border-transparent"
+            />
+          </div>
+
+          {/* Notas Adicionales */}
           <div>
             <label className="block text-sm font-medium text-gray-700 mb-2">
               Notas Adicionales (Opcional)
@@ -218,28 +258,13 @@ const ModalReservation = ({ onClose, serviceName }) => {
               name="internal_notes"
               value={formData.internal_notes}
               onChange={handleChange}
-              placeholder="Especifica fecha, hora y cualquier detalle adicional..."
+              placeholder="Información adicional sobre la reserva..."
               rows="3"
               className="w-full border border-gray-300 rounded-lg px-3 py-2 focus:ring-2 focus:ring-[#EEAD05] focus:border-transparent resize-none"
             />
             <p className="text-xs text-gray-500 mt-1">
-              Incluye fecha, hora y cualquier información relevante para tu reserva
+              Especifica cualquier detalle adicional para tu reserva
             </p>
-          </div>
-
-          {/* Notas */}
-          <div>
-            <label className="block text-sm font-medium text-gray-700 mb-2">
-              Notas (opcional)
-            </label>
-            <textarea
-              name="internal_notes"
-              value={formData.internal_notes}
-              onChange={handleChange}
-              rows={3}
-              placeholder="Información adicional sobre la reserva..."
-              className="w-full border border-gray-300 rounded-lg px-3 py-2 focus:ring-2 focus:ring-[#EEAD05] focus:border-transparent resize-none"
-            />
           </div>
 
           {/* Botones */}
