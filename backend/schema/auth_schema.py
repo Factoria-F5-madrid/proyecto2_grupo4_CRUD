@@ -1,4 +1,6 @@
 from pydantic import BaseModel
+from typing import List, Optional
+from backend.models.enums import UserRole
 
 class LoginRequest(BaseModel):
     email: str
@@ -15,3 +17,20 @@ class RegisterRequest(BaseModel):
 class TokenResponse(BaseModel):
     access_token: str
     token_type: str = "bearer"
+    user_id: int
+    email: str
+    role: str
+    permissions: List[str]
+    available_routes: dict
+
+class UserInfoResponse(BaseModel):
+    user_id: int
+    email: str
+    first_name: str
+    last_name: str
+    role: str
+    permissions: List[str]
+    available_routes: dict
+
+class RoleUpdateRequest(BaseModel):
+    role: UserRole

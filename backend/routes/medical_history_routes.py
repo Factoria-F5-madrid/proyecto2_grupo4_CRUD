@@ -6,7 +6,16 @@ from backend.schema.medical_history_schema import (
     MedicalHistoryOut,
     MedicalHistoryUpdate,
 )
-from backend.controllers import medical_history_controller
+from backend.controllers.medical_history_controller import (
+    create_medical_history,
+    get_all_medical_histories,
+    get_medical_histories_by_user,
+    get_medical_history_by_id,
+    update_medical_history,
+    delete_medical_history
+)
+from backend.utils.auth_jwt import get_current_user
+from backend.models.enums import UserRole
 
 router = APIRouter()
 
@@ -18,21 +27,37 @@ async def get_db():
             await session.close()
 
 @router.get("/", response_model=list[MedicalHistoryOut])
-async def get_all(db: AsyncSession = Depends(get_db)):
-    return await medical_history_controller.get_all_medical_histories(db)
+async def get_all(
+    db: AsyncSession = Depends(get_db),
+    current_user: dict = Depends(get_current_user)
+):
+    """
+    Obtiene historiales médicos según el rol del usuario:
+    - Admin/Employee: Todos los historiales médicos
+    - User: Solo los historiales de sus mascotas
+    """
+    user_role = UserRole(current_user["role"])
+    
+    if user_role in [UserRole.ADMIN, UserRole.EMPLOYEE]:
+        # Admin y Employee ven todos los historiales médicos
+        return await get_all_medical_histories(db)
+    else:
+        # Usuario regular solo ve los historiales de sus mascotas
+        user_id = current_user["user_id"]
+        return await get_medical_histories_by_user(db, user_id)
 
 @router.get("/{medical_history_id}", response_model=MedicalHistoryOut)
 async def get_by_id(medical_history_id: int, db: AsyncSession = Depends(get_db)):
-    return await medical_history_controller.get_medical_history_by_id(db, medical_history_id)
+    return await get_medical_history_by_id(db, medical_history_id)
 
 @router.post("/", response_model=MedicalHistoryOut)
 async def create(medical_history: MedicalHistoryCreate, db: AsyncSession = Depends(get_db)):
-    return await medical_history_controller.create_medical_history(db, medical_history)
+    return await create_medical_history(db, medical_history)
 
 @router.put("/{medical_history_id}", response_model=MedicalHistoryOut)
 async def update(medical_history_id: int, updates: MedicalHistoryUpdate, db: AsyncSession = Depends(get_db)):
-    return await medical_history_controller.update_medical_history(db, medical_history_id, updates)
+    return await update_medical_history(db, medical_history_id, updates)
 
 @router.delete("/{medical_history_id}")
 async def delete(medical_history_id: int, db: AsyncSession = Depends(get_db)):
-    return await medical_history_controller.delete_medical_history(db, medical_history_id)
+    return await delete_medical_history(db, medical_history_id)

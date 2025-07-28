@@ -19,30 +19,37 @@ async def create_pet_controller(pet_data: PetCreate, db: AsyncSession):
         logger.warning(f"User with ID {pet_data.user_id} not found")
         raise NotFoundException("User not found")
     
-   
-    new_pet = Pet(**pet_data.dict())
-    db.add(new_pet)
-    await db.commit()
-    await db.refresh(new_pet)
-    logger.info(f"Pet created with ID {new_pet.pet_id}")
-    
-    # Enviar notificación en tiempo real
-    pet_dict = {
-        "pet_id": new_pet.pet_id,
-        "name": new_pet.name,
-        "species": new_pet.species,
-        "breed": new_pet.breed,
-        "age": new_pet.age,
-        "user_id": new_pet.user_id
-    }
-    await notification_service.send_pet_update("created", pet_dict)
-    await notification_service.send_user_notification(
-        str(new_pet.user_id), 
-        "pet_created", 
-        {"pet_name": new_pet.name, "pet_id": new_pet.pet_id}
-    )
-    
-    return new_pet
+    try:
+        new_pet = Pet(**pet_data.dict())
+        db.add(new_pet)
+        await db.commit()
+        await db.refresh(new_pet)
+        logger.info(f"Pet created with ID {new_pet.pet_id}")
+        
+        # Enviar notificación en tiempo real
+        pet_dict = {
+            "pet_id": new_pet.pet_id,
+            "name": new_pet.name,
+            "species": new_pet.species.value if new_pet.species else None,
+            "breed": new_pet.breed,
+            "birth_date": new_pet.birth_date.isoformat() if new_pet.birth_date else None,
+            "allergies": new_pet.allergies,
+            "special_needs": new_pet.special_needs,
+            "img_url": new_pet.img_url,
+            "user_id": new_pet.user_id
+        }
+        await notification_service.send_pet_update("created", pet_dict)
+        await notification_service.send_user_notification(
+            str(new_pet.user_id), 
+            "pet_created", 
+            {"pet_name": new_pet.name, "pet_id": new_pet.pet_id}
+        )
+        
+        return new_pet
+    except Exception as e:
+        logger.error(f"Error creating pet: {str(e)}")
+        await db.rollback()
+        raise e
 
 @cache_response("pets:all", ttl=600)  # 10 minutos para listas
 async def get_all_pets_controller(db: AsyncSession):
@@ -101,9 +108,12 @@ async def update_pet_controller(pet_id: int, pet_data: PetUpdate, db: AsyncSessi
     pet_dict = {
         "pet_id": pet.pet_id,
         "name": pet.name,
-        "species": pet.species,
+        "species": pet.species.value if pet.species else None,  # Convertir enum a string
         "breed": pet.breed,
-        "age": pet.age,
+        "birth_date": pet.birth_date.isoformat() if pet.birth_date else None,  # Convertir fecha a string
+        "allergies": pet.allergies,
+        "special_needs": pet.special_needs,
+        "img_url": pet.img_url,
         "user_id": pet.user_id
     }
     await notification_service.send_pet_update("updated", pet_dict)

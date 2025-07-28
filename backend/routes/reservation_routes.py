@@ -13,16 +13,58 @@ from backend.controllers.reservation_controller import (
     delete_reservation_controller,
 )
 from backend.db.database import get_db
+from backend.utils.auth_jwt import get_current_user
+from backend.models.enums import UserRole
 
 router = APIRouter()
 
 @router.post("/", response_model=ReservationOut)
-async def create_reservation(reservation_data: ReservationCreate, db: AsyncSession = Depends(get_db)):
+async def create_reservation(
+    reservation_data: ReservationCreate, 
+    db: AsyncSession = Depends(get_db),
+    current_user: dict = Depends(get_current_user)
+):
+    """
+    Crear una nueva reserva. El usuario solo puede crear reservas para sí mismo.
+    """
+    from backend.logger.logger import logger
+    
+    logger.info(f"Creando reserva para usuario: {current_user['email']} con user_id: {current_user['user_id']}")
+    
+    # Verificar que el usuario esté creando la reserva para sí mismo
+    if reservation_data.user_id != current_user["user_id"]:
+        logger.warning(f"Usuario {current_user['email']} intentó crear reserva para user_id {reservation_data.user_id}")
+        raise HTTPException(status_code=403, detail="You can only create reservations for yourself")
+    
     return await create_reservation_controller(reservation_data, db)
 
 @router.get("/", response_model=List[ReservationOut])
-async def get_all_reservations(db: AsyncSession = Depends(get_db)):
-    return await get_all_reservations_controller(db)
+async def get_all_reservations(
+    db: AsyncSession = Depends(get_db),
+    current_user: dict = Depends(get_current_user)
+):
+    """
+    Obtiene reservas según el rol del usuario:
+    - Admin/Employee: Todas las reservas
+    - User: Solo sus propias reservas
+    """
+    from backend.logger.logger import logger
+    
+    logger.info(f"Endpoint /reservations/ llamado por usuario: {current_user['email']} con rol: {current_user['role']}")
+    
+    user_role = UserRole(current_user["role"])
+    
+    if user_role in [UserRole.ADMIN, UserRole.EMPLOYEE]:
+        # Admin y Employee ven todas las reservas
+        logger.info("Usuario es Admin/Employee - devolviendo todas las reservas")
+        return await get_all_reservations_controller(db)
+    else:
+        # Usuario regular solo ve sus reservas
+        user_id = current_user["user_id"]
+        logger.info(f"Usuario regular - buscando reservas para user_id: {user_id}")
+        reservations = await get_reservations_by_user_controller(user_id, db)
+        logger.info(f"Reservas encontradas para usuario {user_id}: {len(reservations)}")
+        return reservations
 
 @router.get("/{reservation_id}", response_model=ReservationOut)
 async def get_reservation_by_id(reservation_id: int, db: AsyncSession = Depends(get_db)):

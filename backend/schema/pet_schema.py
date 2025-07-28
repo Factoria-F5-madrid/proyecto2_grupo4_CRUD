@@ -1,30 +1,64 @@
-from typing import Optional
-from pydantic import BaseModel
+from typing import Optional, Union
+from pydantic import BaseModel, validator
 from datetime import date
 from backend.models.enums import PetTypeEnum
 
 class PetBase(BaseModel):
     name: str
-    species: PetTypeEnum
+    species: Union[PetTypeEnum, str]
     breed: str
     birth_date: date
     allergies: Optional[str] = None
     special_needs: Optional[str] = None
     img_url: Optional[str] = None  
-    user_id: int  
+    user_id: int
+
+    @validator('species', pre=True)
+    def validate_species(cls, v):
+        if isinstance(v, str):
+            # Mapear valores del frontend a los valores del enum
+            species_mapping = {
+                "Canino": PetTypeEnum.CANINO,
+                "Felino": PetTypeEnum.FELINO,
+                "Reptil": PetTypeEnum.REPTIL,
+                "Anfibio": PetTypeEnum.ANFIBIO,
+                "Ave": PetTypeEnum.AVE,
+                "Pez": PetTypeEnum.PEZ,
+                "Roedor": PetTypeEnum.ROEDOR,
+                "Otro": PetTypeEnum.OTRO
+            }
+            return species_mapping.get(v, v)
+        return v
 
 class PetCreate(PetBase):
     pass
 
 class PetUpdate(BaseModel):
     name: Optional[str] = None
-    species: Optional[PetTypeEnum] = None
+    species: Optional[Union[PetTypeEnum, str]] = None
     breed: Optional[str] = None
     birth_date: Optional[date] = None
     allergies: Optional[str] = None
     special_needs: Optional[str] = None
     img_url: Optional[str] = None
     user_id: Optional[int] = None
+
+    @validator('species', pre=True)
+    def validate_species(cls, v):
+        if isinstance(v, str):
+            # Mapear valores del frontend a los valores del enum
+            species_mapping = {
+                "Canino": PetTypeEnum.CANINO,
+                "Felino": PetTypeEnum.FELINO,
+                "Reptil": PetTypeEnum.REPTIL,
+                "Anfibio": PetTypeEnum.ANFIBIO,
+                "Ave": PetTypeEnum.AVE,
+                "Pez": PetTypeEnum.PEZ,
+                "Roedor": PetTypeEnum.ROEDOR,
+                "Otro": PetTypeEnum.OTRO
+            }
+            return species_mapping.get(v, v)
+        return v
 
 class PetOut(PetBase):
     pet_id: int

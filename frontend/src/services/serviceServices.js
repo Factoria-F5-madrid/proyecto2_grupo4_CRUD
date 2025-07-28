@@ -1,25 +1,51 @@
 import axios from "axios";
+import { API_ENDPOINTS } from '../config/api.js';
 
-const BASE_URL = "http://127.0.0.1:8000/service"; 
+const BASE_URL = API_ENDPOINTS.SERVICES;
 
-//Obtener todos los servicios
-export const getAllService = async () => {
+const getAuthToken = () => {
+  return localStorage.getItem('token');
+};
+
+const apiClient = axios.create({
+  baseURL: BASE_URL,
+  headers: {
+    'Content-Type': 'application/json',
+  },
+});
+
+// Interceptor para agregar el token de autenticación
+apiClient.interceptors.request.use(
+  (config) => {
+    const token = getAuthToken();
+    if (token) {
+      config.headers.Authorization = `Bearer ${token}`;
+    }
+    return config;
+  },
+  (error) => {
+    return Promise.reject(error);
+  }
+);
+
+// Obtener todos los servicios
+export const getAllServices = async () => {
   try {
-    const response = await axios.get(BASE_URL);
+    const response = await apiClient.get("/");
     return response.data;
   } catch (error) {
-    console.error("Error al obtener todos los servicios:", error);
+    console.error("Error al obtener servicios:", error);
     throw error;
   }
 };
 
 // Obtener un servicio por ID
-export const getServiceByID = async (service_id) => {
+export const getServiceById = async (serviceId) => {
   try {
-    const response = await axios.get(`${BASE_URL}/${service_id}`);
+    const response = await apiClient.get(`/${serviceId}`);
     return response.data;
   } catch (error) {
-    console.error(`Error al obtener el servicio con ID ${service_id}:`, error);
+    console.error("Error al obtener servicio:", error);
     throw error;
   }
 };
@@ -27,53 +53,34 @@ export const getServiceByID = async (service_id) => {
 // Crear un nuevo servicio
 export const createService = async (serviceData) => {
   try {
-    const response = await axios.post(
-      "http://127.0.0.1:8000/service/",
-      serviceData,
-      {
-        headers: {
-          "Content-Type": "application/json",
-        },
-      }
-    );
-    return response.data; 
+    const response = await apiClient.post("/", serviceData);
+    return response.data;
   } catch (error) {
-    console.error("Error al crear el servicio:", error);
-    throw error; 
+    console.error("Error al crear servicio:", error);
+    throw error;
+  }
+};
+
+// Actualizar un servicio
+export const updateService = async (serviceId, serviceData) => {
+  try {
+    console.log('Actualizando servicio:', serviceId, serviceData);
+    const response = await apiClient.put(`/${serviceId}`, serviceData);
+    console.log('Respuesta del servidor:', response.data);
+    return response.data;
+  } catch (error) {
+    console.error("Error al actualizar servicio:", error);
+    throw error;
   }
 };
 
 // Eliminar un servicio
-export const deleteService = async (service_id) => {
-  const token = localStorage.getItem("token"); 
-
+export const deleteService = async (serviceId) => {
   try {
-    const response = await axios.delete(`${BASE_URL}/${service_id}`, {
-      headers: {
-        Authorization: 'Bearer ${token}',
-      },
-    });
+    const response = await apiClient.delete(`/${serviceId}`);
     return response.data;
   } catch (error) {
-    console.error(`Error al eliminar el servicio con ID ${service_id}:`, error);
-    throw error;
-  } 
-};
-
-// Actualizar el servicio por ID
-export const updateService = async (service_id, updatedData) => {
-  const token = localStorage.getItem("token"); 
-
-  try {
-    const response = await axios.put(`${BASE_URL}/${service_id}`, updatedData, {
-      headers: {
-        "Content-Type": "application/json",
-        Authorization: 'Bearer ${token}',
-      },
-    });
-    return response.data;
-  } catch (error) {
-    console.error(`Error al actualizar el servicio con ID ${service_id}:`, error);
+    console.error("Error al eliminar servicio:", error);
     throw error;
   }
 };

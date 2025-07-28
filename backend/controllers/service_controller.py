@@ -4,6 +4,7 @@ from backend.exceptions.custom_exceptions import NotFoundException
 from backend.utils.cache_decorators import cache_response, invalidate_cache
 
 from backend.models.service_models import Service
+from backend.models.reservation_models import Reservation
 from backend.schema.service_schemas import ServiceCreate, ServiceUpdate, ServiceOut
 
 from backend.logger.logger import logger
@@ -18,12 +19,31 @@ async def create_service_controller(service_data: ServiceCreate, db: AsyncSessio
     logger.info(f"Service created successfully with ID: {new_service.service_id}")
     return new_service
 
-@cache_response("services:all", ttl=600)  # 10 minutos para listas
+@cache_response("services:all", ttl=600)  
 async def get_all_services_controller(db: AsyncSession):
     logger.debug("Fetching all services")
     result = await db.execute(select(Service))
     services = result.scalars().all()
     logger.info(f"Fetched {len(services)} services")
+    return services
+
+@cache_response("services:by_user", ttl=600)  
+async def get_services_by_user_controller(user_id: int, db: AsyncSession):
+    """
+    Obtiene todos los servicios que un usuario ha contratado a través de sus reservas
+    """
+    logger.info(f"Fetching services for user ID {user_id}")
+    
+    # Obtener servicios únicos que el usuario ha contratado
+    result = await db.execute(
+        select(Service)
+        .join(Reservation, Service.service_id == Reservation.service_id)
+        .where(Reservation.user_id == user_id)
+        .distinct()
+    )
+    services = result.scalars().all()
+    
+    logger.info(f"Fetched {len(services)} unique services for user ID {user_id}")
     return services
 
 @cache_response("services:by_id", ttl=900)  # 15 minutos para servicios individuales
