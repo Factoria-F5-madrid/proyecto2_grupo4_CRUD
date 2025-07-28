@@ -1,24 +1,24 @@
 import React, { useState, useEffect } from 'react';
-import { useNavigate } from 'react-router-dom';
 import { useAuth } from '../context/AuthContext';
 import { updateUser, getAllUsers } from '../services/userServices';
 import { 
   FaUser, 
   FaEnvelope, 
   FaShieldAlt, 
-  FaSignOutAlt,
   FaEdit,
   FaCheck,
   FaTimes,
   FaSpinner,
   FaPhone,
   FaCalendarAlt,
-  FaMapMarkerAlt
+  FaMapMarkerAlt,
+  FaCrown,
+  FaUserTie,
+  FaUserAlt
 } from 'react-icons/fa';
 
 const Account = () => {
-  const { user, logout } = useAuth();
-  const navigate = useNavigate();
+  const { user } = useAuth();
   const [isEditing, setIsEditing] = useState(false);
   const [loading, setLoading] = useState(false);
   const [userData, setUserData] = useState(null);
@@ -111,26 +111,39 @@ const Account = () => {
   const getRoleColor = (role) => {
     switch (role) {
       case 'admin':
-        return 'bg-red-100 text-red-800 border-red-200';
+        return 'bg-red-500';
       case 'employee':
-        return 'bg-blue-100 text-blue-800 border-blue-200';
+        return 'bg-blue-500';
       case 'user':
-        return 'bg-green-100 text-green-800 border-green-200';
+        return 'bg-green-500';
       default:
-        return 'bg-gray-100 text-gray-800 border-gray-200';
+        return 'bg-gray-500';
     }
   };
 
   const getRoleIcon = (role) => {
     switch (role) {
       case 'admin':
-        return '👑';
+        return <FaCrown className="text-white text-xl" />;
       case 'employee':
-        return '👨‍��';
+        return <FaUserTie className="text-white text-xl" />;
       case 'user':
-        return '👤';
+        return <FaUserAlt className="text-white text-xl" />;
       default:
-        return '👤';
+        return <FaUserAlt className="text-white text-xl" />;
+    }
+  };
+
+  const getRoleBgColor = (role) => {
+    switch (role) {
+      case 'admin':
+        return 'bg-gradient-to-br from-red-400 to-red-600';
+      case 'employee':
+        return 'bg-gradient-to-br from-blue-400 to-blue-600';
+      case 'user':
+        return 'bg-gradient-to-br from-green-400 to-green-600';
+      default:
+        return 'bg-gradient-to-br from-gray-400 to-gray-600';
     }
   };
 
@@ -147,7 +160,7 @@ const Account = () => {
 
   return (
     <div className="flex-1 p-6 bg-gray-50">
-      <div className="max-w-4xl mx-auto">
+      <div className="max-w-6xl mx-auto">
         {/* Header */}
         <div className="mb-8">
           <h1 className="text-3xl font-bold text-gray-800 mb-2">Mi Cuenta</h1>
@@ -164,161 +177,152 @@ const Account = () => {
           </div>
         )}
 
-        <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
-          {/* Información del Perfil */}
-          <div className="bg-white rounded-lg border border-gray-200 p-6">
-            <div className="flex items-center justify-between mb-6">
-              <div className="flex items-center gap-3">
-                <div className="p-2 bg-blue-100 rounded-lg">
-                  <FaUser className="text-blue-600 text-xl" />
-                </div>
-                <div>
-                  <h2 className="text-xl font-semibold text-gray-900">
-                    Información del Perfil
-                  </h2>
-                  <p className="text-sm text-gray-500">
-                    Datos personales y de contacto
-                  </p>
-                </div>
-              </div>
-              {!isEditing ? (
-                <button
-                  onClick={() => setIsEditing(true)}
-                  className="flex items-center gap-2 px-3 py-2 text-sm bg-[#EEAD05] text-white rounded hover:bg-yellow-600 transition-colors"
-                >
-                  <FaEdit />
-                  Editar
-                </button>
-              ) : (
-                <div className="flex gap-2">
-                  <button
-                    onClick={handleSaveProfile}
-                    disabled={loading}
-                    className="flex items-center gap-2 px-3 py-2 text-sm bg-green-500 text-white rounded hover:bg-green-600 transition-colors disabled:opacity-50"
-                  >
-                    {loading ? <FaSpinner className="animate-spin" /> : <FaCheck />}
-                    Guardar
-                  </button>
-                  <button
-                    onClick={() => setIsEditing(false)}
-                    className="flex items-center gap-2 px-3 py-2 text-sm bg-gray-500 text-white rounded hover:bg-gray-600 transition-colors"
-                  >
-                    <FaTimes />
-                    Cancelar
-                  </button>
-                </div>
-              )}
-            </div>
-
-            <div className="space-y-4">
-              <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                <div>
-                  <label className="block text-sm font-medium text-gray-700 mb-2">
-                    Nombre
-                  </label>
-                  {isEditing ? (
-                    <input
-                      type="text"
-                      name="first_name"
-                      value={formData.first_name}
-                      onChange={handleInputChange}
-                      className="w-full border border-gray-300 rounded px-3 py-2 focus:ring-2 focus:ring-[#EEAD05] focus:border-transparent"
-                      placeholder="Tu nombre"
-                    />
+        <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
+          {/* Tarjeta Principal del Usuario */}
+          <div className="lg:col-span-2">
+            <div className="bg-white rounded-lg shadow-lg overflow-hidden">
+              {/* Header con imagen y rol */}
+              <div className={`${getRoleBgColor(userData?.role || user.role)} p-6 text-white relative`}>
+                <div className="flex items-center justify-between">
+                  <div className="flex items-center gap-4">
+                    <div className="w-16 h-16 bg-white bg-opacity-20 rounded-full flex items-center justify-center">
+                      {getRoleIcon(userData?.role || user.role)}
+                    </div>
+                    <div>
+                      <h2 className="text-2xl font-bold">
+                        {userData?.first_name || 'Usuario'} {userData?.last_name || ''}
+                      </h2>
+                      <p className="text-white text-opacity-90">
+                        {getRoleLabel(userData?.role || user.role)}
+                      </p>
+                    </div>
+                  </div>
+                  {!isEditing ? (
+                                          <button
+                        onClick={() => setIsEditing(true)}
+                        className="flex items-center gap-2 px-4 py-2 bg-white text-gray-800 rounded-lg hover:bg-gray-100 transition-colors font-medium"
+                      >
+                        <FaEdit />
+                        Editar Perfil
+                      </button>
                   ) : (
-                    <p className="text-gray-900 font-medium">{userData?.first_name || 'No especificado'}</p>
-                  )}
-                </div>
-
-                <div>
-                  <label className="block text-sm font-medium text-gray-700 mb-2">
-                    Apellidos
-                  </label>
-                  {isEditing ? (
-                    <input
-                      type="text"
-                      name="last_name"
-                      value={formData.last_name}
-                      onChange={handleInputChange}
-                      className="w-full border border-gray-300 rounded px-3 py-2 focus:ring-2 focus:ring-[#EEAD05] focus:border-transparent"
-                      placeholder="Tus apellidos"
-                    />
-                  ) : (
-                    <p className="text-gray-900 font-medium">{userData?.last_name || 'No especificado'}</p>
+                    <div className="flex gap-2">
+                      <button
+                        onClick={handleSaveProfile}
+                        disabled={loading}
+                        className="flex items-center gap-2 px-4 py-2 bg-green-500 text-white rounded-lg hover:bg-green-600 transition-colors disabled:opacity-50"
+                      >
+                        {loading ? <FaSpinner className="animate-spin" /> : <FaCheck />}
+                        Guardar
+                      </button>
+                      <button
+                        onClick={() => setIsEditing(false)}
+                        className="flex items-center gap-2 px-4 py-2 bg-white text-gray-800 rounded-lg hover:bg-gray-100 transition-colors font-medium"
+                      >
+                        <FaTimes />
+                        Cancelar
+                      </button>
+                    </div>
                   )}
                 </div>
               </div>
 
-              <div>
-                <label className="block text-sm font-medium text-gray-700 mb-2 flex items-center gap-2">
-                  <FaEnvelope className="text-gray-500" />
-                  Email
-                </label>
-                {isEditing ? (
-                  <input
-                    type="email"
-                    name="email"
-                    value={formData.email}
-                    onChange={handleInputChange}
-                    className="w-full border border-gray-300 rounded px-3 py-2 focus:ring-2 focus:ring-[#EEAD05] focus:border-transparent"
-                    placeholder="tu@email.com"
-                  />
-                ) : (
-                  <p className="text-gray-900 font-medium">{userData?.email || user.email}</p>
-                )}
-              </div>
+              {/* Información del perfil */}
+              <div className="p-6">
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                  <div>
+                    <label className="block text-sm font-medium text-gray-700 mb-2">
+                      Nombre
+                    </label>
+                    {isEditing ? (
+                      <input
+                        type="text"
+                        name="first_name"
+                        value={formData.first_name}
+                        onChange={handleInputChange}
+                        className="w-full border border-gray-300 rounded-lg px-3 py-2 focus:ring-2 focus:ring-[#EEAD05] focus:border-transparent"
+                        placeholder="Tu nombre"
+                      />
+                    ) : (
+                      <p className="text-gray-900 font-medium text-lg">{userData?.first_name || 'No especificado'}</p>
+                    )}
+                  </div>
 
-              <div>
-                <label className="block text-sm font-medium text-gray-700 mb-2 flex items-center gap-2">
-                  <FaPhone className="text-gray-500" />
-                  Teléfono
-                </label>
-                {isEditing ? (
-                  <input
-                    type="tel"
-                    name="phone_number"
-                    value={formData.phone_number}
-                    onChange={handleInputChange}
-                    className="w-full border border-gray-300 rounded px-3 py-2 focus:ring-2 focus:ring-[#EEAD05] focus:border-transparent"
-                    placeholder="Tu número de teléfono"
-                  />
-                ) : (
-                  <p className="text-gray-900 font-medium">{userData?.phone_number || 'No especificado'}</p>
-                )}
-              </div>
+                  <div>
+                    <label className="block text-sm font-medium text-gray-700 mb-2">
+                      Apellidos
+                    </label>
+                    {isEditing ? (
+                      <input
+                        type="text"
+                        name="last_name"
+                        value={formData.last_name}
+                        onChange={handleInputChange}
+                        className="w-full border border-gray-300 rounded-lg px-3 py-2 focus:ring-2 focus:ring-[#EEAD05] focus:border-transparent"
+                        placeholder="Tus apellidos"
+                      />
+                    ) : (
+                      <p className="text-gray-900 font-medium text-lg">{userData?.last_name || 'No especificado'}</p>
+                    )}
+                  </div>
 
-              <div>
-                <label className="block text-sm font-medium text-gray-700 mb-2 flex items-center gap-2">
-                  <FaShieldAlt className="text-gray-500" />
-                  Rol
-                </label>
-                <div className="flex items-center gap-3">
-                  <span className="text-2xl">{getRoleIcon(userData?.role || user.role)}</span>
-                  <span className={`inline-block px-3 py-1 rounded-full text-sm font-medium border ${getRoleColor(userData?.role || user.role)}`}>
-                    {getRoleLabel(userData?.role || user.role)}
-                  </span>
+                  <div>
+                    <label className="block text-sm font-medium text-gray-700 mb-2 flex items-center gap-2">
+                      <FaEnvelope className="text-gray-500" />
+                      Email
+                    </label>
+                    {isEditing ? (
+                      <input
+                        type="email"
+                        name="email"
+                        value={formData.email}
+                        onChange={handleInputChange}
+                        className="w-full border border-gray-300 rounded-lg px-3 py-2 focus:ring-2 focus:ring-[#EEAD05] focus:border-transparent"
+                        placeholder="tu@email.com"
+                      />
+                    ) : (
+                      <p className="text-gray-900 font-medium text-lg">{userData?.email || user.email}</p>
+                    )}
+                  </div>
+
+                  <div>
+                    <label className="block text-sm font-medium text-gray-700 mb-2 flex items-center gap-2">
+                      <FaPhone className="text-gray-500" />
+                      Teléfono
+                    </label>
+                    {isEditing ? (
+                      <input
+                        type="tel"
+                        name="phone_number"
+                        value={formData.phone_number}
+                        onChange={handleInputChange}
+                        className="w-full border border-gray-300 rounded-lg px-3 py-2 focus:ring-2 focus:ring-[#EEAD05] focus:border-transparent"
+                        placeholder="Tu número de teléfono"
+                      />
+                    ) : (
+                      <p className="text-gray-900 font-medium text-lg">{userData?.phone_number || 'No especificado'}</p>
+                    )}
+                  </div>
                 </div>
               </div>
             </div>
           </div>
 
-          {/* Información de la Cuenta */}
-          <div className="bg-white rounded-lg border border-gray-200 p-6">
-            <div className="flex items-center gap-3 mb-6">
-              <div className="p-2 bg-purple-100 rounded-lg">
-                <FaShieldAlt className="text-purple-600 text-xl" />
-              </div>
-              <div>
-                <h2 className="text-xl font-semibold text-gray-900">
-                  Información de la Cuenta
-                </h2>
-                <p className="text-sm text-gray-500">
-                  Detalles de tu cuenta
-                </p>
+          {/* Tarjeta de Información de la Cuenta */}
+          <div className="bg-white rounded-lg shadow-lg overflow-hidden">
+            <div className="bg-gradient-to-br from-purple-400 to-purple-600 p-6 text-white">
+              <div className="flex items-center gap-3">
+                <div className="w-12 h-12 bg-white bg-opacity-20 rounded-full flex items-center justify-center">
+                  <FaShieldAlt className="text-white text-xl" />
+                </div>
+                <div>
+                  <h2 className="text-xl font-bold">Información de la Cuenta</h2>
+                  <p className="text-white text-opacity-90 text-sm">Detalles de tu cuenta</p>
+                </div>
               </div>
             </div>
 
-            <div className="space-y-4">
+            <div className="p-6 space-y-4">
               <div className="bg-gray-50 p-4 rounded-lg">
                 <h3 className="font-medium text-gray-800 mb-2 flex items-center gap-2">
                   <FaUser className="text-gray-500" />
@@ -333,12 +337,20 @@ const Account = () => {
                   Miembro desde
                 </h3>
                 <p className="text-gray-600 text-sm">
-                  {userData?.created_at ? new Date(userData.created_at).toLocaleDateString('es-ES', {
+                  {user?.created_at ? new Date(user.created_at).toLocaleDateString('es-ES', {
                     year: 'numeric',
                     month: 'long',
                     day: 'numeric'
                   }) : 'Fecha no disponible'}
                 </p>
+                {user?.created_at && (
+                  <p className="text-xs text-gray-500 mt-1">
+                    {new Date(user.created_at).toLocaleTimeString('es-ES', {
+                      hour: '2-digit',
+                      minute: '2-digit'
+                    })}
+                  </p>
+                )}
               </div>
 
               <div className="bg-gray-50 p-4 rounded-lg">
@@ -347,26 +359,12 @@ const Account = () => {
                   Estado de la Cuenta
                 </h3>
                 <div className="flex items-center gap-2">
-                  <div className="w-2 h-2 bg-green-500 rounded-full"></div>
+                  <div className="w-3 h-3 bg-green-500 rounded-full"></div>
                   <span className="text-green-600 text-sm font-medium">Activa</span>
                 </div>
               </div>
             </div>
           </div>
-        </div>
-
-        {/* Botón de Cerrar Sesión */}
-        <div className="mt-8 flex justify-center">
-          <button
-            onClick={() => {
-              logout();
-              navigate('/');
-            }}
-            className="flex items-center gap-3 px-6 py-3 bg-red-500 text-white rounded hover:bg-red-600 transition-colors font-medium"
-          >
-            <FaSignOutAlt />
-            Cerrar Sesión
-          </button>
         </div>
       </div>
     </div>
