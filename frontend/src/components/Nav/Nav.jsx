@@ -4,7 +4,7 @@ import {
   FaUserAlt, FaCog, FaCalendarAlt, FaBars, FaTimes,
   FaMoneyCheckAlt, FaStethoscope, FaFileInvoice,
   FaDog, FaClipboardList, FaUsers, FaUserTie, FaClipboard,
-  FaEnvelope, FaSignInAlt, FaHome, FaChartBar
+  FaEnvelope, FaSignInAlt, FaHome, FaChartBar, FaListAlt
 } from "react-icons/fa";
 import Modal from "./Modal";
 import { useAuth } from "../../context/AuthContext";
@@ -37,6 +37,16 @@ export default function Nav() {
       to: "/services",
       show: true
     });
+
+    // Mis Reservas - Solo para usuarios logueados
+    if (user) {
+      items.push({
+        icon: <FaListAlt />,
+        label: "Mis Reservas",
+        to: "/my-reservations",
+        show: true
+      });
+    }
 
     // Enlaces específicos para Admin
     if (isAdmin()) {

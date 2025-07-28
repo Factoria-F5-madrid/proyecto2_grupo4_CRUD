@@ -457,10 +457,10 @@ const Services = () => {
       </div>
 
       {/* Modal de reserva */}
-      {showModal && selectedService && (
+      {showModal && selectedServiceForReservation && (
         <ModalReservation 
           onClose={handleCloseModal} 
-          serviceName={selectedService.name}
+          serviceName={selectedServiceForReservation.name}
         />
       )}
 

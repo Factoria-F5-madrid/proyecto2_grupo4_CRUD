@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
 import { FaClipboard, FaCalendarAlt, FaMoneyBillWave, FaClock, FaBed, FaCar, FaUtensils, FaArrowLeft } from 'react-icons/fa';
-import { getServiceByID } from '../services/serviceServices';
+import { getServiceById } from '../services/serviceServices';
 
 const ServiceDetail = () => {
   const [service, setService] = useState(null);
@@ -17,7 +17,7 @@ const ServiceDetail = () => {
   const loadService = async () => {
     try {
       setLoading(true);
-      const data = await getServiceByID(serviceId);
+      const data = await getServiceById(serviceId);
       setService(data);
     } catch (error) {
       console.error('Error cargando servicio:', error);

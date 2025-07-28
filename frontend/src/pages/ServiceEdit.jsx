@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
 import { FaClipboard, FaMoneyBillWave, FaClock, FaBed, FaCar, FaUtensils, FaArrowLeft, FaSave, FaTimes } from 'react-icons/fa';
-import { getServiceByID, updateService } from '../services/serviceServices';
+import { getServiceById, updateService } from '../services/serviceServices';
 import { useAuth } from '../context/AuthContext';
 
 const ServiceEdit = () => {
@@ -28,7 +28,7 @@ const ServiceEdit = () => {
   const loadService = async () => {
     try {
       setLoading(true);
-      const data = await getServiceByID(serviceId);
+      const data = await getServiceById(serviceId);
       setService(data);
       
       // Prellenar el formulario con los datos actuales

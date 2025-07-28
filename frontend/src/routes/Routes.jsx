@@ -24,6 +24,7 @@ import Employees from "../pages/Employees";
 import Services from "../pages/Services";
 import ServiceEdit from "../pages/ServiceEdit";
 import PaymentCreate from "../pages/PaymentCreate";
+import MyReservations from "../pages/MyReservations";
 
 
 export const router = createBrowserRouter([
@@ -123,6 +124,10 @@ export const router = createBrowserRouter([
       {
         path: "settings", // /settings
         element: <Settings />,
+      },
+      {
+        path: "my-reservations", // /my-reservations
+        element: <MyReservations />,
       },
       // aqui se agregan mas rutas chicos :) 
     ],
