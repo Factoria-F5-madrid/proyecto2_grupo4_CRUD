@@ -7,20 +7,25 @@ import groomingServ from '../assets/groomingServ.png';
 import walkServ from '../assets/walkServ.png';
 import vetServ from '../assets/vetServ.png';
 import petImage from '../assets/petland-logo-letra-azul.png';
-import { FaCalendarAlt, FaInfoCircle, FaClock, FaStar, FaSignInAlt, FaTimes, FaCheck, FaMapMarkerAlt, FaPhone, FaEnvelope, FaUsers } from 'react-icons/fa';
+import { FaCalendarAlt, FaInfoCircle, FaClock, FaStar, FaSignInAlt, FaTimes, FaCheck, FaMapMarkerAlt, FaPhone, FaEnvelope, FaUsers, FaEdit, FaTrash, FaPlus } from 'react-icons/fa';
 import ModalReservation from '../components/Nav/ModalReservation';
+import FormEditService from '../components/Forms/FormEditService';
+import FormCreateService from '../components/Forms/FormCreateService';
 import { useAuth } from '../context/AuthContext';
 
 const Services = () => {
   const [showModal, setShowModal] = useState(false);
-  const [selectedService, setSelectedService] = useState(null);
+  const [selectedServiceForReservation, setSelectedServiceForReservation] = useState(null);
   const [showLoginPrompt, setShowLoginPrompt] = useState(false);
   const [showServiceInfo, setShowServiceInfo] = useState(false);
   const [selectedServiceInfo, setSelectedServiceInfo] = useState(null);
+  const [showEditModal, setShowEditModal] = useState(false);
+  const [selectedServiceToEdit, setSelectedServiceToEdit] = useState(null);
+  const [showCreateModal, setShowCreateModal] = useState(false);
   const navigate = useNavigate();
-  const { user } = useAuth();
+  const { user, isAdmin, hasPermission } = useAuth();
 
-  const services = [
+  const [services, setServices] = useState([
     {
       id: 1,
       name: "Guardería",
@@ -189,7 +194,7 @@ const Services = () => {
         }
       }
     }
-  ];
+  ]);
 
   const handleReservation = (service) => {
     // Verificar si el usuario está logueado
@@ -199,13 +204,13 @@ const Services = () => {
     }
     
     // Si está logueado, abrir el modal de reserva
-    setSelectedService(service);
+    setSelectedServiceForReservation(service);
     setShowModal(true);
   };
 
   const handleCloseModal = () => {
     setShowModal(false);
-    setSelectedService(null);
+    setSelectedServiceForReservation(null);
   };
 
   const handleLoginRedirect = () => {
@@ -227,6 +232,61 @@ const Services = () => {
     setSelectedServiceInfo(null);
   };
 
+  const handleEditService = (service) => {
+    console.log('Editando servicio:', service);
+    setSelectedServiceToEdit(service);
+    setShowEditModal(true);
+  };
+
+  const handleServiceUpdated = (updatedService) => {
+    console.log('Servicio actualizado del backend:', updatedService);
+    
+    // Mapear los datos del backend al formato del frontend
+    const mappedService = {
+      id: updatedService.service_id,
+      name: updatedService.other_service || updatedService.service_type.value,
+      description: updatedService.notes || '',
+      price: `€${updatedService.base_price}`,
+      available: updatedService.lodging,
+      image: updatedService.image || '', // Mantener la imagen original si no se actualizó
+      detailedInfo: updatedService.detailedInfo || {} // Mantener la información detallada si existe
+    };
+    
+    console.log('Servicio mapeado para el frontend:', mappedService);
+    
+    // Actualizar la lista de servicios con el servicio mapeado
+    setServices(prevServices => 
+      prevServices.map(service => 
+        service.id === mappedService.id ? mappedService : service
+      )
+    );
+    setShowEditModal(false);
+    setSelectedServiceToEdit(null);
+  };
+
+  const handleCreateService = () => {
+    setShowCreateModal(true);
+  };
+
+  const handleCloseCreateModal = () => {
+    setShowCreateModal(false);
+  };
+
+  const handleServiceCreated = (newService) => {
+    console.log('Servicio creado:', newService);
+    // Agregar el nuevo servicio a la lista
+    setServices(prevServices => [...prevServices, newService]);
+    setShowCreateModal(false);
+  };
+
+  const handleDeleteService = (service) => {
+    if (window.confirm(`¿Estás seguro de que quieres eliminar el servicio "${service.name}"?`)) {
+      console.log('Eliminando servicio:', service);
+      // Aquí puedes implementar la lógica de eliminación
+      alert('Función de eliminación en desarrollo');
+    }
+  };
+
   return (
     <div className="flex-1 p-6 bg-gray-50">
       <div className="max-w-7xl mx-auto">
@@ -246,18 +306,57 @@ const Services = () => {
           </div>
         </div>
 
+        {/* Botón de crear servicio - solo para admin */}
+        {isAdmin() && (
+          <div className="mb-6 flex justify-end">
+            <button
+              onClick={handleCreateService}
+              className="bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded-lg flex items-center gap-2 transition-colors"
+            >
+              <FaPlus />
+              Crear Servicio
+            </button>
+          </div>
+        )}
+
         {/* Grid de servicios */}
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
           {services.map((service) => (
             <div key={service.id} className="bg-white rounded-xl shadow-lg overflow-hidden hover:shadow-xl transition-shadow">
               {/* Imagen del servicio */}
-              <div className="h-48 overflow-hidden">
+              <div className="h-48 overflow-hidden relative group">
                 <img 
                   className="w-full h-full object-cover hover:scale-105 transition-transform duration-300" 
                   src={service.image} 
                   alt={service.name} 
                 />
-      </div>
+                
+                {/* Botones de administrador - solo visibles para admin */}
+                {isAdmin() && (
+                  <div className="absolute top-2 right-2 flex gap-2 opacity-0 group-hover:opacity-100 transition-opacity duration-300">
+                    <button
+                      onClick={(e) => {
+                        e.stopPropagation();
+                        handleEditService(service);
+                      }}
+                      className="bg-white bg-opacity-90 hover:bg-opacity-100 p-2 rounded-full shadow-md"
+                      title="Editar servicio"
+                    >
+                      <FaEdit className="text-indigo-600" />
+                    </button>
+                    <button
+                      onClick={(e) => {
+                        e.stopPropagation();
+                        handleDeleteService(service);
+                      }}
+                      className="bg-white bg-opacity-90 hover:bg-opacity-100 p-2 rounded-full shadow-md"
+                      title="Eliminar servicio"
+                    >
+                      <FaTrash className="text-red-600" />
+                    </button>
+        </div>
+      )}
+              </div>
       
               {/* Información del servicio */}
               <div className="p-6">
@@ -512,6 +611,26 @@ const Services = () => {
             </div>
           </div>
         </div>
+      )}
+
+      {/* Modal de edición de servicio */}
+      {showEditModal && selectedServiceToEdit && (
+        <FormEditService
+          service={selectedServiceToEdit}
+          onClose={() => {
+            setShowEditModal(false);
+            setSelectedServiceToEdit(null);
+          }}
+          onServiceUpdated={handleServiceUpdated}
+        />
+      )}
+
+      {/* Modal de crear servicio */}
+      {showCreateModal && (
+        <FormCreateService
+          onClose={handleCloseCreateModal}
+          onServiceCreated={handleServiceCreated}
+        />
       )}
     </div>
   );
