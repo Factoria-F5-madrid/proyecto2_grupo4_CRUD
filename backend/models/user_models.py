@@ -14,6 +14,8 @@ class User(Base):
     last_update = Column(TIMESTAMP(timezone=False), nullable=False, server_default=func.now())
     updated_by = Column(String(55), nullable=False)
     update_date = Column(TIMESTAMP(timezone=False), nullable=False)
+    hashed_password = Column(String, nullable=False)
+    role = Column(String(20), nullable=False, default="user")
 
 
     reservations = relationship("Reservation", back_populates="user")

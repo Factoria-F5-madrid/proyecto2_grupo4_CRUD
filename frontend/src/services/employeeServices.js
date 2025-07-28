@@ -1,12 +1,10 @@
-// voy hacer los servicios de employee
-import axios from "axios";
-const BASE_URL = "http://127.0.0.1:8000/employees";
-
-// ahora mis servicios con manejo de errores try catch que consumira mi endpoint
+// Servicios de empleados
+import apiClient from "../config/axios";
+import { API_ENDPOINTS } from "../config/api";
 
 export const getAllEmployees = async () => {
     try {
-        const response = await axios.get(BASE_URL);
+        const response = await apiClient.get(API_ENDPOINTS.EMPLOYEES);
         return response.data;
     } catch (error) {
         console.error("Error al obtener todos los empleados:", error);
@@ -16,7 +14,7 @@ export const getAllEmployees = async () => {
 
 export const getEmployeeByID = async (employee_id) => {
     try {
-        const response = await axios.get(`${BASE_URL}/${employee_id}`);
+        const response = await apiClient.get(`${API_ENDPOINTS.EMPLOYEES}/${employee_id}`);
         return response.data;
     } catch (error) {
         console.error(`Error al obtener el empleado con ID ${employee_id}:`, error);
@@ -26,7 +24,7 @@ export const getEmployeeByID = async (employee_id) => {
 
 export const createEmployee = async (employeeData) => {
     try {
-        const response = await axios.post(BASE_URL, employeeData);
+        const response = await apiClient.post(API_ENDPOINTS.EMPLOYEES, employeeData);
         return response.data;
     } catch (error) {
         console.error("Error al crear el empleado:", error);
@@ -36,7 +34,7 @@ export const createEmployee = async (employeeData) => {
 
 export const updateEmployee = async (employee_id, updatedData) => {
     try {
-        const response = await axios.put(`${BASE_URL}/${employee_id}`, updatedData);
+        const response = await apiClient.put(`${API_ENDPOINTS.EMPLOYEES}/${employee_id}`, updatedData);
         return response.data;
     } catch (error) {
         console.error("Error al actualizar el empleado:", error);
@@ -46,7 +44,7 @@ export const updateEmployee = async (employee_id, updatedData) => {
 
 export const deleteEmployee = async (employee_id) => {
     try {
-        const response = await axios.delete(`${BASE_URL}/${employee_id}`);
+        const response = await apiClient.delete(`${API_ENDPOINTS.EMPLOYEES}/${employee_id}`);
         return response.data;
     } catch (error) {
         console.error("Error al eliminar el empleado:", error);

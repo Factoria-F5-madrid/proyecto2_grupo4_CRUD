@@ -20,6 +20,8 @@ config/local_settings.py
 # Archivos de logs y bases de datos locales
 *.log
 *.sqlite3
+backend/logs/*.log
+backend/data/dump.rdb
 
 # Archivos de cache
 *.pyc

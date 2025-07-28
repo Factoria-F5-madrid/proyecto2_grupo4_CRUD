@@ -1,6 +1,7 @@
 import axios from "axios";
+import { API_ENDPOINTS } from '../config/api.js';
 
-const BASE_URL = "http://127.0.0.1:8000/assigment/"; 
+const BASE_URL = API_ENDPOINTS.ASSIGNMENTS; 
 
 // Obtener todas las asignaciones 
 export const getAllAssigments = async () => {
@@ -19,17 +20,17 @@ export const getAssigmentByID = async (assignment_id) => {
     const response = await axios.get(`${BASE_URL}/${assignment_id}`);
     return response.data;
   } catch (error) {
-    console.error(`Error al obtener la asignación de empleado con ID ${id}:`, error);
+    console.error(`Error al obtener la asignación de empleado con ID ${assignment_id}:`, error);
     throw error;
   }
 };
 
 // Crear una nueva asignación de empleado
-export const createAssignment = async (assigmentData) => {
+export const createAssignment = async (assignmentData) => {
   try {
     const response = await axios.post(
-      "http://127.0.0.1:8000/assigment/",
-      assigmentData,
+      API_ENDPOINTS.ASSIGNMENTS,
+      assignmentData,
       {
         headers: {
           "Content-Type": "application/json",

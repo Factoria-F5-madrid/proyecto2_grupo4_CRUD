@@ -1,4 +1,4 @@
-from pydantic import BaseModel
+from pydantic import BaseModel, ConfigDict
 from typing import Optional
 from datetime import time,datetime
 from backend.models.enums import ServiceTypeEnum  
@@ -22,11 +22,8 @@ class ServiceUpdate(BaseModel):
     base_price: Optional[float]
     duration: Optional[time]
 
-
-
 class ServiceOut(ServiceBase):
     service_id: int
     created_at: datetime
 
-    class Config:
-         model_config = {"from_attributes": True}
+    model_config = ConfigDict(from_attributes=True)

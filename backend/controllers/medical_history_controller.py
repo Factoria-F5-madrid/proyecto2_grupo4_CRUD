@@ -2,6 +2,7 @@ from backend.exceptions.custom_exceptions import NotFoundException, BadRequestEx
 from sqlalchemy.ext.asyncio import AsyncSession
 from sqlalchemy.future import select
 from backend.models.medical_history_models import MedicalHistory
+from backend.models.pet_models import Pet
 from backend.schema.medical_history_schema import (
     MedicalHistoryCreate,
     MedicalHistoryUpdate,
@@ -24,6 +25,31 @@ async def get_all_medical_histories(db: AsyncSession):
     result = await db.execute(select(MedicalHistory))
     histories = result.scalars().all()
     logger.info(f"Fetched {len(histories)} medical histories")
+    return histories
+
+async def get_medical_histories_by_user(db: AsyncSession, user_id: int):
+    """
+    Obtiene todos los historiales médicos de las mascotas que pertenecen al usuario
+    """
+    logger.info(f"Fetching medical histories for user ID {user_id}")
+    
+    # Primero obtener las mascotas del usuario
+    pets_result = await db.execute(
+        select(Pet.pet_id).where(Pet.user_id == user_id)
+    )
+    user_pet_ids = [pet_id for (pet_id,) in pets_result.all()]
+    
+    if not user_pet_ids:
+        logger.info(f"No pets found for user ID {user_id}")
+        return []
+    
+    # Luego obtener los historiales médicos de esas mascotas
+    result = await db.execute(
+        select(MedicalHistory).where(MedicalHistory.pet_id.in_(user_pet_ids))
+    )
+    histories = result.scalars().all()
+    
+    logger.info(f"Fetched {len(histories)} medical histories for user ID {user_id}")
     return histories
 
 async def get_medical_history_by_id(db: AsyncSession, medical_history_id: int):

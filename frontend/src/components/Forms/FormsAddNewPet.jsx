@@ -1,8 +1,12 @@
 import { useState } from "react";
 import { createPet } from "../../services/petServices";
 import { subirImagenCloudinary } from "../../services/petServices";
+import { useAuth } from "../../context/AuthContext";
+import { useNavigate } from "react-router-dom";
 
 const Form = ({ onClose, userId }) => {
+  const { user } = useAuth();
+  const navigate = useNavigate();
   const [formData, setFormData] = useState({
     name: "",
     species: "",
@@ -11,7 +15,7 @@ const Form = ({ onClose, userId }) => {
     allergies: "",
     special_needs: "",
     image: null,
-    user_id: 1,
+    user_id: user?.user_id || 1,
   });
 
   const [errors, setErrors] = useState({});
@@ -70,13 +74,14 @@ const Form = ({ onClose, userId }) => {
       allergies: formData.allergies || null,
       special_needs: formData.special_needs || null,
       img_url: imageUrl,
-      user_id: 1,
+      user_id: user?.user_id || 1,
     };
 
     try {
       await createPet(petData);
-      window.location.reload();
+      // Cerrar el modal y navegar a la vista de mascotas
       onClose();
+      navigate('/pets');
     } catch (error) {
       console.error("Error al crear el pet:", error);
     }

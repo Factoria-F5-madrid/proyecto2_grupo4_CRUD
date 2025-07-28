@@ -3,6 +3,7 @@ from sqlalchemy.future import select
 from backend.exceptions.custom_exceptions import NotFoundException, BadRequestException
 
 from backend.models.invoice_models import Invoice
+from backend.models.reservation_models import Reservation
 from backend.schema.invoice_schema import InvoiceCreate, InvoiceUpdate
 
 from backend.logger.logger import logger
@@ -21,6 +22,24 @@ async def get_all_invoices_controller(db: AsyncSession):
     result = await db.execute(select(Invoice))
     invoices = result.scalars().all()
     logger.info(f"Fetched {len(invoices)} invoices")
+    return invoices
+
+async def get_invoices_by_user_controller(user_id: int, db: AsyncSession):
+    """
+    Obtiene todas las facturas de los servicios que un usuario ha contratado a través de sus reservas
+    """
+    logger.info(f"Fetching invoices for user ID {user_id}")
+    
+    # Obtener facturas únicas de los servicios que el usuario ha contratado
+    result = await db.execute(
+        select(Invoice)
+        .join(Reservation, Invoice.service_id == Reservation.service_id)
+        .where(Reservation.user_id == user_id)
+        .distinct()
+    )
+    invoices = result.scalars().all()
+    
+    logger.info(f"Fetched {len(invoices)} unique invoices for user ID {user_id}")
     return invoices
 
 async def get_invoice_by_id_controller(invoice_id: int, db: AsyncSession):

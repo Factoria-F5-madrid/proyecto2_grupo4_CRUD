@@ -1,81 +1,221 @@
 import { useState } from "react";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useLocation } from "react-router-dom";
 import {
-  FaUserAlt, FaCog, FaCalendarAlt, FaBars, FaTimes, FaPlus,
-  FaMoneyCheckAlt, FaStethoscope, FaFileInvoice, FaEnvelope,
-  FaDog, FaClipboardList
+  FaUserAlt, FaCog, FaCalendarAlt, FaBars, FaTimes,
+  FaMoneyCheckAlt, FaStethoscope, FaFileInvoice,
+  FaDog, FaClipboardList, FaUsers, FaUserTie, FaClipboard,
+  FaEnvelope, FaSignInAlt, FaHome, FaChartBar
 } from "react-icons/fa";
-import Modal from "./Modal"; 
+import Modal from "./Modal";
+import { useAuth } from "../../context/AuthContext";
+import PetLandLogo from "../../assets/petLand-sinFondo.png"; 
 
 export default function Nav() {
   const [isOpen, setIsOpen] = useState(true);
-  const [showModal, setShowModal] = useState(false);
   const navigate = useNavigate();
+  const location = useLocation();
+  const { user, logout, hasRouteAccess, isAdmin, isEmployee, isUser } = useAuth();
+
+  // Configuración de navegación basada en roles
+  const getNavigationItems = () => {
+    const items = [];
+
+    // Dashboard/Home - Todos los usuarios
+    items.push({
+      icon: <FaHome />,
+      label: "Dashboard",
+      to: "/home",
+      show: true
+    });
+
+    // Enlaces específicos para Admin
+    if (isAdmin()) {
+      items.push(
+        {
+          icon: <FaUsers />,
+          label: "Usuarios",
+          to: "/users",
+          show: hasRouteAccess('users')
+        },
+        {
+          icon: <FaUserTie />,
+          label: "Empleados",
+          to: "/employees",
+          show: hasRouteAccess('employees')
+        }
+      );
+    }
+
+    // Enlaces para Admin y Employee
+    if (isAdmin() || isEmployee()) {
+      items.push(
+        {
+          icon: <FaDog />,
+          label: "Mascotas",
+          to: "/pets",
+          show: hasRouteAccess('pets')
+        },
+        {
+          icon: <FaCalendarAlt />,
+          label: "Reservas",
+          to: "/reservations",
+          show: hasRouteAccess('reservations')
+        },
+        {
+          icon: <FaStethoscope />,
+          label: "Historial Médico",
+          to: "/medicalhistory",
+          show: hasRouteAccess('medical_history')
+        },
+        {
+          icon: <FaMoneyCheckAlt />,
+          label: "Pagos",
+          to: "/payments",
+          show: hasRouteAccess('payments')
+        },
+        {
+          icon: <FaFileInvoice />,
+          label: "Facturas",
+          to: "/invoices",
+          show: hasRouteAccess('invoices')
+        }
+      );
+    }
+
+    // Enlaces para usuarios regulares
+    if (isUser()) {
+      items.push(
+        {
+          icon: <FaDog />,
+          label: "Mis Mascotas",
+          to: "/pets",
+          show: hasRouteAccess('pets')
+        },
+        {
+          icon: <FaStethoscope />,
+          label: "Historial Médico",
+          to: "/medicalhistory",
+          show: hasRouteAccess('medical_history')
+        },
+        {
+          icon: <FaFileInvoice />,
+          label: "Mis Facturas",
+          to: "/invoices",
+          show: hasRouteAccess('invoices')
+        }
+      );
+    }
+
+    // Enlaces comunes para todos
+    items.push(
+      {
+        icon: <FaClipboard />,
+        label: "Servicios",
+        to: "/services",
+        show: hasRouteAccess('services')
+      },
+      {
+        icon: <FaUserAlt />,
+        label: "Mi Cuenta",
+        to: "/account",
+        show: user
+      },
+      {
+        icon: <FaCog />,
+        label: "Configuración",
+        to: "/settings",
+        show: user
+      },
+      {
+        icon: <FaEnvelope />,
+        label: "Contacto",
+        to: "/contact",
+        show: true
+      }
+    );
+
+    // Login solo si no hay usuario
+    if (!user) {
+      items.push({
+        icon: <FaSignInAlt />,
+        label: "Login",
+        to: "/login",
+        show: true
+      });
+    }
+
+    return items.filter(item => item.show);
+  };
+
+  const navigationItems = getNavigationItems();
+
+  const handleLogout = () => {
+    logout();
+    navigate('/');
+  };
 
   return (
-    <>
     <div className={`${isOpen ? "w-72" : "w-20"} bg-[#1c1f26] text-white duration-300 flex flex-col justify-between`}>
-
-    
       <div>
         <div className="flex items-center justify-between p-6">
-          {isOpen && <img src="../../src/assets/petLand-sinFondo.png" alt="Logo" className="h-8" />}
+          {isOpen && <img src={PetLandLogo} alt="Logo" className="h-8" />}
           <button onClick={() => setIsOpen(!isOpen)} className="text-white">
             {isOpen ? <FaTimes size={20} /> : <FaBars size={20} />}
           </button>
         </div>
 
-        
         <div className="px-6 mb-6">
-          <p className="text-sm text-gray-300 mb-2">Your Pets</p>
-          <button 
-          onClick={() => setShowModal(true)}
-          className="w-full py-2 bg-gray-700 rounded-lg flex items-center justify-center gap-2 hover:bg-gray-600">
-            <FaPlus /> {isOpen && "Add new"}
-          </button>
+          <p className="text-sm text-gray-300 mb-2">
+            {isAdmin() ? "Admin Panel" : 
+             isEmployee() ? "Employee Panel" : "Mi Panel"}
+          </p>
+          {user && (
+            <div className="text-xs text-gray-400">
+              {user.email}
+            </div>
+          )}
         </div>
 
-        
         <nav className="flex flex-col gap-2 px-6">
-          <SidebarLink icon={<FaClipboardList />} label="Dashboard" to="/home" isOpen={isOpen} navigate={navigate} />
-          <SidebarLink icon={<FaEnvelope />} label="Contact Us" to="/contact" isOpen={isOpen} navigate={navigate} />
-          <SidebarLink icon={<FaCalendarAlt />} label="Reservations" to="/reservations" isOpen={isOpen} navigate={navigate} />
-          <SidebarLink icon={<FaDog />} label="Pets" to="/pets" isOpen={isOpen} navigate={navigate} />
-          <SidebarLink icon={<FaStethoscope />} label="Medical History" to="/medicalhistory" isOpen={isOpen} navigate={navigate} />
-          <SidebarLink icon={<FaMoneyCheckAlt />} label="Payments" to="/payments" isOpen={isOpen} navigate={navigate} />
-          <SidebarLink icon={<FaFileInvoice />} label="Invoices" to="/invoices" isOpen={isOpen} navigate={navigate} />
-          <SidebarLink icon={<FaUserAlt />} label="Account" to="/account" isOpen={isOpen} navigate={navigate} />
-          <SidebarLink icon={<FaCog />} label="Settings" to="/settings" isOpen={isOpen} navigate={navigate} />
+          {navigationItems.map((item, index) => (
+            <SidebarLink 
+              key={index}
+              icon={item.icon} 
+              label={item.label} 
+              to={item.to} 
+              isOpen={isOpen} 
+              navigate={navigate}
+              isActive={location.pathname === item.to}
+            />
+          ))}
         </nav>
       </div>
 
-    
-      <div className="flex items-center gap-3 px-6 py-4 bg-gray-800">
-        <img
-          src="https://placehold.co/40x40"
-          className="rounded-full border border-gray-500"
-          alt="User"
-        />
-        {isOpen && (
-          <div>
-            <p className="text-sm text-gray-300">Hello</p>
-            <p className="text-lg font-semibold text-white">YEDER</p> 
-            {/* luego acuerdate de cambiar el YEDER por el id del cliente para que traiga el nombre del cliente logeado */}
-          </div>
-        )}
-      </div>
+      {/* Botón de logout */}
+      {user && (
+        <div className="p-6">
+          <button
+            onClick={handleLogout}
+            className="flex items-center gap-3 text-sm py-2 px-3 rounded hover:bg-red-600 transition w-full text-left text-red-400 hover:text-white"
+          >
+            <span>🚪</span>
+            {isOpen && <span>Cerrar Sesión</span>}
+          </button>
+        </div>
+      )}
     </div>
-      {showModal && <Modal onClose={() => setShowModal(false)} /> }
-        </>
-
   );
 }
 
-function SidebarLink({ icon, label, to, isOpen, navigate }) {
+function SidebarLink({ icon, label, to, isOpen, navigate, isActive }) {
   return (
     <button
       onClick={() => navigate(to)}
-      className="flex items-center gap-3 text-sm py-2 px-3 rounded hover:bg-gray-700 transition w-full text-left"
+      className={`flex items-center gap-3 text-sm py-2 px-3 rounded transition w-full text-left ${
+        isActive 
+          ? 'bg-yellow-500 text-white' 
+          : 'hover:bg-gray-700 text-gray-300 hover:text-white'
+      }`}
     >
       <span>{icon}</span>
       {isOpen && <span>{label}</span>}
