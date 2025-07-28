@@ -21,6 +21,10 @@ services:
           type: redis
           name: petland-redis
           property: connectionString
+      - key: JWT_SECRET
+        generateValue: true
+      - key: CLOUDINARY_URL
+        value: "cloudinary://your-cloudinary-url"
 
   # Frontend
   - type: web
@@ -31,6 +35,8 @@ services:
     envVars:
       - key: VITE_API_URL
         value: https://petland-backend.onrender.com
+      - key: VITE_CLOUDINARY_URL
+        value: "https://api.cloudinary.com/v1_1/yederpt/image/upload"
 
 databases:
   - name: petland-db
