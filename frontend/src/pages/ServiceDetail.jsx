@@ -117,19 +117,9 @@ const ServiceDetail = () => {
     <div className="p-6 bg-gray-100 min-h-screen">
       {/* Header */}
       <div className="bg-[#edad06] rounded-xl p-6 mb-6 shadow-md text-white">
-        <div className="flex items-center justify-between">
-          <div>
-            <h1 className="text-4xl font-bold mb-1">Detalles de Servicio</h1>
-            <p className="text-sm">ID: {service.service_id}</p>
-          </div>
-          <div className="flex gap-2">
-            <button
-              onClick={() => navigate('/services')}
-              className="bg-white bg-opacity-20 hover:bg-opacity-30 text-white px-4 py-2 rounded-xl flex items-center gap-2"
-            >
-              <FaArrowLeft /> Volver
-            </button>
-          </div>
+        <div>
+          <h1 className="text-4xl font-bold mb-1">Detalles de Servicio</h1>
+          <p className="text-sm">ID: {service.service_id}</p>
         </div>
       </div>
 
@@ -254,6 +244,16 @@ const ServiceDetail = () => {
             </div>
           </div>
         </div>
+      </div>
+
+      {/* Botón Cerrar */}
+      <div className="mt-6 flex justify-end">
+        <button
+          onClick={() => navigate('/services')}
+          className="px-6 py-2 bg-gray-600 hover:bg-gray-700 text-white rounded-lg"
+        >
+          Cerrar
+        </button>
       </div>
     </div>
   );
