@@ -14,19 +14,19 @@ from backend.schema.reservation_schema import ReservationCreate, ReservationUpda
 from backend.logger.logger import logger
 
 async def create_reservation_controller(reservation_data: ReservationCreate, db: AsyncSession):
-    logger.debug(f"Fetching service with ID {reservation_data.service_id}")
+    logger.debug(f"Fetching user with ID {reservation_data.user_id}")
     user_result = await db.execute(select(User).where(User.user_id == reservation_data.user_id))
     user = user_result.scalar_one_or_none()
     if not user:
-        logger.warning(f"Service with ID {service_id} not found")
+        logger.warning(f"User with ID {reservation_data.user_id} not found")
         raise NotFoundException("User not found")
     
-  
+    logger.debug(f"Fetching service with ID {reservation_data.service_id}")
     service_result = await db.execute(select(Service).where(Service.service_id == reservation_data.service_id))
     service = service_result.scalar_one_or_none()
     if not service:
         logger.warning(f"Service with ID {reservation_data.service_id} not found")
-        raise NotFoundException("User not found")
+        raise NotFoundException("Service not found")
     
   
     if reservation_data.checkin_date >= reservation_data.checkout_date:

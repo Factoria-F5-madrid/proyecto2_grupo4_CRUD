@@ -42,6 +42,11 @@ const ModalReservation = ({ onClose, serviceName }) => {
         throw new Error('No hay token de autenticación. Por favor, inicia sesión nuevamente.');
       }
 
+      // Verificar que el usuario esté presente en el contexto
+      if (!user) {
+        throw new Error('No se encontró información del usuario. Por favor, inicia sesión nuevamente.');
+      }
+
       // Obtener el user_id del usuario logueado
       const userId = user.user_id ? user.user_id.toString().replace('usr-', '') : null;
       
@@ -65,6 +70,8 @@ const ModalReservation = ({ onClose, serviceName }) => {
       };
 
       console.log('Token:', token);
+      console.log('Usuario:', user);
+      console.log('User ID:', userId);
       console.log('Creando reserva:', cleanPayload);
 
       await createReservation(cleanPayload);
@@ -79,10 +86,19 @@ const ModalReservation = ({ onClose, serviceName }) => {
       
       let errorMessage = 'Error al crear la reserva.';
       
-      if (error.message.includes('token')) {
+      if (error.message.includes('token') || error.message.includes('autenticación')) {
         errorMessage = 'Sesión expirada. Por favor, inicia sesión nuevamente.';
+        // Redirigir al login después de un breve delay
+        setTimeout(() => {
+          window.location.href = '/login';
+        }, 2000);
       } else if (error.response?.status === 401) {
         errorMessage = 'No autorizado. Por favor, inicia sesión nuevamente.';
+        setTimeout(() => {
+          window.location.href = '/login';
+        }, 2000);
+      } else if (error.response?.status === 403) {
+        errorMessage = 'No tienes permisos para crear esta reserva.';
       } else if (error.response?.status === 422) {
         errorMessage = 'Datos inválidos. Verifica la información ingresada.';
       } else if (error.response?.status === 500) {

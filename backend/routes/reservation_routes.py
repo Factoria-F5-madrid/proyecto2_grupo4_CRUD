@@ -19,7 +19,23 @@ from backend.models.enums import UserRole
 router = APIRouter()
 
 @router.post("/", response_model=ReservationOut)
-async def create_reservation(reservation_data: ReservationCreate, db: AsyncSession = Depends(get_db)):
+async def create_reservation(
+    reservation_data: ReservationCreate, 
+    db: AsyncSession = Depends(get_db),
+    current_user: dict = Depends(get_current_user)
+):
+    """
+    Crear una nueva reserva. El usuario solo puede crear reservas para sí mismo.
+    """
+    from backend.logger.logger import logger
+    
+    logger.info(f"Creando reserva para usuario: {current_user['email']} con user_id: {current_user['user_id']}")
+    
+    # Verificar que el usuario esté creando la reserva para sí mismo
+    if reservation_data.user_id != current_user["user_id"]:
+        logger.warning(f"Usuario {current_user['email']} intentó crear reserva para user_id {reservation_data.user_id}")
+        raise HTTPException(status_code=403, detail="You can only create reservations for yourself")
+    
     return await create_reservation_controller(reservation_data, db)
 
 @router.get("/", response_model=List[ReservationOut])
