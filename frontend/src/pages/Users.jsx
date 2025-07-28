@@ -39,7 +39,7 @@ export default function Users() {
       setLoading(true);
       console.log('Cargando usuarios y empleados...');
       
-      // Cargar usuarios primero
+      
       const userData = await getAllUsers();
       console.log('Datos de usuarios recibidos:', userData);
 
@@ -50,7 +50,7 @@ export default function Users() {
         type: 'user',
       }));
 
-      // Intentar cargar empleados, pero no fallar si hay error
+     
       let normalizedEmployees = [];
       try {
         const employeeData = await getAllEmployees();
@@ -64,7 +64,7 @@ export default function Users() {
         }));
       } catch (employeeError) {
         console.error('Error cargando empleados:', employeeError);
-        // Continuar solo con usuarios si hay error en empleados
+        
       }
 
       const allUsers = [...normalizedUsers, ...normalizedEmployees];
@@ -274,7 +274,7 @@ export default function Users() {
         </table>
       </div>
 
-      {/* Modal para usuarios */}
+
       <ModalUsers
         isOpen={showModalUser}
         onClose={() => {
@@ -285,7 +285,6 @@ export default function Users() {
         selectedUser={selectedUser?.type === 'user' ? selectedUser : null}
       />
 
-      {/* Modal para empleados */}
       <ModalEmployee
         isOpen={showModalEmployee}
         onClose={() => {
@@ -296,7 +295,7 @@ export default function Users() {
         selectedUser={selectedUser?.type === 'employee' ? selectedUser : null}
       />
 
-      {/* Modal para ver detalles */}
+   
       {showViewModal && selectedUser && (
         <FormViewUser
           user={selectedUser}

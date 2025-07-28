@@ -33,7 +33,7 @@ async def create_user_controller(user_data: UserCreate, db: AsyncSession):
     logger.info(f"User created successfully with ID: {new_user.user_id}")
     return new_user
 
-@cache_response("users:all", ttl=600)  # 10 minutos para listas
+@cache_response("users:all", ttl=600)  
 async def get_all_users_controller(db: AsyncSession):
     logger.debug("Fetching all users")
     result = await db.execute(select(User))
@@ -41,7 +41,7 @@ async def get_all_users_controller(db: AsyncSession):
     logger.info(f"Fetched {len(users)} users")
     return users
 
-@cache_response("users:by_id", ttl=900)  # 15 minutos para usuarios individuales
+@cache_response("users:by_id", ttl=900)  
 async def get_user_by_id_controller(user_id: int, db: AsyncSession):
     logger.debug(f"Fetching user by ID: {user_id}")
     result = await db.execute(select(User).where(User.user_id == user_id))

@@ -33,7 +33,7 @@ async def get_medical_histories_by_user(db: AsyncSession, user_id: int):
     """
     logger.info(f"Fetching medical histories for user ID {user_id}")
     
-    # Primero obtener las mascotas del usuario
+ 
     pets_result = await db.execute(
         select(Pet.pet_id).where(Pet.user_id == user_id)
     )
@@ -42,8 +42,7 @@ async def get_medical_histories_by_user(db: AsyncSession, user_id: int):
     if not user_pet_ids:
         logger.info(f"No pets found for user ID {user_id}")
         return []
-    
-    # Luego obtener los historiales médicos de esas mascotas
+ 
     result = await db.execute(
         select(MedicalHistory).where(MedicalHistory.pet_id.in_(user_pet_ids))
     )

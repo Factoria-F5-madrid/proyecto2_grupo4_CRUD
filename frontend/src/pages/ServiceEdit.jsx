@@ -31,7 +31,7 @@ const ServiceEdit = () => {
       const data = await getServiceById(serviceId);
       setService(data);
       
-      // Prellenar el formulario con los datos actuales
+      
       setFormData({
         lodging: data.lodging || false,
         service_type: data.service_type || 'Guarderia',
@@ -68,13 +68,13 @@ const ServiceEdit = () => {
       setSaving(true);
       setError('');
 
-      // Validaciones básicas
+      
       if (!formData.service_type || !formData.base_price) {
         setError('Los campos Tipo de Servicio y Precio Base son obligatorios');
         return;
       }
 
-      // Preparar datos para enviar
+
       const updateData = {
         lodging: formData.lodging,
         service_type: formData.service_type,
@@ -87,7 +87,7 @@ const ServiceEdit = () => {
       console.log('Enviando datos de actualización:', updateData);
       await updateService(serviceId, updateData);
       
-      // Navegar a la vista de detalles
+     
       navigate(`/services/${serviceId}`);
     } catch (error) {
       console.error('Error actualizando servicio:', error);
@@ -133,7 +133,6 @@ const ServiceEdit = () => {
 
   return (
     <div className="p-6 bg-gray-100 min-h-screen">
-      {/* Header */}
       <div className="bg-[#edad06] rounded-xl p-6 mb-6 shadow-md text-white">
         <div>
           <h1 className="text-4xl font-bold mb-1">Editar Servicio</h1>
@@ -141,18 +140,18 @@ const ServiceEdit = () => {
         </div>
       </div>
 
-      {/* Mensaje de error */}
+   
       {error && (
         <div className="mb-6 bg-red-50 border border-red-200 text-red-700 px-4 py-3 rounded-lg">
           <p>{error}</p>
         </div>
       )}
 
-      {/* Formulario */}
+     
       <div className="bg-white rounded-xl shadow-md p-6">
         <form onSubmit={handleSubmit} className="space-y-6">
           <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-            {/* Tipo de Servicio */}
+       
             <div>
               <label className="block text-sm font-medium text-gray-700 mb-2">
                 <FaClipboard className="inline mr-2 text-gray-400" />
@@ -172,7 +171,7 @@ const ServiceEdit = () => {
               </select>
             </div>
 
-            {/* Precio Base */}
+          
             <div>
               <label className="block text-sm font-medium text-gray-700 mb-2">
                 <FaMoneyBillWave className="inline mr-2 text-gray-400" />
@@ -191,7 +190,7 @@ const ServiceEdit = () => {
               />
             </div>
 
-            {/* Duración */}
+         
             <div>
               <label className="block text-sm font-medium text-gray-700 mb-2">
                 <FaClock className="inline mr-2 text-gray-400" />
@@ -206,7 +205,7 @@ const ServiceEdit = () => {
               />
             </div>
 
-            {/* Alojamiento */}
+           
             <div>
               <label className="flex items-center">
                 <input
@@ -224,7 +223,7 @@ const ServiceEdit = () => {
             </div>
           </div>
 
-          {/* Servicio Adicional */}
+    
           <div>
             <label className="block text-sm font-medium text-gray-700 mb-2">
               Servicio Adicional
@@ -239,7 +238,7 @@ const ServiceEdit = () => {
             />
           </div>
 
-          {/* Notas */}
+      
           <div>
             <label className="block text-sm font-medium text-gray-700 mb-2">
               Notas
@@ -254,7 +253,7 @@ const ServiceEdit = () => {
             />
           </div>
 
-          {/* Botones de acción */}
+          
           <div className="flex justify-end gap-4 pt-6 border-t border-gray-200">
             <button
               type="button"

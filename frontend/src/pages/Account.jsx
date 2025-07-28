@@ -30,7 +30,7 @@ const Account = () => {
   });
   const [message, setMessage] = useState({ type: '', text: '' });
 
-  // Cargar datos completos del usuario
+  
   useEffect(() => {
     const loadUserData = async () => {
       if (user?.email) {
@@ -69,14 +69,14 @@ const Account = () => {
     setMessage({ type: '', text: '' });
     
     try {
-      // Manejar diferentes formatos de user_id
+     
       let userId;
       if (typeof userData.user_id === 'string') {
         userId = userData.user_id.replace('usr-', '');
       } else if (typeof userData.user_id === 'number') {
         userId = userData.user_id.toString();
       } else {
-        // Si no tenemos userData, usar el ID del contexto
+       
         userId = user.user_id ? user.user_id.toString().replace('usr-', '') : null;
       }
 
@@ -93,7 +93,7 @@ const Account = () => {
 
       await updateUser(userId, cleanPayload);
       
-      // Actualizar los datos locales
+    
       setUserData(prev => ({
         ...prev,
         ...cleanPayload
@@ -241,7 +241,7 @@ const Account = () => {
                 </div>
               </div>
 
-              {/* Información del perfil */}
+            
               <div className="p-6">
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                   <div>
@@ -322,7 +322,7 @@ const Account = () => {
             </div>
           </div>
 
-          {/* Tarjeta de Información de la Cuenta */}
+         
           <div className="bg-white rounded-lg shadow-lg overflow-hidden">
             <div className="bg-gradient-to-br from-purple-400 to-purple-600 p-6 text-white">
               <div className="flex items-center gap-3">

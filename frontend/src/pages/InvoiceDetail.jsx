@@ -117,9 +117,9 @@ const InvoiceDetail = () => {
         </div>
       </div>
 
-      {/* Contenido principal */}
+      
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
-        {/* Información principal */}
+       
         <div className="bg-white rounded-xl shadow-md p-6">
           <h2 className="text-2xl font-bold text-gray-800 mb-4">Información General</h2>
           
@@ -162,7 +162,7 @@ const InvoiceDetail = () => {
           </div>
         </div>
 
-        {/* Servicios y precios */}
+        
         <div className="bg-white rounded-xl shadow-md p-6">
           <h2 className="text-2xl font-bold text-gray-800 mb-4">Servicios y Precios</h2>
           
@@ -203,7 +203,7 @@ const InvoiceDetail = () => {
           </div>
         </div>
 
-        {/* Fechas */}
+     
         <div className="bg-white rounded-xl shadow-md p-6">
           <h2 className="text-2xl font-bold text-gray-800 mb-4">Fechas</h2>
           
@@ -228,7 +228,7 @@ const InvoiceDetail = () => {
           </div>
         </div>
 
-        {/* Información adicional */}
+      
         <div className="bg-white rounded-xl shadow-md p-6">
           <h2 className="text-2xl font-bold text-gray-800 mb-4">Información Adicional</h2>
           
@@ -252,7 +252,7 @@ const InvoiceDetail = () => {
         </div>
       </div>
 
-      {/* Botón Cerrar */}
+   
       <div className="mt-6 flex justify-end">
         <button
           onClick={() => navigate('/invoices')}

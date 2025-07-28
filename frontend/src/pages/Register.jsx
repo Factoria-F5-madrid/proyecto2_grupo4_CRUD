@@ -30,12 +30,12 @@ const Register = () => {
       [name]: value
     }));
     
-    // Limpiar errores cuando el usuario empiece a escribir
+   
     if (error) {
       clearError();
     }
     
-    // Limpiar errores de validación
+ 
     if (validationErrors[name]) {
       setValidationErrors(prev => ({
         ...prev,
@@ -47,45 +47,45 @@ const Register = () => {
   const validateForm = () => {
     const errors = {};
     
-    // Validar email
+  
     if (!formData.email) {
       errors.email = 'El email es requerido';
     } else if (!/\S+@\S+\.\S+/.test(formData.email)) {
       errors.email = 'El email no es válido';
     }
     
-    // Validar contraseña
+
     if (!formData.password) {
       errors.password = 'La contraseña es requerida';
     } else if (formData.password.length < 6) {
       errors.password = 'La contraseña debe tener al menos 6 caracteres';
     }
     
-    // Validar confirmación de contraseña
+    
     if (!formData.confirmPassword) {
       errors.confirmPassword = 'Confirma tu contraseña';
     } else if (formData.password !== formData.confirmPassword) {
       errors.confirmPassword = 'Las contraseñas no coinciden';
     }
     
-    // Validar nombre
+
     if (!formData.first_name.trim()) {
       errors.first_name = 'El nombre es requerido';
     }
     
-    // Validar apellido
+   
     if (!formData.last_name.trim()) {
       errors.last_name = 'El apellido es requerido';
     }
     
-    // Validar teléfono
+
     if (!formData.phone_number) {
       errors.phone_number = 'El teléfono es requerido';
     } else if (!/^\d{9,10}$/.test(formData.phone_number.replace(/\D/g, ''))) {
       errors.phone_number = 'El teléfono no es válido';
     }
     
-    // Validar dirección
+    
     if (!formData.address.trim()) {
       errors.address = 'La dirección es requerida';
     }
@@ -104,18 +104,18 @@ const Register = () => {
     setIsLoading(true);
     
     try {
-      // Preparar datos para el backend (sin confirmPassword)
+    
       const { confirmPassword, ...userData } = formData;
       
-      // Convertir phone_number a número
+    
       userData.phone_number = parseInt(userData.phone_number.replace(/\D/g, ''));
       
       await register(userData);
-      // Si el registro es exitoso, redirigir a home
+     
       navigate('/home');
     } catch (error) {
       console.error('Error en registro:', error);
-      // El error ya se maneja en el AuthContext
+     
     } finally {
       setIsLoading(false);
     }
@@ -132,7 +132,7 @@ const Register = () => {
   return (
     <div className="min-h-screen bg-gradient-to-br from-blue-50 to-indigo-100 flex items-center justify-center p-4">
       <div className="max-w-md w-full space-y-8">
-        {/* Header */}
+        
         <div className="text-center">
           <div className="mx-auto h-16 w-16 bg-indigo-600 rounded-full flex items-center justify-center">
             <img 
@@ -149,10 +149,10 @@ const Register = () => {
           </p>
         </div>
 
-        {/* Form */}
+        
         <form className="mt-8 space-y-6" onSubmit={handleSubmit}>
           <div className="space-y-4">
-            {/* Email Field */}
+            
             <div>
               <label htmlFor="email" className="block text-sm font-medium text-gray-700 mb-2">
                 Correo Electrónico
@@ -180,7 +180,7 @@ const Register = () => {
               )}
             </div>
 
-            {/* First Name Field */}
+          
             <div>
               <label htmlFor="first_name" className="block text-sm font-medium text-gray-700 mb-2">
                 Nombre
@@ -208,7 +208,7 @@ const Register = () => {
               )}
             </div>
 
-            {/* Last Name Field */}
+           
             <div>
               <label htmlFor="last_name" className="block text-sm font-medium text-gray-700 mb-2">
                 Apellido
@@ -236,7 +236,7 @@ const Register = () => {
               )}
             </div>
 
-            {/* Phone Number Field */}
+           
             <div>
               <label htmlFor="phone_number" className="block text-sm font-medium text-gray-700 mb-2">
                 Teléfono
@@ -264,7 +264,7 @@ const Register = () => {
               )}
             </div>
 
-            {/* Address Field */}
+          
             <div>
               <label htmlFor="address" className="block text-sm font-medium text-gray-700 mb-2">
                 Dirección
@@ -292,7 +292,7 @@ const Register = () => {
               )}
             </div>
 
-            {/* Password Field */}
+           
             <div>
               <label htmlFor="password" className="block text-sm font-medium text-gray-700 mb-2">
                 Contraseña
@@ -331,7 +331,7 @@ const Register = () => {
               )}
             </div>
 
-            {/* Confirm Password Field */}
+           
             <div>
               <label htmlFor="confirmPassword" className="block text-sm font-medium text-gray-700 mb-2">
                 Confirmar Contraseña
@@ -371,14 +371,14 @@ const Register = () => {
             </div>
           </div>
 
-          {/* Error Message */}
+       
           {error && (
             <div className="bg-red-50 border border-red-200 text-red-700 px-4 py-3 rounded-lg">
               <p className="text-sm">{error}</p>
             </div>
           )}
 
-          {/* Submit Button */}
+        
           <div>
             <button
               type="submit"
@@ -393,7 +393,7 @@ const Register = () => {
             </button>
           </div>
 
-          {/* Links */}
+     
           <div className="text-center">
             <p className="text-sm text-gray-600">
               ¿Ya tienes cuenta?{' '}

@@ -26,7 +26,7 @@ async def create_pet_controller(pet_data: PetCreate, db: AsyncSession):
         await db.refresh(new_pet)
         logger.info(f"Pet created with ID {new_pet.pet_id}")
         
-        # Enviar notificación en tiempo real
+       
         pet_dict = {
             "pet_id": new_pet.pet_id,
             "name": new_pet.name,
@@ -51,7 +51,7 @@ async def create_pet_controller(pet_data: PetCreate, db: AsyncSession):
         await db.rollback()
         raise e
 
-@cache_response("pets:all", ttl=600)  # 10 minutos para listas
+@cache_response("pets:all", ttl=600)  
 async def get_all_pets_controller(db: AsyncSession):
     logger.debug("Fetching all pets from the database")
     result = await db.execute(select(Pet))
@@ -59,7 +59,7 @@ async def get_all_pets_controller(db: AsyncSession):
     logger.info(f"Fetched {len(pets)} pets")
     return pets
 
-@cache_response("pets:by_id", ttl=900)  # 15 minutos para mascotas individuales
+@cache_response("pets:by_id", ttl=900) 
 async def get_pet_by_id_controller(pet_id: int, db: AsyncSession):
     logger.debug(f"Fetching pet with ID {pet_id}")
     result = await db.execute(select(Pet).where(Pet.pet_id == pet_id))
@@ -70,7 +70,7 @@ async def get_pet_by_id_controller(pet_id: int, db: AsyncSession):
     logger.info(f"Pet found: ID {pet_id}")    
     return pet
 
-@cache_response("pets:by_user", ttl=600)  # 10 minutos para mascotas por usuario
+@cache_response("pets:by_user", ttl=600)  
 async def get_pets_by_user_controller(user_id: int, db: AsyncSession):
     logger.debug(f"Fetching pets for user ID {user_id}")
     result = await db.execute(select(Pet).where(Pet.user_id == user_id))
@@ -104,7 +104,7 @@ async def update_pet_controller(pet_id: int, pet_data: PetUpdate, db: AsyncSessi
     await db.refresh(pet)
     logger.info(f"Pet with ID {pet_id} updated successfully")
     
-    # Enviar notificación en tiempo real
+ 
     pet_dict = {
         "pet_id": pet.pet_id,
         "name": pet.name,
@@ -134,7 +134,7 @@ async def delete_pet_controller(pet_id: int, db: AsyncSession):
         logger.warning(f"Pet with ID {pet_id} not found")
         raise NotFoundException("User not found")
     
-    # Guardar información antes de eliminar para la notificación
+   
     pet_info = {
         "pet_id": pet.pet_id,
         "name": pet.name,
@@ -145,7 +145,7 @@ async def delete_pet_controller(pet_id: int, db: AsyncSession):
     await db.commit()
     logger.info(f"Pet with ID {pet_id} deleted successfully")
     
-    # Enviar notificación en tiempo real
+
     await notification_service.send_pet_update("deleted", pet_info)
     await notification_service.send_user_notification(
         str(pet_info["user_id"]), 

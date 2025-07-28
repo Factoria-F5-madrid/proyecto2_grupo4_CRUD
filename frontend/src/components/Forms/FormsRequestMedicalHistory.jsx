@@ -17,7 +17,7 @@ const Form = ({ onClose, userId}) => {
     const handleChange = (e) => {
         const { name, value } = e.target;
         setFormData ((prev) => ({...prev, [name]: value }));
-        setErrors ((prev) => ({ ...prev, [name]: ""})); //Limpia error al escribir
+        setErrors ((prev) => ({ ...prev, [name]: ""})); 
     };
 
     const handleSubmit = async (e) => {
@@ -44,7 +44,7 @@ const Form = ({ onClose, userId}) => {
         };
 
         console.log("Solicitud de historial enviada", medicalHistoryData);
-        onClose(); // cerrar modal
+        onClose(); 
     };
 
     return (

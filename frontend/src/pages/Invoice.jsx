@@ -19,12 +19,12 @@ const Invoice = () => {
   const loadInvoices = async () => {
       try {
         setLoading(true);
-      console.log("🔍 Cargando facturas...");
+      console.log(" Cargando facturas...");
         const data = await getAllInvoices();
-      console.log("✅ Datos de facturas recibidos:", data);
+      console.log("Datos de facturas recibidos:", data);
         setInvoices(data);
       } catch (error) {
-        console.error("❌ Error al cargar facturas:", error);
+        console.error(" Error al cargar facturas:", error);
         setError("Error al cargar las facturas: " + error.message);
       } finally {
         setLoading(false);
@@ -121,7 +121,7 @@ const Invoice = () => {
         <p className="text-sm">Administra todas las facturas de PetLand</p>
       </div>
 
-      {/* Barra de búsqueda y botón */}
+     
       <div className="flex flex-col sm:flex-row sm:items-center justify-between mb-4 gap-4">
         <div className="relative w-full sm:w-1/2">
           <FaSearch className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400" />
@@ -144,14 +144,14 @@ const Invoice = () => {
         )}
       </div>
       
-      {/* Mensaje de error */}
+     
       {error && (
         <div className="mb-6 bg-red-50 border border-red-200 text-red-700 px-4 py-3 rounded-lg">
           <p>{error}</p>
         </div>
       )}
       
-      {/* Tabla de facturas */}
+     
       <div className="bg-white rounded-xl shadow-md overflow-x-auto">
         <table className="min-w-full divide-y divide-gray-200 text-sm">
           <thead className="bg-gray-50 text-gray-500 uppercase text-xs font-semibold">

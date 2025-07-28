@@ -41,9 +41,7 @@ def verify_token(token: str):
         )
 
 def get_current_user(credentials: HTTPAuthorizationCredentials = Depends(security)):
-    """
-    Dependencia de FastAPI para obtener el usuario actual desde el token
-    """
+   
     token = credentials.credentials
     payload = verify_token(token)
     

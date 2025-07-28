@@ -42,7 +42,7 @@ const FormEditService = ({ service, onClose, onServiceUpdated }) => {
       
       setFormData(prev => ({ ...prev, image: file }));
       
-      // Crear preview
+     
       const reader = new FileReader();
       reader.onload = (e) => {
         console.log('Preview creado');
@@ -62,7 +62,7 @@ const FormEditService = ({ service, onClose, onServiceUpdated }) => {
     setError('');
 
     try {
-      // Validaciones básicas
+      
       if (!formData.name.trim()) {
         throw new Error('El nombre del servicio es obligatorio');
       }
@@ -73,7 +73,7 @@ const FormEditService = ({ service, onClose, onServiceUpdated }) => {
         throw new Error('El precio del servicio es obligatorio');
       }
 
-      // Aquí iría la lógica para subir la imagen si se seleccionó una nueva
+      
       let finalImageUrl = formData.imageUrl;
       if (formData.image) {
         console.log('Subiendo nueva imagen...');
@@ -92,17 +92,17 @@ const FormEditService = ({ service, onClose, onServiceUpdated }) => {
         console.log('No se seleccionó nueva imagen, manteniendo la actual');
       }
 
-      // Mapear los datos del frontend a la estructura del backend
+    
       const updatedServiceData = {
-        lodging: formData.available, // available se mapea a lodging
+        lodging: formData.available,
         service_type: formData.name === "Guardería" ? "Guarderia" : 
                      formData.name === "Transporte" ? "Transporte" :
                      formData.name === "Comida" ? "Comida" : "Otros",
-        other_service: formData.name, // nombre del servicio
-        notes: formData.description, // descripción
-        base_price: parseFloat(formData.price.replace(/[^0-9.]/g, '')), // extraer solo números del precio
-        duration: null, // por ahora null
-        image_url: finalImageUrl // URL de la imagen subida
+        other_service: formData.name, 
+        notes: formData.description, 
+        base_price: parseFloat(formData.price.replace(/[^0-9.]/g, '')), 
+        duration: null, 
+        image_url: finalImageUrl 
       };
 
       console.log('Servicio original:', service);
@@ -111,7 +111,7 @@ const FormEditService = ({ service, onClose, onServiceUpdated }) => {
       console.log('ID del servicio:', service.id);
       console.log('Tipo de service_type:', typeof updatedServiceData.service_type);
       
-      // Llamar a la API para actualizar el servicio
+      
       const response = await updateService(service.id, updatedServiceData);
       console.log('Servicio actualizado exitosamente:', response);
       
@@ -128,7 +128,7 @@ const FormEditService = ({ service, onClose, onServiceUpdated }) => {
   return (
     <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 p-4">
       <div className="bg-white rounded-lg max-w-2xl w-full max-h-[90vh] overflow-y-auto">
-        {/* Header */}
+     
         <div className="flex items-center justify-between p-6 border-b border-gray-200">
           <div className="flex items-center gap-3">
             <div className="p-2 bg-blue-100 rounded-lg">
@@ -151,7 +151,7 @@ const FormEditService = ({ service, onClose, onServiceUpdated }) => {
           </button>
         </div>
 
-        {/* Formulario */}
+  
         <form onSubmit={handleSubmit} className="p-6 space-y-6">
           {error && (
             <div className="bg-red-50 border border-red-200 text-red-700 px-4 py-3 rounded-lg">
@@ -159,7 +159,7 @@ const FormEditService = ({ service, onClose, onServiceUpdated }) => {
             </div>
           )}
 
-          {/* Tipo de Servicio */}
+      
           <div>
             <label className="block text-sm font-medium text-gray-700 mb-2">
               Tipo de Servicio *
@@ -178,7 +178,7 @@ const FormEditService = ({ service, onClose, onServiceUpdated }) => {
             </select>
           </div>
 
-          {/* Notas/Descripción */}
+       
           <div>
             <label className="block text-sm font-medium text-gray-700 mb-2">
               Notas/Descripción *
@@ -194,7 +194,7 @@ const FormEditService = ({ service, onClose, onServiceUpdated }) => {
             />
           </div>
 
-          {/* Precio Base */}
+        
           <div>
             <label className="block text-sm font-medium text-gray-700 mb-2">
               Precio Base (€) *
@@ -211,7 +211,7 @@ const FormEditService = ({ service, onClose, onServiceUpdated }) => {
             />
           </div>
 
-          {/* Disponibilidad */}
+      
           <div className="flex items-center">
             <input
               type="checkbox"
@@ -225,7 +225,7 @@ const FormEditService = ({ service, onClose, onServiceUpdated }) => {
             </label>
           </div>
 
-          {/* Imagen */}
+        
           <div>
             <label className="block text-sm font-medium text-gray-700 mb-2">
               <FaUpload className="inline mr-2" />
@@ -249,7 +249,7 @@ const FormEditService = ({ service, onClose, onServiceUpdated }) => {
             )}
           </div>
 
-          {/* Botones */}
+       
           <div className="flex gap-3 pt-4 border-t border-gray-200">
             <button
               type="button"

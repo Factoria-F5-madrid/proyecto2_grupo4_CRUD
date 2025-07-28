@@ -3,7 +3,7 @@ import { API_ENDPOINTS } from '../config/api.js';
 
 const BASE_URL = API_ENDPOINTS.PAYMENTS;
 
-// Obtener todos los pagos
+
 export const getAllPayment = async () => {
   try {
     const response = await axios.get(BASE_URL);
@@ -14,7 +14,8 @@ export const getAllPayment = async () => {
   }
 };
 
-// Obtener un pago por ID
+
+
 export const getPaymentByID = async (payment_id) => {
   try {
     const response = await axios.get(`${BASE_URL}/${payment_id}`);
@@ -25,7 +26,7 @@ export const getPaymentByID = async (payment_id) => {
   }
 };
 
-// Crear un nuevo pago
+
 export const createPayment = async (paymentData) => {
   try {
     const response = await axios.post(
@@ -44,7 +45,7 @@ export const createPayment = async (paymentData) => {
   }
 };
 
-// Eliminar un pago
+
 export const deletePayment = async (payment_id) => {
   const token = localStorage.getItem("token"); 
 
@@ -61,7 +62,7 @@ export const deletePayment = async (payment_id) => {
   }
 };
 
-// Actualizar un pago por ID
+
 export const updatePayment = async (payment_id, updatedData) => {
   const token = localStorage.getItem("token"); 
 

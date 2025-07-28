@@ -18,7 +18,6 @@ from fastapi import HTTPException
 
 @pytest.mark.asyncio
 async def test_create_pet_controller_success():
-    
     pet_data = PetCreate(
         name="Firulais",
         species=PetTypeEnum.CANINO, 
@@ -27,20 +26,16 @@ async def test_create_pet_controller_success():
         user_id=1,
     )
 
-    
     mock_user = MagicMock()  
     mock_user.scalar_one_or_none = MagicMock(return_value=mock_user)  
 
-   
     mock_db = AsyncMock()
     mock_db.execute = AsyncMock(return_value=mock_user)
     mock_db.commit = AsyncMock()
     mock_db.refresh = AsyncMock()
 
-    
     pet = await create_pet_controller(pet_data, mock_db)
 
-    
     assert isinstance(pet, Pet)
     assert pet.name == "Firulais"
     assert pet.species == PetTypeEnum.CANINO
@@ -59,14 +54,12 @@ async def test_create_pet_controller_user_not_found():
         user_id=999,  
     )
 
-    
     mock_user = MagicMock()
     mock_user.scalar_one_or_none = MagicMock(return_value=None)
 
     mock_db = AsyncMock()
     mock_db.execute = AsyncMock(return_value=mock_user)
 
-   
     with pytest.raises(HTTPException) as exc_info:
         await create_pet_controller(pet_data, mock_db)
     
@@ -75,7 +68,6 @@ async def test_create_pet_controller_user_not_found():
 
 @pytest.mark.asyncio
 async def test_get_all_pets_controller():
-    
     mock_pet1 = MagicMock()
     mock_pet1.name = "Firulais"
     mock_pet1.species = PetTypeEnum.CANINO
@@ -99,7 +91,6 @@ async def test_get_all_pets_controller():
 
 @pytest.mark.asyncio
 async def test_get_pet_by_id_controller_success():
-    
     mock_pet = MagicMock()
     mock_pet.pet_id = 1
     mock_pet.name = "Firulais"
@@ -120,7 +111,6 @@ async def test_get_pet_by_id_controller_success():
 
 @pytest.mark.asyncio
 async def test_get_pet_by_id_controller_not_found():
-    
     mock_result = MagicMock()
     mock_result.scalar_one_or_none.return_value = None
     
@@ -136,7 +126,6 @@ async def test_get_pet_by_id_controller_not_found():
 
 @pytest.mark.asyncio
 async def test_get_pets_by_user_controller():
-    
     mock_pet1 = MagicMock()
     mock_pet1.name = "Firulais"
     mock_pet1.user_id = 1
@@ -161,7 +150,6 @@ async def test_get_pets_by_user_controller():
 
 @pytest.mark.asyncio
 async def test_update_pet_controller_success():
-    
     mock_pet = MagicMock()
     mock_pet.pet_id = 1
     mock_pet.name = "Firulais"
@@ -191,7 +179,6 @@ async def test_update_pet_controller_success():
 
 @pytest.mark.asyncio
 async def test_update_pet_controller_not_found():
-    
     mock_result = MagicMock()
     mock_result.scalar_one_or_none.return_value = None
     
@@ -208,7 +195,6 @@ async def test_update_pet_controller_not_found():
 
 @pytest.mark.asyncio
 async def test_update_pet_controller_user_not_found():
-    
     mock_pet = MagicMock()
     mock_pet.pet_id = 1
     mock_pet.name = "Firulais"
@@ -231,7 +217,6 @@ async def test_update_pet_controller_user_not_found():
 
 @pytest.mark.asyncio
 async def test_delete_pet_controller_success():
-    
     mock_pet = MagicMock()
     mock_pet.pet_id = 1
     mock_pet.name = "Firulais"
@@ -252,7 +237,6 @@ async def test_delete_pet_controller_success():
 
 @pytest.mark.asyncio
 async def test_delete_pet_controller_not_found():
-    
     mock_result = MagicMock()
     mock_result.scalar_one_or_none.return_value = None
     

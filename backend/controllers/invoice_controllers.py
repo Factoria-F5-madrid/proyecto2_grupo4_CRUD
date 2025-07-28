@@ -30,7 +30,7 @@ async def get_invoices_by_user_controller(user_id: int, db: AsyncSession):
     """
     logger.info(f"Fetching invoices for user ID {user_id}")
     
-    # Obtener facturas únicas de los servicios que el usuario ha contratado
+
     result = await db.execute(
         select(Invoice)
         .join(Reservation, Invoice.service_id == Reservation.service_id)

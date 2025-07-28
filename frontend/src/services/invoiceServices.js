@@ -3,17 +3,17 @@ import { API_ENDPOINTS } from '../config/api.js';
 
 const BASE_URL = API_ENDPOINTS.INVOICES;
 
-// Función para obtener el token de autenticación
+
 const getAuthToken = () => {
   return localStorage.getItem('token');
 };
 
-// Configuración de axios con interceptor para incluir el token
+
 const apiClient = axios.create({
   baseURL: BASE_URL,
 });
 
-// Interceptor para agregar el token a todas las peticiones
+
 apiClient.interceptors.request.use(
   (config) => {
     const token = getAuthToken();
@@ -27,7 +27,7 @@ apiClient.interceptors.request.use(
   }
 );
 
-// Obtener todas las facturas
+
 export const getAllInvoices = async () => {
   try {
     const response = await apiClient.get("/");
@@ -38,7 +38,7 @@ export const getAllInvoices = async () => {
   }
 };
 
-// Obtener una factura por ID
+
 export const getInvoiceByID = async (invoice_id) => {
   try {
     const response = await apiClient.get(`/${invoice_id}`);
@@ -49,7 +49,7 @@ export const getInvoiceByID = async (invoice_id) => {
   }
 };
 
-// Crear una nueva factura
+
 export const createInvoice = async (invoiceData) => {
   try {
     const response = await apiClient.post("/", invoiceData);
@@ -60,7 +60,7 @@ export const createInvoice = async (invoiceData) => {
   }
 };
 
-// Eliminar una factura por ID
+
 export const deleteInvoice = async (invoice_id) => {
   try {
     const response = await apiClient.delete(`/${invoice_id}`);
@@ -71,7 +71,7 @@ export const deleteInvoice = async (invoice_id) => {
   }
 };
 
-// Actualizar una factura por ID
+
 export const updateInvoice = async (invoice_id, updatedData) => {
   try {
     const response = await apiClient.put(`/${invoice_id}`, updatedData);

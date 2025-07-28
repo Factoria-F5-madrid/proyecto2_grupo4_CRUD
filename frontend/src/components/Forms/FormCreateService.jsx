@@ -28,7 +28,7 @@ const FormCreateService = ({ onClose, onServiceCreated }) => {
       
       setFormData(prev => ({ ...prev, image: file }));
       
-      // Crear preview
+     
       const reader = new FileReader();
       reader.onload = (e) => {
         console.log('Preview creado');
@@ -48,7 +48,7 @@ const FormCreateService = ({ onClose, onServiceCreated }) => {
     setError('');
 
     try {
-      // Validaciones básicas
+      
       if (!formData.name.trim()) {
         throw new Error('El nombre del servicio es obligatorio');
       }
@@ -59,7 +59,7 @@ const FormCreateService = ({ onClose, onServiceCreated }) => {
         throw new Error('El precio del servicio es obligatorio');
       }
 
-      // Subir imagen si se seleccionó una
+      
       let finalImageUrl = '';
       if (formData.image) {
         console.log('Subiendo nueva imagen...');
@@ -78,7 +78,7 @@ const FormCreateService = ({ onClose, onServiceCreated }) => {
         console.log('No se seleccionó imagen');
       }
 
-      // Mapear los datos del frontend a la estructura del backend
+  
       const newServiceData = {
         lodging: formData.available,
         service_type: formData.name === "Guardería" ? "Guarderia" : 
@@ -93,11 +93,11 @@ const FormCreateService = ({ onClose, onServiceCreated }) => {
 
       console.log('Datos a enviar:', newServiceData);
       
-      // Llamar a la API para crear el servicio
+ 
       const response = await createService(newServiceData);
       console.log('Servicio creado exitosamente:', response);
       
-      // Mapear la respuesta del backend al formato del frontend
+     
       const mappedService = {
         id: response.service_id,
         name: response.other_service || response.service_type.value,
@@ -121,7 +121,7 @@ const FormCreateService = ({ onClose, onServiceCreated }) => {
   return (
     <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 p-4">
       <div className="bg-white rounded-lg max-w-2xl w-full max-h-[90vh] overflow-y-auto">
-        {/* Header */}
+      
         <div className="flex items-center justify-between p-6 border-b border-gray-200">
           <div className="flex items-center gap-3">
             <div className="p-2 bg-green-100 rounded-lg">
@@ -144,7 +144,7 @@ const FormCreateService = ({ onClose, onServiceCreated }) => {
           </button>
         </div>
 
-        {/* Formulario */}
+      
         <form onSubmit={handleSubmit} className="p-6 space-y-6">
           {error && (
             <div className="bg-red-50 border border-red-200 text-red-700 px-4 py-3 rounded-lg">
@@ -152,7 +152,7 @@ const FormCreateService = ({ onClose, onServiceCreated }) => {
             </div>
           )}
 
-          {/* Tipo de Servicio */}
+      
           <div>
             <label className="block text-sm font-medium text-gray-700 mb-2">
               Tipo de Servicio *
@@ -172,7 +172,7 @@ const FormCreateService = ({ onClose, onServiceCreated }) => {
             </select>
           </div>
 
-          {/* Notas/Descripción */}
+         
           <div>
             <label className="block text-sm font-medium text-gray-700 mb-2">
               Notas/Descripción *
@@ -188,7 +188,7 @@ const FormCreateService = ({ onClose, onServiceCreated }) => {
             />
           </div>
 
-          {/* Precio Base */}
+         
           <div>
             <label className="block text-sm font-medium text-gray-700 mb-2">
               Precio Base (€) *
@@ -205,7 +205,7 @@ const FormCreateService = ({ onClose, onServiceCreated }) => {
             />
           </div>
 
-          {/* Disponibilidad */}
+        
           <div className="flex items-center">
             <input
               type="checkbox"
@@ -219,7 +219,7 @@ const FormCreateService = ({ onClose, onServiceCreated }) => {
             </label>
           </div>
 
-          {/* Imagen */}
+         
           <div>
             <label className="block text-sm font-medium text-gray-700 mb-2">
               <FaUpload className="inline mr-2" />
@@ -243,7 +243,7 @@ const FormCreateService = ({ onClose, onServiceCreated }) => {
             )}
           </div>
 
-          {/* Botones */}
+      
           <div className="flex gap-3 pt-4 border-t border-gray-200">
             <button
               type="button"

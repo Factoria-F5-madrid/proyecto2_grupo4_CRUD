@@ -31,7 +31,7 @@ const InvoiceEdit = () => {
       const data = await getInvoiceByID(invoiceId);
       setInvoice(data);
       
-      // Prellenar el formulario con los datos actuales
+     
       setFormData({
         fiscal_number: data.fiscal_number || '',
         discounts: data.discounts || false,
@@ -68,13 +68,12 @@ const InvoiceEdit = () => {
       setSaving(true);
       setError('');
 
-      // Validaciones básicas
+
       if (!formData.fiscal_number || !formData.vat) {
         setError('Los campos Número Fiscal e IVA son obligatorios');
         return;
       }
 
-      // Preparar datos para enviar
       const updateData = {
         fiscal_number: formData.fiscal_number,
         discounts: formData.discounts,
@@ -87,7 +86,7 @@ const InvoiceEdit = () => {
       console.log('Enviando datos de actualización:', updateData);
       await updateInvoice(invoiceId, updateData);
       
-      // Navegar a la vista de detalles
+      
       navigate(`/invoices/${invoiceId}`);
     } catch (error) {
       console.error('Error actualizando factura:', error);
@@ -133,7 +132,7 @@ const InvoiceEdit = () => {
 
   return (
     <div className="p-6 bg-gray-100 min-h-screen">
-      {/* Header */}
+    
       <div className="bg-[#edad06] rounded-xl p-6 mb-6 shadow-md text-white">
         <div>
           <h1 className="text-4xl font-bold mb-1">Editar Factura</h1>
@@ -141,18 +140,18 @@ const InvoiceEdit = () => {
         </div>
       </div>
 
-      {/* Mensaje de error */}
+    
       {error && (
         <div className="mb-6 bg-red-50 border border-red-200 text-red-700 px-4 py-3 rounded-lg">
           <p>{error}</p>
         </div>
       )}
 
-      {/* Formulario */}
+     
       <div className="bg-white rounded-xl shadow-md p-6">
         <form onSubmit={handleSubmit} className="space-y-6">
           <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-            {/* Número Fiscal */}
+           
             <div>
               <label className="block text-sm font-medium text-gray-700 mb-2">
                 <FaFileInvoice className="inline mr-2 text-gray-400" />
@@ -169,7 +168,7 @@ const InvoiceEdit = () => {
               />
             </div>
 
-            {/* IVA */}
+          
             <div>
               <label className="block text-sm font-medium text-gray-700 mb-2">
                 <FaPercent className="inline mr-2 text-gray-400" />
@@ -189,7 +188,7 @@ const InvoiceEdit = () => {
               />
             </div>
 
-            {/* Precio Adicional */}
+         
             <div>
               <label className="block text-sm font-medium text-gray-700 mb-2">
                 <FaMoneyBillWave className="inline mr-2 text-gray-400" />
@@ -207,7 +206,7 @@ const InvoiceEdit = () => {
               />
             </div>
 
-            {/* Servicios Incluidos */}
+          
             <div>
               <label className="block text-sm font-medium text-gray-700 mb-2">
                 <FaMoneyBillWave className="inline mr-2 text-gray-400" />
@@ -226,7 +225,7 @@ const InvoiceEdit = () => {
               </select>
             </div>
 
-            {/* Descuentos */}
+       
             <div>
               <label className="flex items-center">
                 <input
@@ -242,7 +241,7 @@ const InvoiceEdit = () => {
               </label>
             </div>
 
-            {/* Completada */}
+       
             <div>
               <label className="flex items-center">
                 <input
@@ -259,7 +258,7 @@ const InvoiceEdit = () => {
             </div>
           </div>
 
-          {/* Botones de acción */}
+         
           <div className="flex justify-end gap-4 pt-6 border-t border-gray-200">
             <button
               type="button"

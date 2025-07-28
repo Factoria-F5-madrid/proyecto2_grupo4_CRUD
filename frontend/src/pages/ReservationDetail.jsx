@@ -72,7 +72,7 @@ const ReservationDetail = () => {
 
   const formatTime = (timeString) => {
     if (!timeString) return 'No disponible';
-    return timeString.substring(0, 5); // Solo HH:MM
+    return timeString.substring(0, 5); 
   };
 
   if (loading) {
@@ -107,7 +107,7 @@ const ReservationDetail = () => {
 
   return (
     <div className="p-6 bg-gray-100 min-h-screen">
-      {/* Header */}
+    
       <div className="bg-[#edad06] rounded-xl p-6 mb-6 shadow-md text-white">
         <div>
           <h1 className="text-4xl font-bold mb-1">Detalles de Reserva</h1>
@@ -115,9 +115,9 @@ const ReservationDetail = () => {
         </div>
       </div>
 
-      {/* Contenido principal */}
+   
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
-        {/* Información principal */}
+       
         <div className="bg-white rounded-xl shadow-md p-6">
           <h2 className="text-2xl font-bold text-gray-800 mb-4">Información General</h2>
           
@@ -155,7 +155,7 @@ const ReservationDetail = () => {
           </div>
         </div>
 
-        {/* Fechas y horarios */}
+       
         <div className="bg-white rounded-xl shadow-md p-6">
           <h2 className="text-2xl font-bold text-gray-800 mb-4">Fechas y Horarios</h2>
           
@@ -192,7 +192,7 @@ const ReservationDetail = () => {
           </div>
         </div>
 
-        {/* Empleado asignado */}
+        
         <div className="bg-white rounded-xl shadow-md p-6">
           <h2 className="text-2xl font-bold text-gray-800 mb-4">Empleado Asignado</h2>
           
@@ -215,7 +215,7 @@ const ReservationDetail = () => {
           </div>
         </div>
 
-        {/* Notas */}
+      
         {reservation.internal_notes && (
           <div className="bg-white rounded-xl shadow-md p-6">
             <h2 className="text-2xl font-bold text-gray-800 mb-4">Notas</h2>
@@ -227,7 +227,7 @@ const ReservationDetail = () => {
         )}
       </div>
 
-      {/* Botón Cerrar */}
+   
       <div className="mt-6 flex justify-end">
         <button
           onClick={() => navigate('/reservations')}

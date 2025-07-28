@@ -30,18 +30,14 @@ async def get_all_pets(
     db: AsyncSession = Depends(get_db),
     current_user: dict = Depends(get_current_user)
 ):
-    """
-    Obtiene mascotas según el rol del usuario:
-    - Admin/Employee: Todas las mascotas
-    - User: Solo sus propias mascotas
-    """
+   
     user_role = UserRole(current_user["role"])
     
     if user_role in [UserRole.ADMIN, UserRole.EMPLOYEE]:
-        # Admin y Employee ven todas las mascotas
+        
         return await get_all_pets_controller(db)
     else:
-        # Usuario regular solo ve sus mascotas
+      
         user_id = current_user["user_id"]
         return await get_pets_by_user_controller(user_id, db)
 

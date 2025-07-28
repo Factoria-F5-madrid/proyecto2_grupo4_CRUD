@@ -21,10 +21,10 @@ const Payments = () => {
       setLoading(true);
       console.log("🔍 Cargando pagos...");
       const data = await getAllPayment();
-      console.log("✅ Datos de pagos recibidos:", data);
+      console.log(" Datos de pagos recibidos:", data);
       setPayments(data);
     } catch (error) {
-      console.error("❌ Error al cargar pagos:", error);
+      console.error("Error al cargar pagos:", error);
       setError("Error al cargar los pagos: " + error.message);
     } finally {
       setLoading(false);
@@ -160,13 +160,12 @@ const Payments = () => {
 
   return (
     <div className="p-6 bg-gray-100 min-h-screen">
-      {/* Header */}
+    
       <div className="bg-[#edad06] rounded-xl p-6 mb-6 shadow-md text-white">
         <h1 className="text-4xl font-bold mb-1">Gestión de Pagos</h1>
         <p className="text-sm">Administra todos los pagos de PetLand</p>
       </div>
 
-      {/* Barra de búsqueda */}
       <div className="mb-4">
         <div className="relative w-full sm:w-1/2">
           <FaSearch className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400" />
@@ -180,7 +179,7 @@ const Payments = () => {
         </div>
       </div>
 
-      {/* Botón Nuevo Pago */}
+  
       <div className="mb-4 flex justify-end">
         <button
           onClick={() => navigate('/payments/new')}
@@ -191,14 +190,14 @@ const Payments = () => {
         </button>
       </div>
 
-      {/* Mensaje de error */}
+     
       {error && (
         <div className="mb-6 bg-red-50 border border-red-200 text-red-700 px-4 py-3 rounded-lg">
           <p>{error}</p>
         </div>
       )}
 
-      {/* Tabla de pagos */}
+  
       <div className="bg-white rounded-xl shadow-md overflow-x-auto">
         <table className="min-w-full divide-y divide-gray-200 text-sm">
           <thead className="bg-gray-50">
@@ -305,7 +304,7 @@ const Payments = () => {
         </table>
       </div>
 
-      {/* Estado vacío */}
+     
       {filteredPayments.length === 0 && !loading && (
         <div className="text-center py-12">
           <div className="text-gray-400 text-6xl mx-auto mb-4">

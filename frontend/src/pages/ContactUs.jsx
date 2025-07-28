@@ -66,12 +66,12 @@ const ContactUs = () => {
       .then(
         (result) => {
           console.log('Email sent!', result.text);
-          setFormSuccess('✅ Mensaje enviado correctamente');
+          setFormSuccess('Mensaje enviado correctamente');
           form.current.reset();
         },
         (error) => {
           console.error('Error:', error.text);
-          setFormSuccess('❌ Hubo un error al enviar el mensaje');
+          setFormSuccess(' Hubo un error al enviar el mensaje');
         }
       );
   };
@@ -97,9 +97,9 @@ const ContactUs = () => {
           </div>
         </div>
 
-        {/* Contenedor principal */}
+      
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 mb-8">
-          {/* Imagen a la izquierda */}
+       
           <div className="flex justify-center items-center">
             <img
               src={mascotasImage}
@@ -108,7 +108,7 @@ const ContactUs = () => {
             />
           </div>
 
-          {/* Formulario */}
+         
           <div className="bg-white rounded-lg shadow-lg p-6">
             <h2 className="text-2xl font-bold text-gray-800 mb-6">Envíanos un mensaje</h2>
             <form
@@ -164,7 +164,7 @@ const ContactUs = () => {
 
               {formSuccess && (
                 <div className={`p-3 rounded-lg ${
-                  formSuccess.includes('✅') ? 'bg-green-50 text-green-700 border border-green-200' : 'bg-red-50 text-red-700 border border-red-200'
+                  formSuccess.includes('') ? 'bg-green-50 text-green-700 border border-green-200' : 'bg-red-50 text-red-700 border border-red-200'
                 }`}>
                   {formSuccess}
                 </div>
@@ -180,7 +180,7 @@ const ContactUs = () => {
           </div>
         </div>
 
-        {/* Redes sociales */}
+      
         <div className="text-center mb-8">
           <h3 className="text-2xl font-bold text-gray-800 mb-4">Síguenos en redes sociales</h3>
           <div className="flex justify-center gap-6">
@@ -216,7 +216,7 @@ const ContactUs = () => {
           </div>
         </div>
 
-        {/* Información de contacto */}
+       
         <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
           <div className="bg-white rounded-lg shadow-lg p-6">
             <div className="flex items-center gap-3 mb-4">

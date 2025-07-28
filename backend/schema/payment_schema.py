@@ -15,7 +15,7 @@ class PaymentBase(BaseModel):
     @validator('payment_method', pre=True)
     def validate_payment_method(cls, v):
         if isinstance(v, str):
-            # Mapear valores del frontend a los valores del enum
+            
             payment_method_mapping = {
                 "Efectivo": PaymentMethodEnum.EFECTIVO,
                 "Tarjeta de Crédito": PaymentMethodEnum.TARJETA_CREDITO,
@@ -30,7 +30,7 @@ class PaymentBase(BaseModel):
     @validator('payment_status', pre=True)
     def validate_payment_status(cls, v):
         if isinstance(v, str):
-            # Mapear valores del frontend a los valores del enum
+            
             payment_status_mapping = {
                 "Pendiente": PaymentStatusEnum.PENDIENTE,
                 "Completado": PaymentStatusEnum.COMPLETADO,
@@ -55,7 +55,7 @@ class PaymentUpdate(BaseModel):
     @validator('payment_method', pre=True)
     def validate_payment_method(cls, v):
         if isinstance(v, str):
-            # Mapear valores del frontend a los valores del enum
+            
             payment_method_mapping = {
                 "Efectivo": PaymentMethodEnum.EFECTIVO,
                 "Tarjeta de Crédito": PaymentMethodEnum.TARJETA_CREDITO,
@@ -70,7 +70,7 @@ class PaymentUpdate(BaseModel):
     @validator('payment_status', pre=True)
     def validate_payment_status(cls, v):
         if isinstance(v, str):
-            # Mapear valores del frontend a los valores del enum
+         
             payment_status_mapping = {
                 "Pendiente": PaymentStatusEnum.PENDIENTE,
                 "Completado": PaymentStatusEnum.COMPLETADO,

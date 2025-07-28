@@ -28,7 +28,7 @@ import MyReservations from "../pages/MyReservations";
 
 
 export const router = createBrowserRouter([
-  // Rutas de autenticación (sin layout)
+  
   {
     path: "/login",
     element: <Login />,
@@ -38,98 +38,98 @@ export const router = createBrowserRouter([
     element: <Register />,
   },
   {
-    path: "/", // rutas con layout (Nav + Footer)
+    path: "/", 
     element: <Layout />,
     children: [
       {
-        path: "", // / (página principal)
+        path: "",
         element: <Home />,
       },
       {
-        path: "home", // /home (redirección)
+        path: "home", 
         element: <Home />,
       },
       {
-        path: "users", // /users
+        path: "users",
         element: <Users />,
       },
       {
-        path: "employees", // /employees
+        path: "employees",
         element: <Employees />,
       },
       {
-        path: "contact", // /contact-us
+        path: "contact", 
         element: <ContactUs />,
       },
       {
-        path: "reservations", // /reservations
+        path: "reservations", 
         element: <Reservations />,
       },
       {
-        path: "reservations/:reservationId", // /reservations/:id
+        path: "reservations/:reservationId", 
         element: <ReservationDetail />,
       },
       {
-        path: "reservations/:reservationId/edit", // /reservations/:id/edit
+        path: "reservations/:reservationId/edit",
         element: <ReservationEdit />,
       },
       {
-        path: "pets", // /pets
+        path: "pets", 
         element: <Pets />,
       },
       {
-        path: "medicalhistory", // /medical-history
+        path: "medicalhistory", 
         element: <MedicalHistory />,
       },
       {
-        path: "payments", // /payments
+        path: "payments", 
         element: <Payments />,
       },
       {
-        path: "payments/new", // /payments/new
+        path: "payments/new",
         element: <PaymentCreate />,
       },
       {
-        path: "invoices", // /invoice
+        path: "invoices",
         element: <Invoice />,
       },
       {
-        path: "invoices/new", // /invoices/new
+        path: "invoices/new", 
         element: <InvoiceCreate />,
       },
       {
-        path: "invoices/:invoiceId", // /invoices/:id
+        path: "invoices/:invoiceId", 
         element: <InvoiceDetail />,
       },
       {
-        path: "invoices/:invoiceId/edit", // /invoices/:id/edit
+        path: "invoices/:invoiceId/edit", 
         element: <InvoiceEdit />,
       },
       {
-        path: "services", // /services
+        path: "services",
         element: <Services />,
       },
       {
-        path: "services/:serviceId", // /services/:id
+        path: "services/:serviceId", 
         element: <ServiceDetail />,
       },
       {
-        path: "services/:serviceId/edit", // /services/:id/edit
+        path: "services/:serviceId/edit", 
         element: <ServiceEdit />,
       },
       {
-        path: "account", // /account
+        path: "account", 
         element: <Account />,
       },
       {
-        path: "settings", // /settings
+        path: "settings", 
         element: <Settings />,
       },
       {
-        path: "my-reservations", // /my-reservations
+        path: "my-reservations", 
         element: <MyReservations />,
       },
-      // aqui se agregan mas rutas chicos :) 
+      
     ],
   },
 ]);

@@ -15,8 +15,7 @@ const MyReservations = () => {
   const fetchMyReservations = async () => {
     try {
       setLoading(true);
-      // Aquí harías la llamada a la API para obtener las reservas del usuario
-      // Por ahora usaremos datos de ejemplo
+    
       const mockReservations = [
         {
           reservation_id: 1,
@@ -118,7 +117,7 @@ const MyReservations = () => {
   return (
     <div className="flex-1 p-6 bg-gray-50">
       <div className="max-w-4xl mx-auto">
-        {/* Header */}
+      
         <div className="mb-8">
           <h1 className="text-3xl font-bold text-gray-900 mb-2">
             Mis Reservas
@@ -128,7 +127,7 @@ const MyReservations = () => {
           </p>
         </div>
 
-        {/* Lista de reservas */}
+     
         {reservations.length === 0 ? (
           <div className="text-center py-12">
             <FaCalendarAlt className="w-16 h-16 mx-auto mb-4 text-gray-400" />
@@ -152,7 +151,7 @@ const MyReservations = () => {
                 key={reservation.reservation_id}
                 className="bg-white rounded-lg shadow-md border border-gray-200 overflow-hidden"
               >
-                {/* Header de la reserva */}
+              
                 <div className="p-6 border-b border-gray-200">
                   <div className="flex items-center justify-between">
                     <div className="flex items-center gap-3">
@@ -174,10 +173,10 @@ const MyReservations = () => {
                   </div>
                 </div>
 
-                {/* Detalles de la reserva */}
+               
                 <div className="p-6">
                   <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-                    {/* Fechas */}
+                   
                     <div className="space-y-4">
                       <div>
                         <h4 className="font-medium text-gray-900 mb-2 flex items-center gap-2">
@@ -201,7 +200,7 @@ const MyReservations = () => {
                       </div>
                     </div>
 
-                    {/* Notas */}
+               
                     <div>
                       <h4 className="font-medium text-gray-900 mb-2 flex items-center gap-2">
                         <FaMapMarkerAlt className="text-gray-500" />
@@ -215,7 +214,7 @@ const MyReservations = () => {
                     </div>
                   </div>
 
-                  {/* Sin acciones por ahora */}
+                  
                 </div>
               </div>
             ))}

@@ -59,9 +59,9 @@ export const createService = async (serviceData) => {
 
 export const updateService = async (serviceId, serviceData) => {
   try {
-    console.log('Actualizando servicio:', serviceId, serviceData);
+  
     const response = await apiClient.put(`/${serviceId}`, serviceData);
-    console.log('Respuesta del servidor:', response.data);
+   
     return response.data;
   } catch (error) {
     console.error("Error al actualizar servicio:", error);

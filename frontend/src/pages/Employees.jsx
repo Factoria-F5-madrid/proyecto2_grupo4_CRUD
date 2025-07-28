@@ -57,13 +57,13 @@ export default function Employees() {
 
   return (
     <div className="p-6 bg-gray-100 min-h-screen">
-      {/* Header */}
+    
       <div className="bg-[#edad06] rounded-xl p-6 mb-6 shadow-md text-white">
         <h1 className="text-4xl font-bold mb-1">Gestión de Empleados</h1>
         <p className="text-sm">Administra todos los empleados de PetLand</p>
       </div>
 
-      {/* Barra de búsqueda */}
+      
       <div className="mb-4">
         <div className="relative w-full sm:w-1/2">
           <FaSearch className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400" />
@@ -77,7 +77,7 @@ export default function Employees() {
         </div>
       </div>
 
-      {/* Tabla de empleados */}
+    
       <div className="bg-white rounded-xl shadow-md overflow-x-auto">
         <table className="min-w-full divide-y divide-gray-200 text-sm">
           <thead className="bg-gray-50 text-gray-500 uppercase text-xs font-semibold">

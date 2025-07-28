@@ -26,7 +26,7 @@ const FormViewPet = ({ pet, onClose }) => {
   return (
     <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 p-4">
       <div className="bg-white rounded-lg max-w-4xl w-full max-h-[90vh] overflow-y-auto">
-        {/* Header */}
+       
         <div className="flex items-center justify-between p-6 border-b border-gray-200">
           <div className="flex items-center gap-3">
             <div className="p-2 bg-yellow-100 rounded-lg">
@@ -49,10 +49,10 @@ const FormViewPet = ({ pet, onClose }) => {
           </button>
         </div>
 
-        {/* Contenido */}
+      
         <div className="p-6">
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
-            {/* Imagen de la mascota */}
+           
             <div className="space-y-4">
               <div className="bg-gray-100 rounded-lg overflow-hidden">
                 <img
@@ -62,7 +62,7 @@ const FormViewPet = ({ pet, onClose }) => {
                 />
               </div>
               
-              {/* Información básica */}
+            
               <div className="bg-yellow-50 rounded-lg p-4">
                 <h3 className="font-semibold text-gray-900 mb-3 flex items-center gap-2">
                   <FaPaw className="text-yellow-600" />
@@ -85,9 +85,9 @@ const FormViewPet = ({ pet, onClose }) => {
               </div>
             </div>
 
-            {/* Información detallada */}
+          
             <div className="space-y-6">
-              {/* Fechas */}
+             
               <div className="bg-blue-50 rounded-lg p-4">
                 <h3 className="font-semibold text-gray-900 mb-3 flex items-center gap-2">
                   <FaCalendar className="text-blue-600" />
@@ -113,7 +113,7 @@ const FormViewPet = ({ pet, onClose }) => {
                 </div>
               </div>
 
-              {/* Propietario */}
+            
               <div className="bg-green-50 rounded-lg p-4">
                 <h3 className="font-semibold text-gray-900 mb-3 flex items-center gap-2">
                   <FaUser className="text-green-600" />
@@ -127,7 +127,7 @@ const FormViewPet = ({ pet, onClose }) => {
                 </div>
               </div>
 
-              {/* Características físicas */}
+        
               <div className="bg-purple-50 rounded-lg p-4">
                 <h3 className="font-semibold text-gray-900 mb-3 flex items-center gap-2">
                   <FaRuler className="text-purple-600" />
@@ -155,7 +155,7 @@ const FormViewPet = ({ pet, onClose }) => {
                 </div>
               </div>
 
-              {/* Información médica */}
+            
               <div className="bg-red-50 rounded-lg p-4">
                 <h3 className="font-semibold text-gray-900 mb-3 flex items-center gap-2">
                   <FaHeart className="text-red-600" />
@@ -183,7 +183,7 @@ const FormViewPet = ({ pet, onClose }) => {
                 </div>
               </div>
 
-              {/* Notas adicionales */}
+           
               {pet.notes && (
                 <div className="bg-gray-50 rounded-lg p-4">
                   <h3 className="font-semibold text-gray-900 mb-3">Notas Adicionales</h3>
@@ -194,7 +194,7 @@ const FormViewPet = ({ pet, onClose }) => {
           </div>
         </div>
 
-        {/* Footer */}
+        
         <div className="flex justify-end p-6 border-t border-gray-200">
           <button
             onClick={onClose}

@@ -14,7 +14,7 @@ const ModalReservation = ({ onClose, serviceName }) => {
   const [loading, setLoading] = useState(false);
   const [message, setMessage] = useState({ type: '', text: '' });
 
-  // Opciones de servicios disponibles
+ 
   const serviceOptions = [
     { value: 'Guarderia', label: 'Guardería' },
     { value: 'Transporte', label: 'Transporte' },
@@ -22,7 +22,7 @@ const ModalReservation = ({ onClose, serviceName }) => {
     { value: 'Otros', label: 'Otros Servicios' }
   ];
 
-  // Mapeo de servicios a service_type
+  
   const getServiceType = (serviceName) => {
     const serviceMap = {
       'Guardería': 'Guarderia',
@@ -46,18 +46,18 @@ const ModalReservation = ({ onClose, serviceName }) => {
     setMessage({ type: '', text: '' });
 
     try {
-      // Verificar que el usuario esté autenticado
+      
       const token = localStorage.getItem('token');
       if (!token) {
         throw new Error('No hay token de autenticación. Por favor, inicia sesión nuevamente.');
       }
 
-      // Verificar que el usuario esté presente en el contexto
+     
       if (!user) {
         throw new Error('No se encontró información del usuario. Por favor, inicia sesión nuevamente.');
       }
 
-      // Obtener el user_id del usuario logueado
+     
       const userId = user.user_id ? user.user_id.toString().replace('usr-', '') : null;
       
       if (!userId) {
@@ -76,22 +76,22 @@ const ModalReservation = ({ onClose, serviceName }) => {
         throw new Error('Por favor, selecciona una hora');
       }
 
-      // Crear fecha y hora combinadas
+      
       let checkinDate;
       if (formData.date && formData.time) {
         const [year, month, day] = formData.date.split('-');
         const [hour, minute] = formData.time.split(':');
         checkinDate = new Date(year, month - 1, day, hour, minute);
       } else {
-        // Usar fecha y hora actual como fallback
+      
         checkinDate = new Date();
       }
       
-      // Calcular automáticamente la fecha de salida (1 día después)
+      
       const checkoutDate = new Date(checkinDate);
       checkoutDate.setDate(checkoutDate.getDate() + 1);
 
-      // Crear notas con fecha y hora
+   
       const notesWithDateTime = formData.date && formData.time 
         ? `Fecha: ${formData.date} - Hora: ${formData.time}${formData.internal_notes ? ` - ${formData.internal_notes}` : ''}`
         : formData.internal_notes || '';
@@ -99,8 +99,8 @@ const ModalReservation = ({ onClose, serviceName }) => {
       const cleanPayload = {
         user_id: parseInt(userId),
         service_type: formData.service_type,
-        checkin_date: checkinDate.toISOString().slice(0, 19), // Formato: 2025-01-30T10:00:00
-        checkout_date: checkoutDate.toISOString().slice(0, 19), // Formato: 2025-01-30T10:00:00
+        checkin_date: checkinDate.toISOString().slice(0, 19), 
+        checkout_date: checkoutDate.toISOString().slice(0, 19), 
         internal_notes: notesWithDateTime
       };
 
@@ -145,7 +145,7 @@ const ModalReservation = ({ onClose, serviceName }) => {
         text: errorMessage
       });
 
-      // Redirigir al login si es necesario
+     
       if (shouldRedirect) {
         setTimeout(() => {
           window.location.href = '/login';
@@ -159,7 +159,7 @@ const ModalReservation = ({ onClose, serviceName }) => {
   return (
     <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 p-4">
       <div className="bg-white rounded-lg max-w-md w-full max-h-[90vh] overflow-y-auto">
-        {/* Header */}
+        
         <div className="flex items-center justify-between p-6 border-b border-gray-200">
           <div className="flex items-center gap-3">
             <div className="p-2 bg-blue-100 rounded-lg">
@@ -182,7 +182,7 @@ const ModalReservation = ({ onClose, serviceName }) => {
           </button>
         </div>
 
-        {/* Formulario */}
+    
         <form onSubmit={handleSubmit} className="p-6 space-y-4">
           {message.text && (
             <div className={`p-4 rounded-lg border ${
@@ -194,7 +194,7 @@ const ModalReservation = ({ onClose, serviceName }) => {
             </div>
           )}
 
-          {/* Tipo de Servicio */}
+      
           <div>
             <label className="block text-sm font-medium text-gray-700 mb-2">
               <FaCalendarAlt className="inline mr-2" />
@@ -216,7 +216,7 @@ const ModalReservation = ({ onClose, serviceName }) => {
             </select>
           </div>
 
-          {/* Fecha */}
+    
           <div>
             <label className="block text-sm font-medium text-gray-700 mb-2">
               <FaCalendarAlt className="inline mr-2" />
@@ -233,7 +233,7 @@ const ModalReservation = ({ onClose, serviceName }) => {
             />
           </div>
 
-          {/* Hora */}
+
           <div>
             <label className="block text-sm font-medium text-gray-700 mb-2">
               <FaClock className="inline mr-2" />
@@ -249,7 +249,7 @@ const ModalReservation = ({ onClose, serviceName }) => {
             />
           </div>
 
-          {/* Notas Adicionales */}
+         
           <div>
             <label className="block text-sm font-medium text-gray-700 mb-2">
               Notas Adicionales (Opcional)
@@ -267,7 +267,7 @@ const ModalReservation = ({ onClose, serviceName }) => {
             </p>
           </div>
 
-          {/* Botones */}
+        
           <div className="flex justify-end gap-3 pt-4 border-t border-gray-200">
             <button
               type="button"

@@ -26,11 +26,7 @@ async def get_all_invoices(
     db: AsyncSession = Depends(get_db),
     current_user: dict = Depends(get_current_user)
 ):
-    """
-    Obtiene facturas según el rol del usuario:
-    - Admin/Employee: Todas las facturas
-    - User: Solo las facturas de sus servicios contratados
-    """
+    
     from backend.logger.logger import logger
     
     logger.info(f"Endpoint /invoice/ llamado por usuario: {current_user['email']} con rol: {current_user['role']}")
@@ -38,11 +34,11 @@ async def get_all_invoices(
     user_role = UserRole(current_user["role"])
     
     if user_role in [UserRole.ADMIN, UserRole.EMPLOYEE]:
-        # Admin y Employee ven todas las facturas
+       
         logger.info("Usuario es Admin/Employee - devolviendo todas las facturas")
         return await get_all_invoices_controller(db)
     else:
-        # Usuario regular solo ve las facturas de sus servicios contratados
+      
         user_id = current_user["user_id"]
         logger.info(f"Usuario regular - buscando facturas para user_id: {user_id}")
         invoices = await get_invoices_by_user_controller(user_id, db)

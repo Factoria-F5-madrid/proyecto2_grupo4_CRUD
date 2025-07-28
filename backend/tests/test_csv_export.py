@@ -1,7 +1,3 @@
-"""
-Test script for CSV export functionality
-"""
-
 import requests
 import json
 import os

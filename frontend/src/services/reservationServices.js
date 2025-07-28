@@ -21,7 +21,7 @@ const verifyToken = async () => {
       }
     });
     
-    console.log('Token válido, usuario:', response.data);
+
     return true;
   } catch (error) {
     console.error('Token inválido o expirado:', error);
@@ -91,13 +91,9 @@ export const getReservationByService = async (service_id) => {
 export const createReservation = async (reservationData) => {
   try {
     await verifyToken();
-    
-    console.log('Token de autenticación:', getAuthToken());
-    console.log('URL de la petición:', `${BASE_URL}/`);
-    console.log('Datos a enviar:', reservationData);
-    
+
     const response = await apiClient.post("/", reservationData);
-    console.log('Respuesta exitosa:', response.data);
+  
     return response.data;
   } catch (error) {
     console.error("Error al crear la reserva:", error);

@@ -4,9 +4,7 @@ import { API_ENDPOINTS } from '../config/api.js';
 
 const BASE_URL = API_ENDPOINTS.ACTIVITY_LOGS;
 
-// ahora mis servicios con manejo de errores try catch que consumira mi endpoint
 
-// Obtener todos los logs de actividad
 export const getAllActivityLogs = async () => {
     try {
         const response = await axios.get(BASE_URL);

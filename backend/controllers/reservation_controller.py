@@ -16,14 +16,14 @@ from backend.logger.logger import logger
 async def create_reservation_controller(reservation_data: ReservationCreate, db: AsyncSession):
     logger.debug(f"Creating reservation for user ID {reservation_data.user_id}")
     
-    # Verificar que el usuario existe
+
     user_result = await db.execute(select(User).where(User.user_id == reservation_data.user_id))
     user = user_result.scalar_one_or_none()
     if not user:
         logger.warning(f"User with ID {reservation_data.user_id} not found")
         raise NotFoundException("User not found")
     
-    # Buscar un servicio del tipo especificado
+
     logger.debug(f"Looking for service with type {reservation_data.service_type.value}")
     service_result = await db.execute(select(Service).where(Service.service_type == reservation_data.service_type))
     services = service_result.scalars().all()
@@ -32,11 +32,11 @@ async def create_reservation_controller(reservation_data: ReservationCreate, db:
         logger.warning(f"No services found for type {reservation_data.service_type.value}")
         raise NotFoundException(f"No service available for type {reservation_data.service_type.value}")
     
-    # Usar el primer servicio disponible del tipo especificado
+
     service = services[0]
     logger.info(f"Using service_id {service.service_id} for type {reservation_data.service_type.value}")
     
-    # Crear la reserva directamente
+   
     new_reservation = Reservation(
         user_id=reservation_data.user_id,
         service_id=service.service_id,
@@ -51,7 +51,7 @@ async def create_reservation_controller(reservation_data: ReservationCreate, db:
 
     logger.info(f"Reservation {new_reservation.reservation_id} created successfully for user_id={reservation_data.user_id}")
     
-    # Enviar notificación en tiempo real
+    
     reservation_dict = {
         "reservation_id": new_reservation.reservation_id,
         "user_id": new_reservation.user_id,
@@ -72,7 +72,7 @@ async def create_reservation_controller(reservation_data: ReservationCreate, db:
 async def get_all_reservations_controller(db: AsyncSession):
     logger.debug("Fetching all reservations with employee assignments")
     
-    # Query para obtener reservas con información del empleado asignado
+   
     query = select(Reservation).options(
         selectinload(Reservation.service).selectinload(Service.assignments).selectinload(Assignment.employee)
     )
@@ -80,7 +80,7 @@ async def get_all_reservations_controller(db: AsyncSession):
     result = await db.execute(query)
     reservations = result.scalars().all()
     
-    # Procesar cada reserva para agregar información del empleado
+ 
     reservations_with_employee = []
     for reservation in reservations:
         reservation_dict = {
@@ -95,7 +95,7 @@ async def get_all_reservations_controller(db: AsyncSession):
             "assigned_employee": None
         }
         
-        # Buscar el empleado asignado para este servicio
+      
         if reservation.service and reservation.service.assignments:
             # Tomar el empleado de la primera asignación (asumiendo una asignación por servicio)
             assignment = reservation.service.assignments[0] if reservation.service.assignments else None
@@ -146,11 +146,11 @@ async def update_reservation_controller(reservation_id: int, reservation_data: R
             logger.warning(f"Reservation with ID {reservation_id} not found")
             raise NotFoundException("Reservation not found")
         
-        # Solo validar campos que se están actualizando
+    
         update_data = reservation_data.dict(exclude_unset=True)
         logger.debug(f"Update data: {update_data}")
         
-        # Validar usuario solo si se está actualizando
+ 
         if 'user_id' in update_data and update_data['user_id'] is not None:
             user_result = await db.execute(select(User).where(User.user_id == update_data['user_id']))
             user = user_result.scalar_one_or_none()
@@ -158,7 +158,7 @@ async def update_reservation_controller(reservation_id: int, reservation_data: R
                 logger.warning(f"User with ID {update_data['user_id']} not found")
                 raise NotFoundException("User not found")
         
-        # Validar servicio solo si se está actualizando
+      
         if 'service_id' in update_data and update_data['service_id'] is not None:
             service_result = await db.execute(select(Service).where(Service.service_id == update_data['service_id']))
             service = service_result.scalar_one_or_none()
@@ -166,14 +166,14 @@ async def update_reservation_controller(reservation_id: int, reservation_data: R
                 logger.warning(f"Service with ID {update_data['service_id']} not found")
                 raise NotFoundException("Service not found")
         
-        # Validar fechas solo si ambas se están actualizando
+      
         if 'checkin_date' in update_data and 'checkout_date' in update_data:
             if update_data['checkin_date'] is not None and update_data['checkout_date'] is not None:
                 if update_data['checkin_date'] >= update_data['checkout_date']:
                     logger.warning("Invalid reservation dates: check-in is not before check-out")
                     raise BadRequestException(detail="Check-in date must be before check-out date")
         
-        # Actualizar solo los campos que se envían
+        
         for field, value in update_data.items():
             logger.debug(f"Setting {field} = {value} (type: {type(value)})")
             setattr(reservation, field, value)
@@ -182,7 +182,7 @@ async def update_reservation_controller(reservation_id: int, reservation_data: R
         await db.refresh(reservation)
         logger.info(f"Reservation with ID {reservation_id} updated successfully")
         
-        # Enviar notificación en tiempo real
+      
         reservation_dict = {
             "reservation_id": reservation.reservation_id,
             "user_id": reservation.user_id,
@@ -213,7 +213,7 @@ async def delete_reservation_controller(reservation_id: int, db: AsyncSession):
         logger.warning(f"Reservation with ID {reservation_id} not found")
         raise NotFoundException("Reservation not found")
     
-    # Guardar información antes de eliminar para la notificación
+   
     reservation_info = {
         "reservation_id": reservation.reservation_id,
         "user_id": reservation.user_id,
@@ -224,7 +224,7 @@ async def delete_reservation_controller(reservation_id: int, db: AsyncSession):
     await db.commit()
     logger.info(f"Reservation with ID {reservation_id} deleted successfully")
     
-    # Enviar notificación en tiempo real
+   
     await notification_service.send_reservation_update("deleted", reservation_info)
     await notification_service.send_user_notification(
         str(reservation_info["user_id"]), 

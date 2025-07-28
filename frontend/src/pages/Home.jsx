@@ -26,19 +26,19 @@ const Home = () => {
                 console.log("🔍 Iniciando fetchStats en Home...");
                 console.log("👤 Usuario actual:", user);
                 
-                // Usar diferentes servicios según el rol
+          
                 let data;
                 if (isAdmin() || isEmployee()) {
-                    data = await getAdminStats(); // Para admin/employee: reservas
+                    data = await getAdminStats(); 
                 } else {
-                    data = await getDashboardStats(); // Para usuarios: servicios
+                    data = await getDashboardStats(); 
                 }
                 
-                console.log("✅ Estadísticas obtenidas:", data);
+                console.log(" Estadísticas obtenidas:", data);
                 
                 setStats(data);
             } catch (error) {
-                console.error("❌ Error obteniendo estadísticas:", error);
+                console.error("Error obteniendo estadísticas:", error);
                 setError("Error al cargar las estadísticas");
             } finally {
                 setLoading(false);
@@ -84,7 +84,7 @@ const Home = () => {
                 route: "/medicalhistory",
                 show: hasRouteAccess('medical_history')
             },
-            // Cards adicionales para admin
+            
             {
                 title: "Usuarios",
                 value: stats.totalUsers || 0,
@@ -165,7 +165,7 @@ const Home = () => {
   
   return (
         <div className="flex-1 p-6 bg-gray-50">
-            {/* Header */}
+        
             <div className="mb-8">
                 <div className="flex items-center justify-between">
                     <div>
@@ -189,7 +189,7 @@ const Home = () => {
                 </div>
             )}
 
-            {/* Estadísticas */}
+         
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 mb-8">
                 {dashboardCards.map((card, index) => (
                     <div
@@ -210,7 +210,7 @@ const Home = () => {
                 ))}
             </div>
 
-            {/* Modal para añadir mascota */}
+           
             {showModal && <Modal onClose={() => setShowModal(false)} />}
     </div>
   );

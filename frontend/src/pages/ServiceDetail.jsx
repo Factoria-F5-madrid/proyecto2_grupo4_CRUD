@@ -67,7 +67,7 @@ const ServiceDetail = () => {
 
   const formatDuration = (duration) => {
     if (!duration) return 'No especificada';
-    // Asumiendo que duration viene en formato HH:MM:SS
+    
     const [hours, minutes] = duration.split(':');
     return `${hours}h ${minutes}m`;
   };
@@ -115,7 +115,7 @@ const ServiceDetail = () => {
 
   return (
     <div className="p-6 bg-gray-100 min-h-screen">
-      {/* Header */}
+     
       <div className="bg-[#edad06] rounded-xl p-6 mb-6 shadow-md text-white">
         <div>
           <h1 className="text-4xl font-bold mb-1">Detalles de Servicio</h1>
@@ -123,9 +123,8 @@ const ServiceDetail = () => {
         </div>
       </div>
 
-      {/* Contenido principal */}
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
-        {/* Información principal */}
+     
         <div className="bg-white rounded-xl shadow-md p-6">
           <h2 className="text-2xl font-bold text-gray-800 mb-4">Información General</h2>
           
@@ -170,7 +169,7 @@ const ServiceDetail = () => {
           </div>
         </div>
 
-        {/* Detalles adicionales */}
+     
         <div className="bg-white rounded-xl shadow-md p-6">
           <h2 className="text-2xl font-bold text-gray-800 mb-4">Detalles Adicionales</h2>
           
@@ -206,7 +205,7 @@ const ServiceDetail = () => {
           </div>
         </div>
 
-        {/* Fechas */}
+      
         <div className="bg-white rounded-xl shadow-md p-6">
           <h2 className="text-2xl font-bold text-gray-800 mb-4">Fechas</h2>
           
@@ -221,7 +220,7 @@ const ServiceDetail = () => {
           </div>
         </div>
 
-        {/* Información del servicio */}
+        
         <div className="bg-white rounded-xl shadow-md p-6">
           <h2 className="text-2xl font-bold text-gray-800 mb-4">Información del Servicio</h2>
           
@@ -246,7 +245,7 @@ const ServiceDetail = () => {
         </div>
       </div>
 
-      {/* Botón Cerrar */}
+
       <div className="mt-6 flex justify-end">
         <button
           onClick={() => navigate('/services')}

@@ -8,10 +8,10 @@ from backend.logger.logger import logger
 class CacheService:
     def __init__(self):
         self.redis: Optional[redis.Redis] = None
-        self.default_ttl = 300  # 5 minutos por defecto
+        self.default_ttl = 300  
     
     async def connect(self):
-        """Conectar a Redis"""
+      
         try:
             if self.redis is None:
                 self.redis = redis.from_url(
@@ -26,7 +26,7 @@ class CacheService:
             self.redis = None
     
     async def disconnect(self):
-        """Desconectar de Redis"""
+       
         if self.redis:
             try:
                 await self.redis.aclose()
@@ -36,7 +36,7 @@ class CacheService:
                 self.redis = None
     
     async def get(self, key: str) -> Optional[Any]:
-        """Obtener valor del caché"""
+      
         if not self.redis:
             return None
         
@@ -50,7 +50,7 @@ class CacheService:
             return None
     
     async def set(self, key: str, value: Any, ttl: int = None) -> bool:
-        """Establecer valor en caché"""
+       
         if not self.redis:
             return False
         
@@ -64,7 +64,7 @@ class CacheService:
             return False
     
     async def delete(self, key: str) -> bool:
-        """Eliminar valor del caché"""
+ 
         if not self.redis:
             return False
         
@@ -77,7 +77,7 @@ class CacheService:
             return False
     
     async def delete_pattern(self, pattern: str) -> bool:
-        """Eliminar múltiples claves que coincidan con un patrón"""
+      
         if not self.redis:
             return False
         
@@ -92,13 +92,13 @@ class CacheService:
             return False
     
     def generate_key(self, prefix: str, **kwargs) -> str:
-        """Generar clave de caché basada en parámetros"""
+       
         key_parts = [prefix]
         for k, v in sorted(kwargs.items()):
             key_parts.append(f"{k}:{v}")
         return ":".join(key_parts)
 
-# Instancia global del servicio de caché
+
 cache_service = CacheService()
 
 async def get_cache_service() -> CacheService:

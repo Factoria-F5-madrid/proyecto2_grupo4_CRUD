@@ -3,7 +3,7 @@ import { API_ENDPOINTS } from '../config/api.js';
 
 const BASE_URL = API_ENDPOINTS.ASSIGNMENTS; 
 
-// Obtener todas las asignaciones 
+
 export const getAllAssigments = async () => {
   try {
     const response = await axios.get(BASE_URL);
@@ -14,7 +14,7 @@ export const getAllAssigments = async () => {
   }
 };
 
-// Obtener una asignación por ID
+
 export const getAssigmentByID = async (assignment_id) => {
   try {
     const response = await axios.get(`${BASE_URL}/${assignment_id}`);
@@ -25,7 +25,7 @@ export const getAssigmentByID = async (assignment_id) => {
   }
 };
 
-// Crear una nueva asignación de empleado
+
 export const createAssignment = async (assignmentData) => {
   try {
     const response = await axios.post(
@@ -45,7 +45,7 @@ export const createAssignment = async (assignmentData) => {
 };
 
 
-// Eliminar una asignación 
+
 export const deleteAssigment = async (assigment_id) => {
   const token = localStorage.getItem("token"); 
 
@@ -62,7 +62,7 @@ export const deleteAssigment = async (assigment_id) => {
   }
 };
 
-// Actualizar una asignación de empleado por ID
+
 export const updateAssigment = async (assigment_id, updatedData) => {
   const token = localStorage.getItem("token"); 
   try {

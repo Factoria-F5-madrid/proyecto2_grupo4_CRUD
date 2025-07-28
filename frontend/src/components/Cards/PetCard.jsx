@@ -16,7 +16,6 @@ const PetCard = ({ pet, onEditClick, onDeleteClick, onViewClick }) => {
   };
 
   const handleCardClick = (e) => {
-    // Evitar que se active si se hace click en los botones
     if (e.target.closest('.action-button')) {
       return;
     }
@@ -46,7 +45,7 @@ const PetCard = ({ pet, onEditClick, onDeleteClick, onViewClick }) => {
         className="w-full h-60 object-cover"
       />
       
-      {/* Botones de acción */}
+    
       <div className="absolute top-2 right-2 flex gap-2 opacity-0 group-hover:opacity-100 transition-opacity duration-300">
         <button
           className="action-button bg-white bg-opacity-90 hover:bg-opacity-100 p-2 rounded-full shadow-md"

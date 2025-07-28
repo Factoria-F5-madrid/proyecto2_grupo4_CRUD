@@ -35,11 +35,11 @@ export default function FormNewUsers({ onClose, onSuccess, userToEdit }) {
       phone_number: Number(formData.phone_number),
       email: formData.email,
       address: formData.address,
-      password: formData.password || undefined, // No se envía si está vacío
+      password: formData.password || undefined,
       role: formData.role,
     };
 
-    // Agregar especialidad si el rol es employee
+   
     if (formData.role === 'employee' && formData.specialty) {
       cleanPayload.specialty = formData.specialty;
     }
@@ -47,10 +47,10 @@ export default function FormNewUsers({ onClose, onSuccess, userToEdit }) {
     if (isEditing) {
       const userId = userToEdit.user_id.replace('usr-', '');
       await updateUser(userId, cleanPayload);
-      setSuccessMessage('✅ Usuario actualizado correctamente.');
+      setSuccessMessage(' Usuario actualizado correctamente.');
     } else {
       await createUser(cleanPayload);
-      setSuccessMessage('✅ Usuario creado correctamente.');
+      setSuccessMessage(' Usuario creado correctamente.');
       setFormData({
         first_name: '',
         last_name: '',
@@ -71,7 +71,7 @@ export default function FormNewUsers({ onClose, onSuccess, userToEdit }) {
     }, 2000);
   } catch (error) {
     console.error(error);
-    alert('❌ Error al guardar el usuario. Verifica los datos.');
+    alert('Error al guardar el usuario. Verifica los datos.');
   }
 };
 
@@ -130,7 +130,7 @@ export default function FormNewUsers({ onClose, onSuccess, userToEdit }) {
         className="w-full border rounded px-3 py-2"
       />
 
-      {/* Selector de rol - Solo visible para administradores */}
+
       {isAdmin() && (
         <select
           name="role"
@@ -145,7 +145,7 @@ export default function FormNewUsers({ onClose, onSuccess, userToEdit }) {
         </select>
       )}
 
-      {/* Campo de especialidad - Solo visible cuando se selecciona empleado */}
+    
       {formData.role === 'employee' && (
         <select
           name="specialty"
@@ -176,7 +176,7 @@ export default function FormNewUsers({ onClose, onSuccess, userToEdit }) {
         />
       )}
 
-      {/* Campo oculto para usuarios no-admin (rol fijo como 'user') */}
+     
       {!isAdmin() && (
         <input type="hidden" name="role" value="user" />
       )}

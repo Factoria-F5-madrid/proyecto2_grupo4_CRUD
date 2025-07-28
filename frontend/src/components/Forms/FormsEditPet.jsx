@@ -21,7 +21,7 @@ const FormsEditPet = ({ pet, onClose, onPetUpdated }) => {
         name: pet.name || '',
         species: pet.species || '',
         breed: pet.breed || '',
-        birth_date: pet.birth_date ? pet.birth_date.split('T')[0] : '', // Formatear fecha para input
+        birth_date: pet.birth_date ? pet.birth_date.split('T')[0] : '',
         allergies: pet.allergies || '',
         special_needs: pet.special_needs || '',
         img_url: pet.img_url || ''
@@ -46,12 +46,12 @@ const FormsEditPet = ({ pet, onClose, onPetUpdated }) => {
       console.log('🔄 Actualizando mascota:', pet.pet_id, formData);
       
       const updatedPet = await updatePet(pet.pet_id, formData);
-      console.log('✅ Mascota actualizada:', updatedPet);
+      console.log(' Mascota actualizada:', updatedPet);
       
       onPetUpdated(updatedPet);
       onClose();
     } catch (error) {
-      console.error('❌ Error actualizando mascota:', error);
+      console.error(' Error actualizando mascota:', error);
       setError('Error al actualizar la mascota: ' + error.message);
     } finally {
       setLoading(false);

@@ -12,7 +12,3 @@ def verify_password(plain_password: str, hashed_password: str) -> bool:
 
 
 
-#Email: superadmin@petland.com
-#Password: admin123
-# Rol: admin
-#User ID: 43

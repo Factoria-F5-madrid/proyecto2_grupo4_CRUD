@@ -12,8 +12,7 @@ from backend.logger.logger import logger
 
 async def create_payment_controller(payment_data: PaymentCreate, db: AsyncSession):
     logger.debug(f"Creating payment with data: {payment_data}")
-    
-    # Verificar que la factura existe
+  
     result = await db.execute(select(Invoice).where(Invoice.invoice_id == payment_data.invoice_id))
     invoice = result.scalar_one_or_none()
     if not invoice:

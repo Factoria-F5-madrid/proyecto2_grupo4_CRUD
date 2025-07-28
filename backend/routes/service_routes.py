@@ -24,13 +24,8 @@ async def create_service(service_data: ServiceCreate, db: AsyncSession = Depends
 @router.get("/", response_model=List[ServiceOut])
 async def get_all_services(
     db: AsyncSession = Depends(get_db),
-    current_user: dict = Depends(get_current_user)
-):
-    """
-    Obtiene servicios según el rol del usuario:
-    - Admin/Employee: Todos los servicios disponibles
-    - User: Solo los servicios que ha contratado
-    """
+    current_user: dict = Depends(get_current_user)):
+   
     from backend.logger.logger import logger
     
     logger.info(f"Endpoint /services/ llamado por usuario: {current_user['email']} con rol: {current_user['role']}")
@@ -38,11 +33,11 @@ async def get_all_services(
     user_role = UserRole(current_user["role"])
     
     if user_role in [UserRole.ADMIN, UserRole.EMPLOYEE]:
-        # Admin y Employee ven todos los servicios disponibles
+       
         logger.info("Usuario es Admin/Employee - devolviendo todos los servicios")
         return await get_all_services_controller(db)
     else:
-        # Usuario regular solo ve los servicios que ha contratado
+      
         user_id = current_user["user_id"]
         logger.info(f"Usuario regular - buscando servicios para user_id: {user_id}")
         services = await get_services_by_user_controller(user_id, db)

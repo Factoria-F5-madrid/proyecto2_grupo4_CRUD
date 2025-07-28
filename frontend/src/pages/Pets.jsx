@@ -26,12 +26,12 @@ const Pets = () => {
       console.log("👤 Usuario actual:", user);
       
       const data = await getAllPets();
-      console.log("✅ Datos recibidos:", data);
-      console.log("📊 Número de mascotas:", data.length);
+      console.log("Datos recibidos:", data);
+      console.log("Número de mascotas:", data.length);
       
       setPets(data);
     } catch (error) {
-      console.error("❌ Error al cargar mascotas:", error);
+      console.error(" Error al cargar mascotas:", error);
       setError("Error al cargar las mascotas: " + error.message);
     }
   };
@@ -40,19 +40,19 @@ const Pets = () => {
     fetchPets();
   }, [user]);
 
-  // Detectar si venimos de crear una mascota y limpiar la URL
+  
   useEffect(() => {
     const searchParams = new URLSearchParams(location.search);
     if (searchParams.get('refresh') === 'true') {
-      // Recargar los datos
+   
       fetchPets();
-      // Limpiar el parámetro de la URL
+     
       navigate('/pets', { replace: true });
     }
   }, [location.search, navigate]);
 
   const handlePetCreated = () => {
-    // Recargar la lista de mascotas después de crear una nueva
+    
     window.location.reload();
   };
 
@@ -74,15 +74,15 @@ const Pets = () => {
     
     try {
       await deletePet(pet.pet_id);
-      console.log("✅ Mascota eliminada exitosamente");
+      console.log(" Mascota eliminada exitosamente");
       
-      // Actualizar la lista de mascotas
+     
       setPets(prevPets => prevPets.filter(p => p.pet_id !== pet.pet_id));
       
-      // Mostrar mensaje de éxito
+   
       alert(`${pet.name} ha sido eliminado exitosamente`);
     } catch (error) {
-      console.error("❌ Error eliminando mascota:", error);
+      console.error(" Error eliminando mascota:", error);
       alert("Error al eliminar la mascota: " + error.message);
     } finally {
       setLoading(false);
@@ -90,8 +90,8 @@ const Pets = () => {
   };
 
   const handlePetUpdated = (updatedPet) => {
-    console.log("✅ Mascota actualizada:", updatedPet);
-    // Actualizar la lista de mascotas con los datos actualizados
+    console.log(" Mascota actualizada:", updatedPet);
+    
     setPets(prevPets => 
       prevPets.map(pet => 
         pet.pet_id === updatedPet.pet_id ? updatedPet : pet
@@ -101,10 +101,10 @@ const Pets = () => {
     setSelectedPet(null);
   };
 
-  console.log("🎨 Renderizando Pets component");
-  console.log("📊 Estado actual de pets:", pets);
-  console.log("👤 Usuario:", user);
-  console.log("🔐 Es usuario regular:", isUser());
+  console.log(" Renderizando Pets component");
+  console.log(" Estado actual de pets:", pets);
+  console.log(" Usuario:", user);
+  console.log(" Es usuario regular:", isUser());
 
   return (
     <div className="p-8">
@@ -154,7 +154,7 @@ const Pets = () => {
       </div>
       )}
 
-      {/* Modal para el formulario de creación */}
+      
       {showForm && (
         <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
           <div className="bg-white rounded-lg p-6 max-w-md w-full mx-4">
@@ -166,7 +166,7 @@ const Pets = () => {
         </div>
       )}
 
-      {/* Modal para el formulario de edición */}
+     
       {showEditForm && selectedPet && (
         <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
           <div className="bg-white rounded-lg p-6 max-w-md w-full mx-4">
@@ -182,7 +182,7 @@ const Pets = () => {
         </div>
       )}
 
-      {/* Modal para ver detalles de la mascota */}
+   
       {showViewForm && selectedPet && (
         <FormViewPet 
           pet={selectedPet}

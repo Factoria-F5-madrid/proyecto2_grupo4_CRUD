@@ -31,18 +31,14 @@ async def get_all(
     db: AsyncSession = Depends(get_db),
     current_user: dict = Depends(get_current_user)
 ):
-    """
-    Obtiene historiales médicos según el rol del usuario:
-    - Admin/Employee: Todos los historiales médicos
-    - User: Solo los historiales de sus mascotas
-    """
+   
     user_role = UserRole(current_user["role"])
     
     if user_role in [UserRole.ADMIN, UserRole.EMPLOYEE]:
-        # Admin y Employee ven todos los historiales médicos
+        
         return await get_all_medical_histories(db)
     else:
-        # Usuario regular solo ve los historiales de sus mascotas
+   
         user_id = current_user["user_id"]
         return await get_medical_histories_by_user(db, user_id)
 

@@ -16,7 +16,7 @@ class PetBase(BaseModel):
     @validator('species', pre=True)
     def validate_species(cls, v):
         if isinstance(v, str):
-            # Mapear valores del frontend a los valores del enum
+         
             species_mapping = {
                 "Canino": PetTypeEnum.CANINO,
                 "Felino": PetTypeEnum.FELINO,
@@ -46,7 +46,7 @@ class PetUpdate(BaseModel):
     @validator('species', pre=True)
     def validate_species(cls, v):
         if isinstance(v, str):
-            # Mapear valores del frontend a los valores del enum
+           
             species_mapping = {
                 "Canino": PetTypeEnum.CANINO,
                 "Felino": PetTypeEnum.FELINO,
@@ -65,7 +65,7 @@ class PetOut(PetBase):
 
     class Config:
         from_attributes = True
-        schema_extra = {
+        json_schema_extra = {
             "example": {
                 "pet_id": 1,
                 "name": "Firulais",

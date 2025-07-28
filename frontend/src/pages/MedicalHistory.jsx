@@ -101,7 +101,7 @@ const MedicalHistory = () => {
 
   return (
     <div className="min-h-screen bg-gray-50">
-      {/* Cabecera amarilla */}
+      
       <div className="bg-[#EEAD05] py-8 px-6">
         <div className="max-w-7xl mx-auto">
           <h1 className="text-3xl font-bold text-white mb-2">
@@ -113,11 +113,11 @@ const MedicalHistory = () => {
         </div>
       </div>
 
-      {/* Contenido principal */}
+ 
       <div className="max-w-7xl mx-auto px-6 py-8">
-        {/* Barra de herramientas */}
+      
         <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4 mb-6">
-          {/* Barra de búsqueda */}
+        
           <div className="relative flex-1 max-w-md">
             <FaSearch className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400" />
             <input
@@ -129,7 +129,7 @@ const MedicalHistory = () => {
             />
           </div>
 
-          {/* Botón de nuevo historial */}
+       
           {(isAdmin() || isEmployee()) && (
           <button
               onClick={() => setShowCreateModal(true)}
@@ -141,14 +141,14 @@ const MedicalHistory = () => {
         )}
       </div>
       
-        {/* Mensaje de error */}
+        
         {error && (
           <div className="bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded mb-6">
             {error}
           </div>
         )}
 
-        {/* Tabla de historiales */}
+
         {filteredHistories.length > 0 ? (
           <div className="bg-white rounded-lg shadow-sm border border-gray-200 overflow-hidden">
             <div className="overflow-x-auto">
@@ -270,7 +270,7 @@ const MedicalHistory = () => {
       )}
       </div>
 
-      {/* Modal para crear/editar historial */}
+     
       {showCreateModal && (
         <FormCreateMedicalHistory
           onClose={() => setShowCreateModal(false)}
@@ -278,11 +278,11 @@ const MedicalHistory = () => {
         />
       )}
 
-      {/* Modal de detalles del historial médico */}
+    
       {showDetailModal && selectedHistory && (
         <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 p-4">
           <div className="bg-white rounded-lg max-w-2xl w-full max-h-[90vh] overflow-y-auto">
-            {/* Header del modal */}
+           
             <div className="flex items-center justify-between p-6 border-b border-gray-200">
               <div className="flex items-center gap-3">
                 <div className="p-2 bg-blue-100 rounded-lg">
@@ -305,10 +305,9 @@ const MedicalHistory = () => {
               </button>
             </div>
 
-            {/* Contenido del modal */}
+        
             <div className="p-6 space-y-6">
-              {/* Información de la mascota */}
-              <div className="bg-gray-50 rounded-lg p-4">
+                <div className="bg-gray-50 rounded-lg p-4">
                 <div className="flex items-center gap-3 mb-3">
                   <FaPaw className="text-orange-500" />
                   <h3 className="font-semibold text-gray-900">Información de la Mascota</h3>
@@ -328,7 +327,7 @@ const MedicalHistory = () => {
                 </div>
               </div>
 
-              {/* Detalles del historial */}
+          
               <div>
                 <h3 className="font-semibold text-gray-900 mb-3">Descripción del Tratamiento</h3>
                 <div className="bg-white border border-gray-200 rounded-lg p-4">
@@ -338,7 +337,7 @@ const MedicalHistory = () => {
                 </div>
               </div>
 
-              {/* Información adicional */}
+             
               <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                 <div>
                   <h3 className="font-semibold text-gray-900 mb-3 flex items-center gap-2">
@@ -389,7 +388,7 @@ const MedicalHistory = () => {
                 </div>
               </div>
 
-              {/* Información del veterinario (si está disponible) */}
+            
               {selectedHistory.veterinarian && (
                 <div className="bg-blue-50 rounded-lg p-4">
                   <h3 className="font-semibold text-gray-900 mb-2">Veterinario Responsable</h3>
@@ -398,7 +397,7 @@ const MedicalHistory = () => {
               )}
             </div>
 
-            {/* Footer del modal */}
+            
             <div className="flex justify-end p-6 border-t border-gray-200">
             <button
                 onClick={() => setShowDetailModal(false)}
@@ -411,7 +410,7 @@ const MedicalHistory = () => {
         </div>
       )}
 
-      {/* Modal de edición */}
+     
       {showEditModal && selectedHistory && (
         <FormEditMedicalHistory
           medicalHistory={selectedHistory}

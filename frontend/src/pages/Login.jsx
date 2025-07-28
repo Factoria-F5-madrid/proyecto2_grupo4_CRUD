@@ -23,7 +23,6 @@ const Login = () => {
       [name]: value
     }));
     
-    // Limpiar errores cuando el usuario empiece a escribir
     if (error) {
       clearError();
     }
@@ -35,11 +34,11 @@ const Login = () => {
     
     try {
       await login(formData.email, formData.password);
-      // Si el login es exitoso, redirigir a home
+   
       navigate('/home');
     } catch (error) {
       console.error('Error en login:', error);
-      // El error ya se maneja en el AuthContext
+   
     } finally {
       setIsLoading(false);
     }
@@ -52,7 +51,7 @@ const Login = () => {
   return (
     <div className="min-h-screen bg-gradient-to-br from-blue-50 to-indigo-100 flex items-center justify-center p-4">
       <div className="max-w-md w-full space-y-8">
-        {/* Header */}
+       
         <div className="text-center">
           <div className="mx-auto h-16 w-16 bg-indigo-600 rounded-full flex items-center justify-center">
             <img 
@@ -69,10 +68,10 @@ const Login = () => {
           </p>
         </div>
 
-        {/* Form */}
+    
         <form className="mt-8 space-y-6" onSubmit={handleSubmit}>
           <div className="space-y-4">
-            {/* Email Field */}
+           
             <div>
               <label htmlFor="email" className="block text-sm font-medium text-gray-700 mb-2">
                 Correo Electrónico
@@ -95,7 +94,6 @@ const Login = () => {
               </div>
             </div>
 
-            {/* Password Field */}
             <div>
               <label htmlFor="password" className="block text-sm font-medium text-gray-700 mb-2">
                 Contraseña
@@ -130,14 +128,14 @@ const Login = () => {
             </div>
           </div>
 
-          {/* Error Message */}
+       
           {error && (
             <div className="bg-red-50 border border-red-200 text-red-700 px-4 py-3 rounded-lg">
               <p className="text-sm">{error}</p>
             </div>
           )}
 
-          {/* Submit Button */}
+         
           <div>
             <button
               type="submit"
@@ -152,7 +150,7 @@ const Login = () => {
             </button>
           </div>
 
-          {/* Links */}
+         
           <div className="text-center space-y-2">
             <p className="text-sm text-gray-600">
               ¿No tienes cuenta?{' '}

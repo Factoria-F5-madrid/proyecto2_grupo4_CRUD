@@ -11,26 +11,14 @@ from backend.utils.authorization import get_user_permissions, get_available_rout
 from backend.logger.logger import logger
 
 async def login_user(login_data: LoginRequest, db: AsyncSession) -> TokenResponse:
-    """
-    Autentica un usuario y genera un token JWT
-    
-    Args:
-        login_data: Datos de login (email, password)
-        db: Sesión de base de datos
-    
-    Returns:
-        TokenResponse: Token de acceso generado
-    
-    Raises:
-        HTTPException: Si las credenciales son inválidas
-    """
+   
     logger.info(f"Intento de login para email: {login_data.email}")
     
-    # Buscar usuario por email
+    
     result = await db.execute(select(User).where(User.email == login_data.email))
     user = result.scalar_one_or_none()
     
-    # Verificar que el usuario existe
+   
     if not user:
         logger.warning(f"Login fallido: usuario no encontrado - {login_data.email}")
         raise HTTPException(
@@ -39,7 +27,7 @@ async def login_user(login_data: LoginRequest, db: AsyncSession) -> TokenRespons
             headers={"WWW-Authenticate": "Bearer"},
         )
     
-    # Verificar contraseña
+ 
     if not verify_password(login_data.password, user.hashed_password):
         logger.warning(f"Login fallido: contraseña incorrecta - {login_data.email}")
         raise HTTPException(
@@ -48,7 +36,7 @@ async def login_user(login_data: LoginRequest, db: AsyncSession) -> TokenRespons
             headers={"WWW-Authenticate": "Bearer"},
         )
     
-    # Crear token con datos del usuario
+    
     token_data = {
         "user_id": user.user_id,
         "email": user.email,
@@ -57,7 +45,7 @@ async def login_user(login_data: LoginRequest, db: AsyncSession) -> TokenRespons
     
     access_token = create_access_token(data=token_data)
     
-    # Obtener permisos y rutas disponibles
+   
     permissions = get_user_permissions(user.role)
     available_routes = get_available_routes(user.role)
     
@@ -74,22 +62,10 @@ async def login_user(login_data: LoginRequest, db: AsyncSession) -> TokenRespons
     )
 
 async def register_user(register_data: RegisterRequest, db: AsyncSession) -> TokenResponse:
-    """
-    Registra un nuevo usuario y genera un token JWT
-    
-    Args:
-        register_data: Datos de registro
-        db: Sesión de base de datos
-    
-    Returns:
-        TokenResponse: Token de acceso generado
-    
-    Raises:
-        HTTPException: Si el email ya existe
-    """
+   
     logger.info(f"Intento de registro para email: {register_data.email}")
     
-    # Verificar si el email ya existe
+   
     result = await db.execute(select(User).where(User.email == register_data.email))
     existing_user = result.scalar_one_or_none()
     
@@ -100,7 +76,7 @@ async def register_user(register_data: RegisterRequest, db: AsyncSession) -> Tok
             detail="El email ya está registrado"
         )
     
-    # Verificar si el teléfono ya existe
+   
     result = await db.execute(select(User).where(User.phone_number == register_data.phone_number))
     existing_phone = result.scalar_one_or_none()
     
@@ -111,10 +87,10 @@ async def register_user(register_data: RegisterRequest, db: AsyncSession) -> Tok
             detail="El número de teléfono ya está registrado"
         )
     
-    # Hash de la contraseña
+
     hashed_password = hash_password(register_data.password)
     
-    # Crear nuevo usuario
+   
     new_user = User(
         first_name=register_data.first_name,
         last_name=register_data.last_name,
@@ -122,17 +98,17 @@ async def register_user(register_data: RegisterRequest, db: AsyncSession) -> Tok
         email=register_data.email,
         address=register_data.address,
         hashed_password=hashed_password,
-        role="user",  # Por defecto es usuario
+        role="user",  
         updated_by="system",
         update_date=func.now()
     )
     
-    # Guardar en base de datos
+   
     db.add(new_user)
     await db.commit()
     await db.refresh(new_user)
     
-    # Crear token con datos del usuario
+    
     token_data = {
         "user_id": new_user.user_id,
         "email": new_user.email,
@@ -141,7 +117,7 @@ async def register_user(register_data: RegisterRequest, db: AsyncSession) -> Tok
     
     access_token = create_access_token(data=token_data)
     
-    # Obtener permisos y rutas disponibles
+   
     permissions = get_user_permissions(new_user.role)
     available_routes = get_available_routes(new_user.role)
     

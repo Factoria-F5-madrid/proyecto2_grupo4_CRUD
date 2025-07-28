@@ -16,11 +16,11 @@ from backend.logger.logger import logger
 
 
 class CSVExportService:
-    """Servicio para exportar datos a formato CSV"""
+   
     
     @staticmethod
     async def export_users_to_csv(db: AsyncSession, filters: Dict[str, Any] = None) -> bytes:
-        """Exportar usuarios a CSV"""
+        
         try:
             query = select(User)
             
@@ -33,7 +33,7 @@ class CSVExportService:
             result = await db.execute(query)
             users = result.scalars().all()
             
-            # Convertir a DataFrame
+            
             data = []
             for user in users:
                 data.append({
@@ -57,7 +57,7 @@ class CSVExportService:
     
     @staticmethod
     async def export_pets_to_csv(db: AsyncSession, filters: Dict[str, Any] = None) -> bytes:
-        """Exportar mascotas a CSV"""
+      
         try:
             query = select(Pet)
             
@@ -70,7 +70,7 @@ class CSVExportService:
             result = await db.execute(query)
             pets = result.scalars().all()
             
-            # Convertir a DataFrame
+            
             data = []
             for pet in pets:
                 data.append({
@@ -96,7 +96,7 @@ class CSVExportService:
     
     @staticmethod
     async def export_reservations_to_csv(db: AsyncSession, filters: Dict[str, Any] = None) -> bytes:
-        """Exportar reservas a CSV"""
+        
         try:
             query = select(Reservation)
             
@@ -111,7 +111,7 @@ class CSVExportService:
             result = await db.execute(query)
             reservations = result.scalars().all()
             
-            # Convertir a DataFrame
+           
             data = []
             for reservation in reservations:
                 data.append({
@@ -150,7 +150,7 @@ class CSVExportService:
             result = await db.execute(query)
             services = result.scalars().all()
             
-            # Convertir a DataFrame
+           
             data = []
             for service in services:
                 data.append({
@@ -188,7 +188,7 @@ class CSVExportService:
             result = await db.execute(query)
             employees = result.scalars().all()
             
-            # Convertir a DataFrame
+            
             data = []
             for employee in employees:
                 data.append({
@@ -214,7 +214,7 @@ class CSVExportService:
     
     @staticmethod
     async def export_invoices_to_csv(db: AsyncSession, filters: Dict[str, Any] = None) -> bytes:
-        """Exportar facturas a CSV"""
+      
         try:
             query = select(Invoice)
             
@@ -227,7 +227,7 @@ class CSVExportService:
             result = await db.execute(query)
             invoices = result.scalars().all()
             
-            # Convertir a DataFrame
+            
             data = []
             for invoice in invoices:
                 data.append({
@@ -252,7 +252,7 @@ class CSVExportService:
     
     @staticmethod
     async def export_payments_to_csv(db: AsyncSession, filters: Dict[str, Any] = None) -> bytes:
-        """Exportar pagos a CSV"""
+       
         try:
             query = select(Payment)
             
@@ -265,7 +265,7 @@ class CSVExportService:
             result = await db.execute(query)
             payments = result.scalars().all()
             
-            # Convertir a DataFrame
+            
             data = []
             for payment in payments:
                 data.append({
@@ -300,7 +300,7 @@ class CSVExportService:
             result = await db.execute(query)
             rows = result.all()
             
-            # Convertir a DataFrame
+           
             data = []
             for user, pet in rows:
                 data.append({
@@ -342,7 +342,7 @@ class CSVExportService:
             result = await db.execute(query)
             rows = result.all()
             
-            # Convertir a DataFrame
+         
             data = []
             for reservation, user, service in rows:
                 data.append({
@@ -382,7 +382,7 @@ class CSVExportService:
             result = await db.execute(query)
             rows = result.all()
             
-            # Convertir a DataFrame
+            
             data = []
             for invoice, user, payment in rows:
                 data.append({
@@ -408,7 +408,7 @@ class CSVExportService:
     
     @staticmethod
     async def export_all_data_to_csv(db: AsyncSession, entity: str) -> bytes:
-        """Exportar todos los datos de una entidad específica a CSV"""
+       
         try:
             if entity == "users":
                 return await CSVExportService.export_users_to_csv(db)

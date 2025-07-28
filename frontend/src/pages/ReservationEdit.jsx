@@ -27,7 +27,7 @@ const ReservationEdit = () => {
       const data = await getReservationById(reservationId);
       setReservation(data);
       
-      // Prellenar el formulario con los datos actuales
+     
       setFormData({
         status: data.status || 'pending',
         internal_notes: data.internal_notes || ''
@@ -60,13 +60,13 @@ const ReservationEdit = () => {
       setSaving(true);
       setError('');
 
-      // Validaciones básicas
+    
       if (!formData.status) {
         setError('El estado es obligatorio');
         return;
       }
 
-      // Preparar datos para enviar
+     
       const updateData = {
         status: formData.status,
         internal_notes: formData.internal_notes || null
@@ -75,7 +75,7 @@ const ReservationEdit = () => {
       console.log('Enviando datos de actualización:', updateData);
       await updateReservation(reservationId, updateData);
       
-      // Navegar a la vista de detalles
+    
       navigate(`/reservations/${reservationId}`);
     } catch (error) {
       console.error('Error actualizando reserva:', error);
@@ -121,7 +121,7 @@ const ReservationEdit = () => {
 
   return (
     <div className="p-6 bg-gray-100 min-h-screen">
-      {/* Header */}
+     
       <div className="bg-[#edad06] rounded-xl p-6 mb-6 shadow-md text-white">
                   <div>
             <h1 className="text-4xl font-bold mb-1">Editar Reserva</h1>
@@ -129,18 +129,18 @@ const ReservationEdit = () => {
           </div>
       </div>
 
-      {/* Mensaje de error */}
+   
       {error && (
         <div className="mb-6 bg-red-50 border border-red-200 text-red-700 px-4 py-3 rounded-lg">
           <p>{error}</p>
         </div>
       )}
 
-      {/* Formulario */}
+     
       <div className="bg-white rounded-xl shadow-md p-6">
         <form onSubmit={handleSubmit} className="space-y-6">
           <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-            {/* Estado */}
+          
             <div>
               <label className="block text-sm font-medium text-gray-700 mb-2">
                 <FaClock className="inline mr-2 text-gray-400" />
@@ -161,7 +161,7 @@ const ReservationEdit = () => {
             </div>
           </div>
 
-          {/* Notas */}
+         
           <div>
             <label className="block text-sm font-medium text-gray-700 mb-2">
               Notas Internas
@@ -176,7 +176,7 @@ const ReservationEdit = () => {
             />
           </div>
 
-          {/* Botones de acción */}
+       
           <div className="flex justify-end gap-4 pt-6 border-t border-gray-200">
             <button
               type="button"

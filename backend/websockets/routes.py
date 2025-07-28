@@ -9,15 +9,15 @@ router = APIRouter()
 
 @router.websocket("/ws/{channel}")
 async def websocket_endpoint(websocket: WebSocket, channel: str):
-    """Endpoint principal para websockets"""
+ 
     await manager.connect(websocket, channel)
     try:
         while True:
-            # Mantener la conexión activa
+       
             data = await websocket.receive_text()
             try:
                 message = json.loads(data)
-                # Procesar mensaje si es necesario
+            
                 print(f"Mensaje recibido en canal {channel}: {message}")
             except json.JSONDecodeError:
                 print(f"Mensaje no válido recibido: {data}")
@@ -27,7 +27,7 @@ async def websocket_endpoint(websocket: WebSocket, channel: str):
 
 @router.websocket("/ws/user/{user_id}")
 async def user_websocket_endpoint(websocket: WebSocket, user_id: str):
-    """Endpoint específico para usuarios"""
+
     await manager.connect(websocket, "users")
     manager.user_connections[user_id] = websocket
     
@@ -47,7 +47,7 @@ async def user_websocket_endpoint(websocket: WebSocket, user_id: str):
 
 @router.websocket("/ws/pets")
 async def pets_websocket_endpoint(websocket: WebSocket):
-    """Endpoint para actualizaciones de mascotas"""
+  
     await manager.connect(websocket, "pets")
     try:
         while True:
@@ -63,7 +63,7 @@ async def pets_websocket_endpoint(websocket: WebSocket):
 
 @router.websocket("/ws/reservations")
 async def reservations_websocket_endpoint(websocket: WebSocket):
-    """Endpoint para actualizaciones de reservas"""
+  
     await manager.connect(websocket, "reservations")
     try:
         while True:
@@ -79,7 +79,7 @@ async def reservations_websocket_endpoint(websocket: WebSocket):
 
 @router.websocket("/ws/payments")
 async def payments_websocket_endpoint(websocket: WebSocket):
-    """Endpoint para actualizaciones de pagos"""
+  
     await manager.connect(websocket, "payments")
     try:
         while True:
@@ -95,7 +95,7 @@ async def payments_websocket_endpoint(websocket: WebSocket):
 
 @router.websocket("/ws/invoices")
 async def invoices_websocket_endpoint(websocket: WebSocket):
-    """Endpoint para actualizaciones de facturas"""
+
     await manager.connect(websocket, "invoices")
     try:
         while True:
@@ -111,7 +111,6 @@ async def invoices_websocket_endpoint(websocket: WebSocket):
 
 @router.websocket("/ws/medical-history")
 async def medical_history_websocket_endpoint(websocket: WebSocket):
-    """Endpoint para actualizaciones de historial médico"""
     await manager.connect(websocket, "medical_history")
     try:
         while True:
@@ -127,7 +126,6 @@ async def medical_history_websocket_endpoint(websocket: WebSocket):
 
 @router.websocket("/ws/services")
 async def services_websocket_endpoint(websocket: WebSocket):
-    """Endpoint para actualizaciones de servicios"""
     await manager.connect(websocket, "services")
     try:
         while True:
@@ -143,7 +141,6 @@ async def services_websocket_endpoint(websocket: WebSocket):
 
 @router.websocket("/ws/employees")
 async def employees_websocket_endpoint(websocket: WebSocket):
-    """Endpoint para actualizaciones de empleados"""
     await manager.connect(websocket, "employees")
     try:
         while True:
@@ -159,7 +156,6 @@ async def employees_websocket_endpoint(websocket: WebSocket):
 
 @router.websocket("/ws/activity-logs")
 async def activity_logs_websocket_endpoint(websocket: WebSocket):
-    """Endpoint para actualizaciones de logs de actividad"""
     await manager.connect(websocket, "activity_logs")
     try:
         while True:

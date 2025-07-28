@@ -3,17 +3,16 @@ import { API_ENDPOINTS } from '../config/api.js';
 
 const BASE_URL = API_ENDPOINTS.MEDICAL_HISTORY; 
 
-// Función para obtener el token de autenticación
+
 const getAuthToken = () => {
   return localStorage.getItem('token');
 };
 
-// Configuración de axios con interceptor para incluir el token
 const apiClient = axios.create({
   baseURL: BASE_URL,
 });
 
-// Interceptor para agregar el token a todas las peticiones
+
 apiClient.interceptors.request.use(
   (config) => {
     const token = getAuthToken();
@@ -27,7 +26,7 @@ apiClient.interceptors.request.use(
   }
 );
 
-//Obtener todos los historiales médicos
+
 export const getAllMedicalHistories = async () => {
   try {
     const response = await apiClient.get("/");
@@ -38,7 +37,7 @@ export const getAllMedicalHistories = async () => {
   }
 };
 
-// Obtener un historial médico por ID
+
 export const getMedicalHistoryByID = async (medical_history_id) => {
   try {
     const response = await apiClient.get(`/${medical_history_id}`);
@@ -49,7 +48,7 @@ export const getMedicalHistoryByID = async (medical_history_id) => {
   }
 };
 
-// Obtener historiales médicos por ID de mascota
+
 export const getMedicalHistoryByPetID = async (pet_id) => {
   try {
     const response = await apiClient.get(`/pet/${pet_id}`);
@@ -60,7 +59,7 @@ export const getMedicalHistoryByPetID = async (pet_id) => {
   }
 }
 
-// Crear un nuevo historial médico
+
 export const createMedicalHistory = async (medicalHistoryData) => {
   try {
     const response = await apiClient.post("/", medicalHistoryData);
@@ -71,7 +70,7 @@ export const createMedicalHistory = async (medicalHistoryData) => {
   }
 };
 
-// Eliminar un historial médico
+
 export const deleteMedicalHistory = async (medical_history_id) => {
   try {
     const response = await apiClient.delete(`/${medical_history_id}`);
@@ -82,7 +81,7 @@ export const deleteMedicalHistory = async (medical_history_id) => {
   }
 };
 
-// Actualizar el Historial Médical por ID
+
 export const updateMedicalHistory = async (medical_history_id, updatedData) => {
   try {
     console.log('Servicio - Actualizando historial médico:', {

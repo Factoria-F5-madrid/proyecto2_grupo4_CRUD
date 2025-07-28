@@ -40,7 +40,7 @@ const FormViewUser = ({ user, onClose }) => {
   return (
     <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 p-4">
       <div className="bg-white rounded-lg max-w-4xl w-full max-h-[90vh] overflow-y-auto">
-        {/* Header */}
+     
         <div className="flex items-center justify-between p-6 border-b border-gray-200">
           <div className="flex items-center gap-3">
             <div className="p-2 bg-yellow-100 rounded-lg">
@@ -63,12 +63,12 @@ const FormViewUser = ({ user, onClose }) => {
           </button>
         </div>
 
-        {/* Contenido */}
+   
         <div className="p-6">
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
-            {/* Información personal */}
+          
             <div className="space-y-6">
-              {/* Avatar y nombre */}
+             
               <div className="bg-yellow-50 rounded-lg p-6 text-center">
                 <div className="h-24 w-24 bg-[#edad06] text-white flex items-center justify-center rounded-full font-bold text-2xl uppercase mx-auto mb-4">
                   {user.first_name?.[0]}{user.last_name?.[0]}
@@ -79,7 +79,7 @@ const FormViewUser = ({ user, onClose }) => {
                 <p className="text-gray-600">ID: {user.user_id}</p>
               </div>
 
-              {/* Información de contacto */}
+            
               <div className="bg-blue-50 rounded-lg p-4">
                 <h3 className="font-semibold text-gray-900 mb-3 flex items-center gap-2">
                   <FaEnvelope className="text-blue-600" />
@@ -112,7 +112,7 @@ const FormViewUser = ({ user, onClose }) => {
                 </div>
               </div>
 
-              {/* Información del rol */}
+           
               <div className="bg-purple-50 rounded-lg p-4">
                 <h3 className="font-semibold text-gray-900 mb-3 flex items-center gap-2">
                   <FaUserTie className="text-purple-600" />
@@ -133,9 +133,9 @@ const FormViewUser = ({ user, onClose }) => {
               </div>
             </div>
 
-            {/* Información adicional */}
+           
             <div className="space-y-6">
-              {/* Fechas */}
+          
               <div className="bg-green-50 rounded-lg p-4">
                 <h3 className="font-semibold text-gray-900 mb-3 flex items-center gap-2">
                   <FaCalendar className="text-green-600" />
@@ -163,7 +163,7 @@ const FormViewUser = ({ user, onClose }) => {
                 </div>
               </div>
 
-              {/* Información del sistema */}
+           
               <div className="bg-gray-50 rounded-lg p-4">
                 <h3 className="font-semibold text-gray-900 mb-3 flex items-center gap-2">
                   <FaIdCard className="text-gray-600" />
@@ -183,7 +183,7 @@ const FormViewUser = ({ user, onClose }) => {
                 </div>
               </div>
 
-              {/* Información específica según el tipo */}
+             
               {user.type === 'employee' && (
                 <div className="bg-orange-50 rounded-lg p-4">
                   <h3 className="font-semibold text-gray-900 mb-3">Información de Empleado</h3>
@@ -207,7 +207,7 @@ const FormViewUser = ({ user, onClose }) => {
           </div>
         </div>
 
-        {/* Footer */}
+     
         <div className="flex justify-end p-6 border-t border-gray-200">
           <button
             onClick={onClose}

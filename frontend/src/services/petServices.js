@@ -3,17 +3,17 @@ import { API_ENDPOINTS } from '../config/api.js';
 
 const API_URL = API_ENDPOINTS.PETS;
 
-// Función para obtener el token de autenticación
+
 const getAuthToken = () => {
   return localStorage.getItem('token');
 };
 
-// Configuración de axios con interceptor para incluir el token
+
 const apiClient = axios.create({
   baseURL: API_URL,
 });
 
-// Interceptor para agregar el token a todas las peticiones
+
 apiClient.interceptors.request.use(
   (config) => {
     const token = getAuthToken();
@@ -27,7 +27,7 @@ apiClient.interceptors.request.use(
   }
 );
 
-// ahora mis servicios con manejo de errores try catch que consumira mi endpoint
+
 
 export const getAllPets = async () => {
   try {

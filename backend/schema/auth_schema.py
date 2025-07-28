@@ -33,4 +33,11 @@ class UserInfoResponse(BaseModel):
     available_routes: dict
 
 class RoleUpdateRequest(BaseModel):
-    role: UserRole
+    role: str
+    
+    class Config:
+        json_schema_extra = {
+            "example": {
+                "role": "admin"
+            }
+        }

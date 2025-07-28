@@ -11,7 +11,7 @@ const PaymentCreate = () => {
     invoice_id: '',
     amount: '',
     payment_method: 'Efectivo',
-    payment_date: new Date().toISOString().slice(0, 16), // Formato YYYY-MM-DDTHH:MM
+    payment_date: new Date().toISOString().slice(0, 16), 
     payment_status: 'Pendiente',
     refund_processed: false
   });
@@ -38,13 +38,12 @@ const PaymentCreate = () => {
       setSaving(true);
       setError('');
 
-      // Validaciones básicas
       if (!formData.invoice_id || !formData.amount || !formData.payment_method) {
         setError('Los campos Factura ID, Cantidad y Método de Pago son obligatorios');
         return;
       }
 
-      // Preparar datos para enviar
+   
       const createData = {
         invoice_id: parseInt(formData.invoice_id),
         amount: parseFloat(formData.amount),
@@ -57,7 +56,7 @@ const PaymentCreate = () => {
       console.log('Enviando datos de creación:', createData);
       const newPayment = await createPayment(createData);
       
-      // Navegar a la vista de detalles del nuevo pago
+     
       navigate(`/payments/${newPayment.payment_id}`);
     } catch (error) {
       console.error('Error creando pago:', error);
@@ -73,7 +72,7 @@ const PaymentCreate = () => {
 
   return (
     <div className="p-6 bg-gray-100 min-h-screen">
-      {/* Header */}
+     
       <div className="bg-[#edad06] rounded-xl p-6 mb-6 shadow-md text-white">
         <div>
           <h1 className="text-4xl font-bold mb-1">Crear Nuevo Pago</h1>
@@ -81,18 +80,18 @@ const PaymentCreate = () => {
         </div>
       </div>
 
-      {/* Mensaje de error */}
+    
       {error && (
         <div className="mb-6 bg-red-50 border border-red-200 text-red-700 px-4 py-3 rounded-lg">
           <p>{error}</p>
         </div>
       )}
 
-      {/* Formulario */}
+      
       <div className="bg-white rounded-xl shadow-md p-6">
         <form onSubmit={handleSubmit} className="space-y-6">
           <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-            {/* Factura ID */}
+           
             <div>
               <label className="block text-sm font-medium text-gray-700 mb-2">
                 <FaMoneyBillWave className="inline mr-2 text-gray-400" />
@@ -110,7 +109,7 @@ const PaymentCreate = () => {
               />
             </div>
 
-            {/* Cantidad */}
+           
             <div>
               <label className="block text-sm font-medium text-gray-700 mb-2">
                 <FaMoneyBillWave className="inline mr-2 text-gray-400" />
@@ -129,7 +128,7 @@ const PaymentCreate = () => {
               />
             </div>
 
-            {/* Método de Pago */}
+           
             <div>
               <label className="block text-sm font-medium text-gray-700 mb-2">
                 <FaCreditCard className="inline mr-2 text-gray-400" />
@@ -151,7 +150,7 @@ const PaymentCreate = () => {
               </select>
             </div>
 
-            {/* Estado del Pago */}
+          
             <div>
               <label className="block text-sm font-medium text-gray-700 mb-2">
                 <FaMoneyBillWave className="inline mr-2 text-gray-400" />
@@ -171,7 +170,7 @@ const PaymentCreate = () => {
               </select>
             </div>
 
-            {/* Fecha de Pago */}
+        
             <div>
               <label className="block text-sm font-medium text-gray-700 mb-2">
                 <FaCalendarAlt className="inline mr-2 text-gray-400" />
@@ -186,7 +185,7 @@ const PaymentCreate = () => {
               />
             </div>
 
-            {/* Reembolso Procesado */}
+        
             <div>
               <label className="flex items-center">
                 <input
@@ -203,7 +202,7 @@ const PaymentCreate = () => {
             </div>
           </div>
 
-          {/* Botones de acción */}
+      
           <div className="flex justify-end gap-4 pt-6 border-t border-gray-200">
             <button
               type="button"

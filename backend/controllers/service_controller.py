@@ -29,12 +29,10 @@ async def get_all_services_controller(db: AsyncSession):
 
 @cache_response("services:by_user", ttl=600)  
 async def get_services_by_user_controller(user_id: int, db: AsyncSession):
-    """
-    Obtiene todos los servicios que un usuario ha contratado a través de sus reservas
-    """
+   
     logger.info(f"Fetching services for user ID {user_id}")
     
-    # Obtener servicios únicos que el usuario ha contratado
+    
     result = await db.execute(
         select(Service)
         .join(Reservation, Service.service_id == Reservation.service_id)
@@ -46,7 +44,7 @@ async def get_services_by_user_controller(user_id: int, db: AsyncSession):
     logger.info(f"Fetched {len(services)} unique services for user ID {user_id}")
     return services
 
-@cache_response("services:by_id", ttl=900)  # 15 minutos para servicios individuales
+@cache_response("services:by_id", ttl=900)  
 async def get_service_by_id_controller(service_id: int, db: AsyncSession):
     logger.debug(f"Fetching service with ID {service_id}")
     result = await db.execute(select(Service).where(Service.service_id == service_id))

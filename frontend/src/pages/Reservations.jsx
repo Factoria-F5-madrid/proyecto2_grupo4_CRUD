@@ -19,12 +19,12 @@ const Reservations = () => {
   const loadReservations = async () => {
     try {
       setLoading(true);
-      console.log("🔍 Cargando reservas...");
+      console.log(" Cargando reservas...");
       const data = await getAllReservations();
-      console.log("✅ Datos de reservas recibidos:", data);
+      console.log(" Datos de reservas recibidos:", data);
       setReservations(data);
     } catch (error) {
-      console.error("❌ Error al cargar reservas:", error);
+      console.error(" Error al cargar reservas:", error);
       setError("Error al cargar las reservas: " + error.message);
     } finally {
       setLoading(false);
@@ -99,13 +99,13 @@ const Reservations = () => {
 
   return (
     <div className="p-6 bg-gray-100 min-h-screen">
-      {/* Header */}
+
       <div className="bg-[#edad06] rounded-xl p-6 mb-6 shadow-md text-white">
         <h1 className="text-4xl font-bold mb-1">Gestión de Reservas</h1>
         <p className="text-sm">Administra todas las reservas de PetLand</p>
       </div>
 
-      {/* Barra de búsqueda y botón */}
+     
       <div className="flex flex-col sm:flex-row sm:items-center justify-between mb-4 gap-4">
         <div className="relative w-full sm:w-1/2">
           <FaSearch className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400" />
@@ -121,14 +121,14 @@ const Reservations = () => {
 
       </div>
 
-      {/* Mensaje de error */}
+     
       {error && (
         <div className="mb-6 bg-red-50 border border-red-200 text-red-700 px-4 py-3 rounded-lg">
           <p>{error}</p>
         </div>
       )}
 
-      {/* Tabla de reservas */}
+    
       <div className="bg-white rounded-xl shadow-md overflow-x-auto">
         <table className="min-w-full divide-y divide-gray-200 text-sm">
           <thead className="bg-gray-50 text-gray-500 uppercase text-xs font-semibold">
@@ -226,7 +226,7 @@ const Reservations = () => {
         </table>
       </div>
 
-      {/* Mensaje cuando no hay reservas */}
+     
       {filteredReservations.length === 0 && !loading && (
         <div className="text-center py-12">
           <FaCalendarAlt className="text-6xl text-gray-300 mx-auto mb-4" />

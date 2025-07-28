@@ -198,13 +198,13 @@ const Services = () => {
   ]);
 
   const handleReservation = (service) => {
-    // Verificar si el usuario está logueado
+
     if (!user) {
       setShowLoginPrompt(true);
       return;
     }
     
-    // Si está logueado, abrir el modal de reserva
+
     setSelectedServiceForReservation(service);
     setShowModal(true);
   };
@@ -242,20 +242,20 @@ const Services = () => {
   const handleServiceUpdated = (updatedService) => {
     console.log('Servicio actualizado del backend:', updatedService);
     
-    // Mapear los datos del backend al formato del frontend
+  
     const mappedService = {
       id: updatedService.service_id,
       name: updatedService.other_service || updatedService.service_type.value,
       description: updatedService.notes || '',
       price: `€${updatedService.base_price}`,
       available: updatedService.lodging,
-      image: updatedService.image || '', // Mantener la imagen original si no se actualizó
-      detailedInfo: updatedService.detailedInfo || {} // Mantener la información detallada si existe
+      image: updatedService.image || '', 
+      detailedInfo: updatedService.detailedInfo || {} 
     };
     
     console.log('Servicio mapeado para el frontend:', mappedService);
     
-    // Actualizar la lista de servicios con el servicio mapeado
+
     setServices(prevServices => 
       prevServices.map(service => 
         service.id === mappedService.id ? mappedService : service
@@ -275,7 +275,7 @@ const Services = () => {
 
   const handleServiceCreated = (newService) => {
     console.log('Servicio creado:', newService);
-    // Agregar el nuevo servicio a la lista
+    
     setServices(prevServices => [...prevServices, newService]);
     setShowCreateModal(false);
   };
@@ -287,7 +287,7 @@ const Services = () => {
         await deleteService(service.id);
         console.log('Servicio eliminado exitosamente');
         
-        // Remover el servicio de la lista local
+        
         setServices(prevServices => 
           prevServices.filter(s => s.id !== service.id)
         );
@@ -303,7 +303,7 @@ const Services = () => {
   return (
     <div className="flex-1 p-6 bg-gray-50">
       <div className="max-w-7xl mx-auto">
-      {/* Header */}
+      
         <div className="text-center mb-8">
           <img
             src={petImage}
@@ -319,7 +319,7 @@ const Services = () => {
           </div>
         </div>
 
-        {/* Botón de crear servicio - solo para admin */}
+       
         {isAdmin() && (
           <div className="mb-6 flex justify-end">
             <button
@@ -332,11 +332,11 @@ const Services = () => {
       </div>
         )}
 
-        {/* Grid de servicios */}
+      
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
           {services.map((service) => (
             <div key={service.id} className="bg-white rounded-xl shadow-lg overflow-hidden hover:shadow-xl transition-shadow">
-              {/* Imagen del servicio */}
+            
               <div className="h-48 overflow-hidden relative group">
                 <img 
                   className="w-full h-full object-cover hover:scale-105 transition-transform duration-300" 
@@ -344,7 +344,7 @@ const Services = () => {
                   alt={service.name} 
                 />
                 
-                {/* Botones de administrador - solo visibles para admin */}
+              
                 {isAdmin() && (
                   <div className="absolute top-2 right-2 flex gap-2 opacity-0 group-hover:opacity-100 transition-opacity duration-300">
                     <button
@@ -371,7 +371,7 @@ const Services = () => {
       )}
               </div>
       
-              {/* Información del servicio */}
+         
               <div className="p-6">
                 <div className="flex items-center justify-between mb-3">
                   <h3 className="text-xl font-bold text-gray-800">{service.name}</h3>
@@ -380,7 +380,7 @@ const Services = () => {
                 
                 <p className="text-gray-600 mb-4">{service.description}</p>
                 
-                {/* Botones de acción */}
+                
                 <div className="flex gap-3">
                   {service.available ? (
                     <button 
@@ -413,7 +413,7 @@ const Services = () => {
             ))}
         </div>
 
-        {/* Información adicional */}
+      
         <div className="mt-12 grid grid-cols-1 md:grid-cols-3 gap-6">
           <div className="bg-white rounded-xl p-6 shadow-lg">
             <div className="flex items-center gap-3 mb-4">
@@ -456,7 +456,7 @@ const Services = () => {
         </div>
       </div>
 
-      {/* Modal de reserva */}
+      
       {showModal && selectedServiceForReservation && (
         <ModalReservation 
           onClose={handleCloseModal} 
@@ -464,7 +464,7 @@ const Services = () => {
         />
       )}
 
-      {/* Modal de login requerido */}
+
       {showLoginPrompt && (
         <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 p-4">
           <div className="bg-white rounded-lg shadow-xl text-center max-w-md w-full">
@@ -496,11 +496,11 @@ const Services = () => {
         </div>
       )}
 
-      {/* Modal de información detallada */}
+    
       {showServiceInfo && selectedServiceInfo && (
         <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 p-4">
           <div className="bg-white rounded-lg shadow-xl max-w-4xl w-full max-h-[90vh] overflow-y-auto">
-            {/* Header con imagen */}
+          
             <div className="relative h-48 bg-gradient-to-r from-[#EEAD05] to-yellow-500 rounded-t-lg">
               <img 
                 src={selectedServiceInfo.image} 
@@ -521,18 +521,17 @@ const Services = () => {
               </div>
             </div>
 
-            {/* Contenido */}
+         
             <div className="p-6 space-y-6">
-              {/* Descripción */}
+          
               <div className="bg-gray-50 p-4 rounded-lg">
                 <p className="text-gray-700 text-lg leading-relaxed">
                   {selectedServiceInfo.detailedInfo.description}
                 </p>
               </div>
 
-              {/* Características y Detalles */}
               <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
-                {/* Características */}
+            
                 <div className="bg-blue-50 p-4 rounded-lg">
                   <h3 className="text-xl font-bold text-blue-800 mb-4 flex items-center gap-2">
                     <FaCheck className="text-blue-600" />
@@ -548,7 +547,7 @@ const Services = () => {
                   </ul>
                 </div>
 
-                {/* Detalles */}
+                
                 <div className="bg-green-50 p-4 rounded-lg">
                   <h3 className="text-xl font-bold text-green-800 mb-4 flex items-center gap-2">
                     <FaInfoCircle className="text-green-600" />
@@ -574,7 +573,7 @@ const Services = () => {
                 </div>
               </div>
 
-              {/* Información de contacto */}
+           
               <div className="bg-purple-50 p-4 rounded-lg">
                 <h3 className="text-xl font-bold text-purple-800 mb-4 flex items-center gap-2">
                   <FaPhone className="text-purple-600" />
@@ -606,7 +605,7 @@ const Services = () => {
                 </div>
               </div>
 
-              {/* Botón de reserva */}
+             
               {selectedServiceInfo.available && (
                 <div className="flex justify-center pt-4">
                   <button
@@ -626,7 +625,7 @@ const Services = () => {
         </div>
       )}
 
-      {/* Modal de edición de servicio */}
+    
       {showEditModal && selectedServiceToEdit && (
         <FormEditService
           service={selectedServiceToEdit}
@@ -638,7 +637,7 @@ const Services = () => {
         />
       )}
 
-      {/* Modal de crear servicio */}
+ 
       {showCreateModal && (
         <FormCreateService
           onClose={handleCloseCreateModal}

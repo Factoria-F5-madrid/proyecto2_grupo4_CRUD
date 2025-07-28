@@ -16,11 +16,11 @@ export default function Nav() {
   const location = useLocation();
   const { user, logout, hasRouteAccess, isAdmin, isEmployee, isUser } = useAuth();
 
-  // Configuración de navegación basada en roles
+  
   const getNavigationItems = () => {
     const items = [];
 
-    // Dashboard - Solo para usuarios logueados
+   
     if (user) {
       items.push({
         icon: <FaHome />,
@@ -30,7 +30,7 @@ export default function Nav() {
       });
     }
 
-    // Servicios - Todos los usuarios
+    
     items.push({
       icon: <FaClipboard />,
       label: "Servicios",
@@ -38,7 +38,7 @@ export default function Nav() {
       show: true
     });
 
-    // Mis Reservas - Solo para usuarios regulares (no admin ni employee)
+  
     if (isUser()) {
       items.push({
         icon: <FaListAlt />,
@@ -48,7 +48,7 @@ export default function Nav() {
       });
     }
 
-    // Enlaces específicos para Admin
+    
     if (isAdmin()) {
       items.push(
         {
@@ -66,7 +66,7 @@ export default function Nav() {
       );
     }
 
-    // Enlaces para Admin
+ 
     if (isAdmin()) {
       items.push(
         {
@@ -102,7 +102,7 @@ export default function Nav() {
       );
     }
 
-    // Enlaces para Employee
+   
     if (isEmployee()) {
       items.push(
         {
@@ -132,7 +132,7 @@ export default function Nav() {
       );
     }
 
-    // Enlaces para usuarios regulares
+   
     if (isUser()) {
       items.push(
         {
@@ -156,7 +156,7 @@ export default function Nav() {
       );
     }
 
-    // Enlaces comunes para todos
+  
     items.push(
       {
         icon: <FaUserAlt />,
@@ -166,7 +166,7 @@ export default function Nav() {
       }
     );
 
-    // Enlaces específicos por rol
+  
     if (!isAdmin() && !isEmployee()) {
       items.push(
         {
@@ -178,7 +178,7 @@ export default function Nav() {
       );
     }
 
-    // Login solo si no hay usuario
+   
     if (!user) {
       items.push({
         icon: <FaSignInAlt />,
@@ -235,7 +235,7 @@ export default function Nav() {
         </nav>
       </div>
 
-      {/* Botón de logout */}
+    
       {user && (
         <div className="p-6">
           <button

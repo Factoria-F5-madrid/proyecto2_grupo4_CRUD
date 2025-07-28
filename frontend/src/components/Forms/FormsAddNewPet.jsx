@@ -83,7 +83,7 @@ const Form = ({ onClose, userId }) => {
 
     try {
       await createPet(petData);
-      // Cerrar el modal y navegar a la vista de mascotas con parámetro de recarga
+      
       onClose();
       navigate('/pets?refresh=true');
     } catch (error) {
@@ -94,7 +94,7 @@ const Form = ({ onClose, userId }) => {
   return (
     <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 p-4">
       <div className="bg-white rounded-2xl shadow-xl w-full max-w-2xl max-h-[90vh] overflow-y-auto">
-        {/* Header */}
+     
         <div className="flex items-center justify-between p-6 border-b border-gray-200">
           <h2 className="text-2xl font-bold text-gray-800">Registrar Mascota 🐾</h2>
           <button
@@ -105,10 +105,10 @@ const Form = ({ onClose, userId }) => {
           </button>
         </div>
 
-        {/* Formulario */}
+   
         <form onSubmit={handleSubmit} className="p-6 space-y-6">
           <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-            {/* Nombre */}
+          
             <div className="md:col-span-2">
               <label className="block text-sm font-medium text-gray-700 mb-2">
                 Nombre de la Mascota *
@@ -128,7 +128,7 @@ const Form = ({ onClose, userId }) => {
               )}
             </div>
 
-            {/* Especie */}
+           
             <div>
               <label className="block text-sm font-medium text-gray-700 mb-2">
                 Especie *
@@ -156,7 +156,7 @@ const Form = ({ onClose, userId }) => {
               )}
             </div>
 
-            {/* Raza */}
+        
             <div>
               <label className="block text-sm font-medium text-gray-700 mb-2">
                 Raza *
@@ -176,7 +176,7 @@ const Form = ({ onClose, userId }) => {
               )}
             </div>
 
-            {/* Fecha de Nacimiento */}
+           
             <div>
               <label className="block text-sm font-medium text-gray-700 mb-2">
                 Fecha de Nacimiento *
@@ -196,7 +196,7 @@ const Form = ({ onClose, userId }) => {
               )}
             </div>
 
-            {/* Alergias */}
+            
             <div>
               <label className="block text-sm font-medium text-gray-700 mb-2">
                 Alergias (Opcional)
@@ -211,7 +211,7 @@ const Form = ({ onClose, userId }) => {
               />
             </div>
 
-            {/* Necesidades Especiales */}
+        
             <div>
               <label className="block text-sm font-medium text-gray-700 mb-2">
                 Necesidades Especiales (Opcional)
@@ -227,7 +227,7 @@ const Form = ({ onClose, userId }) => {
             </div>
           </div>
 
-          {/* Subir Imagen */}
+          
           <div>
             <label className="block text-sm font-medium text-gray-700 mb-2">
               <FaUpload className="inline mr-2" />
@@ -251,7 +251,7 @@ const Form = ({ onClose, userId }) => {
             )}
           </div>
 
-          {/* Botones */}
+        
           <div className="flex flex-col sm:flex-row gap-3 pt-6 border-t border-gray-200">
             <button
               type="button"
