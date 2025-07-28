@@ -14,35 +14,37 @@ from backend.schema.reservation_schema import ReservationCreate, ReservationUpda
 from backend.logger.logger import logger
 
 async def create_reservation_controller(reservation_data: ReservationCreate, db: AsyncSession):
-    logger.debug(f"Fetching user with ID {reservation_data.user_id}")
+    logger.debug(f"Creating reservation for user ID {reservation_data.user_id}")
+    
+    # Verificar que el usuario existe
     user_result = await db.execute(select(User).where(User.user_id == reservation_data.user_id))
     user = user_result.scalar_one_or_none()
     if not user:
         logger.warning(f"User with ID {reservation_data.user_id} not found")
         raise NotFoundException("User not found")
     
-    logger.debug(f"Fetching service with type {reservation_data.service_type.value}")
+    # Buscar un servicio del tipo especificado
+    logger.debug(f"Looking for service with type {reservation_data.service_type.value}")
     service_result = await db.execute(select(Service).where(Service.service_type == reservation_data.service_type))
     services = service_result.scalars().all()
+    
     if not services:
-        logger.warning(f"Service with type {reservation_data.service_type.value} not found")
-        raise NotFoundException("Service not found")
+        logger.warning(f"No services found for type {reservation_data.service_type.value}")
+        raise NotFoundException(f"No service available for type {reservation_data.service_type.value}")
     
-    # Tomar el primer servicio encontrado (puede haber múltiples con el mismo tipo)
+    # Usar el primer servicio disponible del tipo especificado
     service = services[0]
-    logger.info(f"Using service_id {service.service_id} for service_type {reservation_data.service_type.value}")
+    logger.info(f"Using service_id {service.service_id} for type {reservation_data.service_type.value}")
     
-    logger.debug(f"Validating reservation dates")
-    if reservation_data.checkin_date >= reservation_data.checkout_date:
-        logger.warning("Invalid reservation dates: check-in is not before check-out")
-        raise BadRequestException(detail="Check-in date must be before check-out date")
-    
-    # Crear la reserva con el service_id obtenido del servicio
-    reservation_dict = reservation_data.dict()
-    reservation_dict['service_id'] = service.service_id
-    del reservation_dict['service_type']  # Remover service_type ya que el modelo usa service_id
-    
-    new_reservation = Reservation(**reservation_dict)
+    # Crear la reserva directamente
+    new_reservation = Reservation(
+        user_id=reservation_data.user_id,
+        service_id=service.service_id,
+        checkin_date=reservation_data.checkin_date,
+        checkout_date=reservation_data.checkout_date,
+        status=reservation_data.status,
+        internal_notes=reservation_data.internal_notes
+    )
     db.add(new_reservation)
     await db.commit()
     await db.refresh(new_reservation)
@@ -56,7 +58,7 @@ async def create_reservation_controller(reservation_data: ReservationCreate, db:
         "service_id": new_reservation.service_id,
         "checkin_date": new_reservation.checkin_date.isoformat(),
         "checkout_date": new_reservation.checkout_date.isoformat(),
-        "status": new_reservation.status
+        "status": new_reservation.status.value  # Convertir enum a string
     }
     await notification_service.send_reservation_update("created", reservation_dict)
     await notification_service.send_user_notification(
