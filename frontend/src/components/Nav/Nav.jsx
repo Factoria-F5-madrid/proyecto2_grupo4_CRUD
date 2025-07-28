@@ -151,7 +151,7 @@ export default function Nav() {
 
   const handleLogout = () => {
     logout();
-    navigate('/login');
+    navigate('/');
   };
 
   return (

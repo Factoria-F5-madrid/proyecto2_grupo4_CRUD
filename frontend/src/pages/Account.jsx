@@ -360,7 +360,10 @@ const Account = () => {
       {/* Botón de Cerrar Sesión */}
       <div className="mt-8 flex justify-center">
         <button
-          onClick={logout}
+          onClick={() => {
+            logout();
+            navigate('/');
+          }}
           className="flex items-center gap-2 px-6 py-3 bg-red-500 text-white rounded-md hover:bg-red-600 transition"
         >
           <FaSignOutAlt />
