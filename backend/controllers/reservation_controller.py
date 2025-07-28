@@ -21,20 +21,24 @@ async def create_reservation_controller(reservation_data: ReservationCreate, db:
         logger.warning(f"User with ID {reservation_data.user_id} not found")
         raise NotFoundException("User not found")
     
-    logger.debug(f"Fetching service with ID {reservation_data.service_id}")
-    service_result = await db.execute(select(Service).where(Service.service_id == reservation_data.service_id))
+    logger.debug(f"Fetching service with type {reservation_data.service_type.value}")
+    service_result = await db.execute(select(Service).where(Service.service_type == reservation_data.service_type))
     service = service_result.scalar_one_or_none()
     if not service:
-        logger.warning(f"Service with ID {reservation_data.service_id} not found")
+        logger.warning(f"Service with type {reservation_data.service_type.value} not found")
         raise NotFoundException("Service not found")
     
-  
+    logger.debug(f"Validating reservation dates")
     if reservation_data.checkin_date >= reservation_data.checkout_date:
         logger.warning("Invalid reservation dates: check-in is not before check-out")
         raise BadRequestException(detail="Check-in date must be before check-out date")
     
-   
-    new_reservation = Reservation(**reservation_data.dict())
+    # Crear la reserva con el service_id obtenido del servicio
+    reservation_dict = reservation_data.dict()
+    reservation_dict['service_id'] = service.service_id
+    del reservation_dict['service_type']  # Remover service_type ya que el modelo usa service_id
+    
+    new_reservation = Reservation(**reservation_dict)
     db.add(new_reservation)
     await db.commit()
     await db.refresh(new_reservation)

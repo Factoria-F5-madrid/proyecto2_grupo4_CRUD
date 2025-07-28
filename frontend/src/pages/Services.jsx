@@ -467,7 +467,7 @@ const Services = () => {
                 <h3 className="text-xl font-bold text-purple-800 mb-4 flex items-center gap-2">
                   <FaPhone className="text-purple-600" />
                   Información de Contacto
-                </h3>
+          </h3>
                 <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
                   <div className="flex items-center gap-2 text-gray-700">
                     <FaMapMarkerAlt className="text-purple-600" />

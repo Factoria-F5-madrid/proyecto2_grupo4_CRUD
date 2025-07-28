@@ -1,11 +1,11 @@
 from pydantic import BaseModel, validator
 from datetime import datetime
 from typing import Optional, Union
-from backend.models.enums import ReservationStatusEnum
+from backend.models.enums import ReservationStatusEnum, ServiceTypeEnum
 
 class ReservationBase(BaseModel):
     user_id: int
-    service_id: int
+    service_type: ServiceTypeEnum
     checkin_date: datetime
     checkout_date: datetime
     status: Optional[ReservationStatusEnum] = ReservationStatusEnum.PENDING
@@ -23,12 +23,21 @@ class ReservationBase(BaseModel):
                     raise ValueError(f"Invalid date format: {v}")
         return v
 
+    @validator('service_type', pre=True)
+    def validate_service_type(cls, v):
+        if isinstance(v, str):
+            try:
+                return ServiceTypeEnum(v)
+            except ValueError:
+                raise ValueError(f"Invalid service type: {v}. Must be one of: {[e.value for e in ServiceTypeEnum]}")
+        return v
+
 class ReservationCreate(ReservationBase):
     pass
 
 class ReservationUpdate(BaseModel):
     user_id: Optional[int] = None
-    service_id: Optional[int] = None
+    service_type: Optional[ServiceTypeEnum] = None
     checkin_date: Optional[datetime] = None
     checkout_date: Optional[datetime] = None
     status: Optional[Union[ReservationStatusEnum, str]] = None
@@ -46,6 +55,17 @@ class ReservationUpdate(BaseModel):
                     return datetime.fromisoformat(v)
                 except ValueError:
                     raise ValueError(f"Invalid date format: {v}")
+        return v
+
+    @validator('service_type', pre=True)
+    def validate_service_type(cls, v):
+        if v is None:
+            return v
+        if isinstance(v, str):
+            try:
+                return ServiceTypeEnum(v)
+            except ValueError:
+                raise ValueError(f"Invalid service type: {v}. Must be one of: {[e.value for e in ServiceTypeEnum]}")
         return v
 
     @validator('status', pre=True)

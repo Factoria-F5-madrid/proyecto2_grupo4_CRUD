@@ -12,17 +12,17 @@ const ModalReservation = ({ onClose, serviceName }) => {
   const [loading, setLoading] = useState(false);
   const [message, setMessage] = useState({ type: '', text: '' });
 
-  // Mapeo de servicios a service_id
-  const getServiceId = (serviceName) => {
+  // Mapeo de servicios a service_type
+  const getServiceType = (serviceName) => {
     const serviceMap = {
-      'Guardería': 1,
-      'Transporte': 2,
-      'Comida': 3,
-      'Peluquería': 4,
-      'Paseo': 5,
-      'Veterinario': 6
+      'Guardería': 'Guarderia',
+      'Transporte': 'Transporte',
+      'Comida': 'Comida',
+      'Peluquería': 'Otros',
+      'Paseo': 'Otros',
+      'Veterinario': 'Otros'
     };
-    return serviceMap[serviceName] || 1;
+    return serviceMap[serviceName] || 'Otros';
   };
 
   const handleChange = (e) => {
@@ -63,7 +63,7 @@ const ModalReservation = ({ onClose, serviceName }) => {
 
       const cleanPayload = {
         user_id: parseInt(userId),
-        service_id: getServiceId(serviceName),
+        service_type: getServiceType(serviceName),
         checkin_date: checkinDate.toISOString().slice(0, 19), // Formato: 2025-01-30T10:00:00
         checkout_date: checkoutDate.toISOString().slice(0, 19), // Formato: 2025-01-30T10:00:00
         internal_notes: formData.internal_notes || ''
