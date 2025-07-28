@@ -7,7 +7,7 @@ import groomingServ from '../assets/groomingServ.png';
 import walkServ from '../assets/walkServ.png';
 import vetServ from '../assets/vetServ.png';
 import petImage from '../assets/petland-logo-letra-azul.png';
-import { FaCalendarAlt, FaInfoCircle, FaClock, FaStar, FaSignInAlt } from 'react-icons/fa';
+import { FaCalendarAlt, FaInfoCircle, FaClock, FaStar, FaSignInAlt, FaTimes, FaCheck, FaMapMarkerAlt, FaPhone, FaEnvelope, FaUsers } from 'react-icons/fa';
 import ModalReservation from '../components/Nav/ModalReservation';
 import { useAuth } from '../context/AuthContext';
 
@@ -29,10 +29,24 @@ const Services = () => {
       available: true,
       price: "€25/día",
       detailedInfo: {
-        duration: "1-7 días",
-        includes: ["Alimentación personalizada", "Ejercicio diario", "Cuidado veterinario básico", "Reporte diario"],
-        requirements: ["Vacunas al día", "Desparasitación reciente", "Comportamiento social"],
-        benefits: ["Socialización con otros animales", "Monitoreo 24/7", "Espacios seguros y limpios"]
+        title: "Guardería Profesional",
+        description: "Ofrecemos un cuidado completo y profesional para tu mascota en un ambiente seguro y acogedor.",
+        features: [
+          "Instalaciones limpias y seguras",
+          "Personal cualificado y experimentado",
+          "Horarios flexibles (24/7)",
+          "Alimentación personalizada",
+          "Ejercicio y socialización",
+          "Reportes diarios de actividad"
+        ],
+        duration: "Mínimo 1 día",
+        capacity: "Hasta 20 mascotas por turno",
+        requirements: "Vacunas al día y desparasitación",
+        contact: {
+          phone: "+34 600 123 456",
+          email: "guarderia@petland.com",
+          address: "Calle Mascotas 123, Madrid"
+        }
       }
     },
     {
@@ -43,10 +57,24 @@ const Services = () => {
       available: true,
       price: "€15/viaje",
       detailedInfo: {
-        duration: "30-60 minutos",
-        includes: ["Transporte puerta a puerta", "Jaula segura", "Aire acondicionado", "Conductor certificado"],
-        requirements: ["Mascota con correa/jaula", "Dirección exacta", "Horario confirmado"],
-        benefits: ["Sin estrés para la mascota", "Puntualidad garantizada", "Cobertura de seguro"]
+        title: "Servicio de Transporte",
+        description: "Transporte seguro y cómodo para tu mascota con vehículos especialmente adaptados.",
+        features: [
+          "Vehículos climatizados",
+          "Jaulas de transporte seguras",
+          "Conductores especializados",
+          "Cobertura en toda la ciudad",
+          "Horarios flexibles",
+          "Seguimiento GPS en tiempo real"
+        ],
+        duration: "Según distancia",
+        capacity: "Hasta 3 mascotas por viaje",
+        requirements: "Transportín propio o alquiler disponible",
+        contact: {
+          phone: "+34 600 123 457",
+          email: "transporte@petland.com",
+          address: "Servicio móvil en toda Madrid"
+        }
       }
     },
     {
@@ -57,10 +85,24 @@ const Services = () => {
       available: true,
       price: "€12/paquete",
       detailedInfo: {
+        title: "Alimentación Especializada",
+        description: "Comida de alta calidad adaptada a las necesidades específicas de tu mascota.",
+        features: [
+          "Comida premium certificada",
+          "Dietas personalizadas",
+          "Opciones para mascotas con alergias",
+          "Entrega a domicilio",
+          "Asesoramiento nutricional",
+          "Seguimiento de peso y salud"
+        ],
         duration: "Entrega en 24h",
-        includes: ["Comida premium", "Raciones personalizadas", "Suplementos vitamínicos", "Asesoría nutricional"],
-        requirements: ["Información de peso y edad", "Alergias conocidas", "Preferencias alimentarias"],
-        benefits: ["Nutrición balanceada", "Mejora de la salud", "Control de peso"]
+        capacity: "Paquetes de 1kg, 5kg y 10kg",
+        requirements: "Evaluación inicial de necesidades",
+        contact: {
+          phone: "+34 600 123 458",
+          email: "comida@petland.com",
+          address: "Entrega a domicilio en Madrid"
+        }
       }
     },
     {
@@ -71,10 +113,24 @@ const Services = () => {
       available: false,
       price: "€30/sesión",
       detailedInfo: {
-        duration: "2-3 horas",
-        includes: ["Baño y secado", "Corte de pelo", "Corte de uñas", "Limpieza de oídos"],
-        requirements: ["Mascota tranquila", "Cita previa", "Vacunas al día"],
-        benefits: ["Hygiene mejorada", "Prevención de problemas", "Aspecto saludable"]
+        title: "Peluquería Canina y Felina",
+        description: "Servicio completo de peluquería con técnicas profesionales y productos de alta calidad.",
+        features: [
+          "Baño y secado profesional",
+          "Corte de pelo a medida",
+          "Corte de uñas",
+          "Limpieza de oídos",
+          "Cepillado y desenredado",
+          "Tratamientos especiales"
+        ],
+        duration: "2-3 horas por sesión",
+        capacity: "1 mascota por sesión",
+        requirements: "Cita previa obligatoria",
+        contact: {
+          phone: "+34 600 123 459",
+          email: "peluqueria@petland.com",
+          address: "Calle Belleza 456, Madrid"
+        }
       }
     },
     {
@@ -85,10 +141,24 @@ const Services = () => {
       available: false,
       price: "€10/paseo",
       detailedInfo: {
-        duration: "30-45 minutos",
-        includes: ["Paseo personalizado", "Ejercicio controlado", "Socialización", "Reporte del paseo"],
-        requirements: ["Mascota con correa", "Comportamiento básico", "Horario acordado"],
-        benefits: ["Ejercicio diario", "Estimulación mental", "Reducción de ansiedad"]
+        title: "Servicio de Paseo",
+        description: "Paseos recreativos y ejercicio personalizado para mantener a tu mascota activa y feliz.",
+        features: [
+          "Paseos individuales o grupales",
+          "Rutas personalizadas",
+          "Ejercicio adaptado a la edad",
+          "Socialización con otras mascotas",
+          "Reportes de actividad",
+          "Horarios flexibles"
+        ],
+        duration: "30, 45 o 60 minutos",
+        capacity: "Hasta 3 mascotas por paseador",
+        requirements: "Correa y identificación obligatorias",
+        contact: {
+          phone: "+34 600 123 460",
+          email: "paseo@petland.com",
+          address: "Servicio en tu zona de Madrid"
+        }
       }
     },
     {
@@ -99,10 +169,24 @@ const Services = () => {
       available: false,
       price: "€50/consulta",
       detailedInfo: {
-        duration: "45-60 minutos",
-        includes: ["Examen físico completo", "Vacunación", "Desparasitación", "Asesoría médica"],
-        requirements: ["Historial médico", "Cita previa", "Mascota en ayunas (si aplica)"],
-        benefits: ["Prevención de enfermedades", "Detección temprana", "Cuidado preventivo"]
+        title: "Atención Veterinaria",
+        description: "Servicio médico completo con veterinarios especializados y equipamiento de última generación.",
+        features: [
+          "Consultas generales",
+          "Vacunación y desparasitación",
+          "Análisis clínicos",
+          "Radiografías y ecografías",
+          "Cirugías menores",
+          "Medicina preventiva"
+        ],
+        duration: "30-60 minutos por consulta",
+        capacity: "Atención individual",
+        requirements: "Historial médico previo",
+        contact: {
+          phone: "+34 600 123 461",
+          email: "veterinario@petland.com",
+          address: "Calle Salud 789, Madrid"
+        }
       }
     }
   ];
@@ -146,7 +230,7 @@ const Services = () => {
   return (
     <div className="flex-1 p-6 bg-gray-50">
       <div className="max-w-7xl mx-auto">
-        {/* Header */}
+      {/* Header */}
         <div className="text-center mb-8">
           <img
             src={petImage}
@@ -173,8 +257,8 @@ const Services = () => {
                   src={service.image} 
                   alt={service.name} 
                 />
-              </div>
-              
+      </div>
+      
               {/* Información del servicio */}
               <div className="p-6">
                 <div className="flex items-center justify-between mb-3">
@@ -195,26 +279,26 @@ const Services = () => {
                       Reservar
                     </button>
                   ) : (
-                    <button 
+                    <button
                       className="flex-1 bg-gray-300 text-gray-600 px-4 py-2 rounded-lg font-medium cursor-not-allowed flex items-center justify-center gap-2"
                       disabled
                     >
                       <FaClock />
                       Próximamente
-                    </button>
-                  )}
+                      </button>
+                    )}
                   
-                  <button 
+                      <button
                     className="px-4 py-2 border border-gray-300 text-gray-600 rounded-lg hover:bg-gray-50 transition-colors flex items-center gap-2"
                     onClick={() => handleServiceInfo(service)}
-                  >
+                      >
                     <FaInfoCircle />
                     Saber más
-                  </button>
+                      </button>
                 </div>
               </div>
-            </div>
-          ))}
+                  </div>
+            ))}
         </div>
 
         {/* Información adicional */}
@@ -268,120 +352,6 @@ const Services = () => {
         />
       )}
 
-      {/* Modal de información del servicio */}
-      {showServiceInfo && selectedServiceInfo && (
-        <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 p-4">
-          <div className="bg-white rounded-lg shadow-xl max-w-2xl w-full max-h-[90vh] overflow-y-auto">
-            <div className="p-6">
-              {/* Header */}
-              <div className="flex items-center justify-between mb-6">
-                <div className="flex items-center gap-4">
-                  <div className="w-16 h-16 rounded-lg overflow-hidden">
-                    <img 
-                      src={selectedServiceInfo.image} 
-                      alt={selectedServiceInfo.name}
-                      className="w-full h-full object-cover"
-                    />
-                  </div>
-                  <div>
-                    <h2 className="text-2xl font-bold text-gray-800">{selectedServiceInfo.name}</h2>
-                    <p className="text-[#EEAD05] font-semibold text-lg">{selectedServiceInfo.price}</p>
-                  </div>
-                </div>
-                <button
-                  onClick={handleCloseServiceInfo}
-                  className="text-gray-400 hover:text-gray-600 p-2"
-                >
-                  <FaTimes className="text-xl" />
-                </button>
-              </div>
-
-              {/* Descripción */}
-              <div className="mb-6">
-                <p className="text-gray-600 text-lg">{selectedServiceInfo.description}</p>
-              </div>
-
-              {/* Información detallada */}
-              <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-                {/* Duración */}
-                <div className="bg-blue-50 rounded-lg p-4">
-                  <h3 className="font-semibold text-blue-800 mb-2 flex items-center gap-2">
-                    <FaClock className="text-blue-600" />
-                    Duración
-                  </h3>
-                  <p className="text-blue-700">{selectedServiceInfo.detailedInfo.duration}</p>
-                </div>
-
-                {/* Incluye */}
-                <div className="bg-green-50 rounded-lg p-4">
-                  <h3 className="font-semibold text-green-800 mb-2">Incluye</h3>
-                  <ul className="space-y-1">
-                    {selectedServiceInfo.detailedInfo.includes.map((item, index) => (
-                      <li key={index} className="text-green-700 text-sm flex items-center gap-2">
-                        <span className="w-1.5 h-1.5 bg-green-600 rounded-full"></span>
-                        {item}
-                      </li>
-                    ))}
-                  </ul>
-                </div>
-
-                {/* Requisitos */}
-                <div className="bg-orange-50 rounded-lg p-4">
-                  <h3 className="font-semibold text-orange-800 mb-2">Requisitos</h3>
-                  <ul className="space-y-1">
-                    {selectedServiceInfo.detailedInfo.requirements.map((item, index) => (
-                      <li key={index} className="text-orange-700 text-sm flex items-center gap-2">
-                        <span className="w-1.5 h-1.5 bg-orange-600 rounded-full"></span>
-                        {item}
-                      </li>
-                    ))}
-                  </ul>
-                </div>
-
-                {/* Beneficios */}
-                <div className="bg-purple-50 rounded-lg p-4">
-                  <h3 className="font-semibold text-purple-800 mb-2">Beneficios</h3>
-                  <ul className="space-y-1">
-                    {selectedServiceInfo.detailedInfo.benefits.map((item, index) => (
-                      <li key={index} className="text-purple-700 text-sm flex items-center gap-2">
-                        <span className="w-1.5 h-1.5 bg-purple-600 rounded-full"></span>
-                        {item}
-                      </li>
-                    ))}
-                  </ul>
-                </div>
-              </div>
-
-              {/* Botón de reserva */}
-              <div className="mt-6 pt-6 border-t border-gray-200">
-                {selectedServiceInfo.available ? (
-                  <button
-                    onClick={() => {
-                      handleCloseServiceInfo();
-                      handleReservation(selectedServiceInfo);
-                    }}
-                    className="w-full bg-[#EEAD05] text-white px-6 py-3 rounded-lg font-medium hover:bg-yellow-600 transition-colors flex items-center justify-center gap-2"
-                  >
-                    <FaCalendarAlt />
-                    Reservar Ahora
-                  </button>
-                ) : (
-                  <div className="text-center">
-                    <p className="text-gray-500 mb-3">Este servicio estará disponible próximamente</p>
-                    <button
-                      onClick={handleCloseServiceInfo}
-                      className="px-6 py-3 border border-gray-300 text-gray-600 rounded-lg hover:bg-gray-50 transition-colors"
-                    >
-                      Cerrar
-                    </button>
-                  </div>
-                )}
-              </div>
-            </div>
-          </div>
-        </div>
-      )}
-
       {/* Modal de login requerido */}
       {showLoginPrompt && (
         <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 p-4">
@@ -409,6 +379,136 @@ const Services = () => {
                   Cancelar
                 </button>
               </div>
+            </div>
+          </div>
+        </div>
+      )}
+
+      {/* Modal de información detallada */}
+      {showServiceInfo && selectedServiceInfo && (
+        <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 p-4">
+          <div className="bg-white rounded-lg shadow-xl max-w-4xl w-full max-h-[90vh] overflow-y-auto">
+            {/* Header con imagen */}
+            <div className="relative h-48 bg-gradient-to-r from-[#EEAD05] to-yellow-500 rounded-t-lg">
+              <img 
+                src={selectedServiceInfo.image} 
+                alt={selectedServiceInfo.name}
+                className="w-full h-full object-cover opacity-20"
+              />
+              <div className="absolute inset-0 flex items-center justify-between p-6">
+                <div className="text-white">
+                  <h2 className="text-3xl font-bold">{selectedServiceInfo.detailedInfo.title}</h2>
+                  <p className="text-lg opacity-90">{selectedServiceInfo.price}</p>
+                </div>
+                <button 
+                  onClick={handleCloseServiceInfo} 
+                  className="text-white hover:text-gray-200 p-2"
+                >
+                  <FaTimes className="text-2xl" />
+                </button>
+              </div>
+            </div>
+
+            {/* Contenido */}
+            <div className="p-6 space-y-6">
+              {/* Descripción */}
+              <div className="bg-gray-50 p-4 rounded-lg">
+                <p className="text-gray-700 text-lg leading-relaxed">
+                  {selectedServiceInfo.detailedInfo.description}
+                </p>
+              </div>
+
+              {/* Características y Detalles */}
+              <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
+                {/* Características */}
+                <div className="bg-blue-50 p-4 rounded-lg">
+                  <h3 className="text-xl font-bold text-blue-800 mb-4 flex items-center gap-2">
+                    <FaCheck className="text-blue-600" />
+                    Características del Servicio
+                  </h3>
+                  <ul className="space-y-2">
+                    {selectedServiceInfo.detailedInfo.features.map((feature, index) => (
+                      <li key={index} className="flex items-start gap-2 text-gray-700">
+                        <FaCheck className="text-green-500 mt-1 flex-shrink-0" />
+                        <span>{feature}</span>
+                      </li>
+                    ))}
+                  </ul>
+                </div>
+
+                {/* Detalles */}
+                <div className="bg-green-50 p-4 rounded-lg">
+                  <h3 className="text-xl font-bold text-green-800 mb-4 flex items-center gap-2">
+                    <FaInfoCircle className="text-green-600" />
+                    Información Importante
+                  </h3>
+                  <div className="space-y-3">
+                    <div className="flex items-center gap-2">
+                      <FaClock className="text-green-600" />
+                      <span className="font-semibold">Duración:</span>
+                      <span className="text-gray-700">{selectedServiceInfo.detailedInfo.duration}</span>
+                    </div>
+                    <div className="flex items-center gap-2">
+                      <FaUsers className="text-green-600" />
+                      <span className="font-semibold">Capacidad:</span>
+                      <span className="text-gray-700">{selectedServiceInfo.detailedInfo.capacity}</span>
+                    </div>
+                    <div className="flex items-center gap-2">
+                      <FaCheck className="text-green-600" />
+                      <span className="font-semibold">Requisitos:</span>
+                      <span className="text-gray-700">{selectedServiceInfo.detailedInfo.requirements}</span>
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+              {/* Información de contacto */}
+              <div className="bg-purple-50 p-4 rounded-lg">
+                <h3 className="text-xl font-bold text-purple-800 mb-4 flex items-center gap-2">
+                  <FaPhone className="text-purple-600" />
+                  Información de Contacto
+                </h3>
+                <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+                  <div className="flex items-center gap-2 text-gray-700">
+                    <FaMapMarkerAlt className="text-purple-600" />
+                    <span>{selectedServiceInfo.detailedInfo.contact.address}</span>
+                  </div>
+                  <div className="flex items-center gap-2 text-gray-700">
+                    <FaPhone className="text-purple-600" />
+                    <a 
+                      href={`tel:${selectedServiceInfo.detailedInfo.contact.phone}`} 
+                      className="hover:text-purple-600 hover:underline"
+                    >
+                      {selectedServiceInfo.detailedInfo.contact.phone}
+                    </a>
+                  </div>
+                  <div className="flex items-center gap-2 text-gray-700">
+                    <FaEnvelope className="text-purple-600" />
+                    <a 
+                      href={`mailto:${selectedServiceInfo.detailedInfo.contact.email}`} 
+                      className="hover:text-purple-600 hover:underline"
+                    >
+                      {selectedServiceInfo.detailedInfo.contact.email}
+                    </a>
+                  </div>
+                </div>
+              </div>
+
+              {/* Botón de reserva */}
+              {selectedServiceInfo.available && (
+                <div className="flex justify-center pt-4">
+                  <button
+                    onClick={() => {
+                      handleCloseServiceInfo();
+                      handleReservation(selectedServiceInfo);
+                    }}
+                    className="bg-[#EEAD05] hover:bg-yellow-600 text-white px-8 py-3 rounded-lg font-medium transition-colors flex items-center gap-2 text-lg"
+                  >
+                    <FaCalendarAlt />
+                    Reservar Ahora
+                  </button>
+                </div>
+              )}
             </div>
           </div>
         </div>
