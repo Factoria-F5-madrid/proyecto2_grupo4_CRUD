@@ -77,6 +77,9 @@ const Form = ({ onClose, userId }) => {
       user_id: user?.user_id || 1,
     };
 
+    console.log('Usuario actual:', user);
+    console.log('Datos a enviar:', petData);
+
     try {
       await createPet(petData);
       // Cerrar el modal y navegar a la vista de mascotas

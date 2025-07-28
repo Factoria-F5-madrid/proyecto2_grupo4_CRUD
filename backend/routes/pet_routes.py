@@ -18,7 +18,11 @@ from backend.models.enums import UserRole
 router = APIRouter()
 
 @router.post("/", response_model=PetOut)
-async def create_pet(pet_data: PetCreate, db: AsyncSession = Depends(get_db)):
+async def create_pet(
+    pet_data: PetCreate, 
+    db: AsyncSession = Depends(get_db),
+    current_user: dict = Depends(get_current_user)
+):
     return await create_pet_controller(pet_data, db)
 
 @router.get("/", response_model=List[PetOut])
