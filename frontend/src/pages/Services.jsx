@@ -17,19 +17,19 @@ const Services = () => {
   }, []);
 
   const loadServices = async () => {
-    try {
-      setLoading(true);
+      try {
+        setLoading(true);
       console.log("🔍 Cargando servicios...");
-      const data = await getAllService();
+        const data = await getAllService();
       console.log("✅ Datos de servicios recibidos:", data);
-      setServices(data);
-    } catch (error) {
-      console.error("❌ Error al cargar servicios:", error);
-      setError("Error al cargar los servicios: " + error.message);
-    } finally {
-      setLoading(false);
-    }
-  };
+        setServices(data);
+      } catch (error) {
+        console.error("❌ Error al cargar servicios:", error);
+        setError("Error al cargar los servicios: " + error.message);
+      } finally {
+        setLoading(false);
+      }
+    };
 
   const handleDelete = async (serviceId) => {
     if (window.confirm('¿Estás seguro de que quieres eliminar este servicio?')) {
@@ -140,14 +140,14 @@ const Services = () => {
           />
         </div>
       </div>
-
+      
       {/* Mensaje de error */}
       {error && (
         <div className="mb-6 bg-red-50 border border-red-200 text-red-700 px-4 py-3 rounded-lg">
           <p>{error}</p>
         </div>
       )}
-
+      
       {/* Tabla de servicios */}
       <div className="bg-white rounded-xl shadow-md overflow-x-auto">
         <table className="min-w-full divide-y divide-gray-200 text-sm">
@@ -182,16 +182,16 @@ const Services = () => {
                 <td className="px-6 py-4 whitespace-nowrap">
                   <div className="flex items-center">
                     <div className="text-lg mr-3">
-                      {getServiceIcon(service.service_type)}
-                    </div>
-                    <div>
+                  {getServiceIcon(service.service_type)}
+                </div>
+                <div>
                       <div className="text-sm font-medium text-gray-900">
                         {service.other_service || getServiceTypeLabel(service.service_type)}
                       </div>
                       <div className="text-sm text-gray-500">
                         ID: {service.service_id}
-                      </div>
-                    </div>
+                </div>
+              </div>
                   </div>
                 </td>
                 <td className="px-6 py-4 whitespace-nowrap">
@@ -252,7 +252,7 @@ const Services = () => {
             ))}
           </tbody>
         </table>
-      </div>
+        </div>
 
       {/* Estado vacío */}
       {filteredServices.length === 0 && !loading && (
