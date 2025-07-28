@@ -3,8 +3,9 @@ import { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { 
   FaUsers, FaUserTie, FaDog, FaCalendarAlt, FaMoneyCheckAlt, 
-  FaFileInvoice, FaStethoscope, FaChartBar, FaPlus, FaCog, FaSpinner, FaClipboard
+  FaFileInvoice, FaStethoscope, FaChartBar, FaPlus, FaCog, FaClipboard
 } from 'react-icons/fa';
+import petHome from '../assets/PetHome.svg';
 
 import Modal from '../components/Nav/Modal';
 import { useAuth } from '../context/AuthContext';
@@ -151,12 +152,12 @@ const Home = () => {
         return (
             <div className="flex-1 p-6 bg-gray-50 flex items-center justify-center">
                 <div className="text-center">
-                    <div className="w-16 h-16 mx-auto mb-4">
-                        <FaSpinner className="w-full h-full text-blue-500 animate-spin" />
-                    </div>
-                    <h1 className="text-2xl font-bold text-gray-800">
-                        Cargando...
-                    </h1>
+                    <img
+                        src={petHome}
+                        alt="PetLand F5"
+                        className="w-64 h-auto mx-auto mb-4"
+                    />
+                   
                 </div>
             </div>
         );
