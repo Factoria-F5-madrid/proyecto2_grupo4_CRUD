@@ -5,7 +5,7 @@ import {
   FaUsers, FaUserTie, FaDog, FaCalendarAlt, FaMoneyCheckAlt, 
   FaFileInvoice, FaStethoscope, FaChartBar, FaPlus, FaCog, FaSpinner, FaClipboard
 } from 'react-icons/fa';
-import perritosImage from '../assets/PetHome.svg';
+
 import Modal from '../components/Nav/Modal';
 import { useAuth } from '../context/AuthContext';
 import { getDashboardStats, getAdminStats } from '../services/dashboardServices';
@@ -151,13 +151,11 @@ const Home = () => {
         return (
             <div className="flex-1 p-6 bg-gray-50 flex items-center justify-center">
                 <div className="text-center">
-                    <img 
-                        src={perritosImage} 
-                        alt="PetLand Home" 
-                        className="w-64 h-64 mx-auto animate-pulse"
-                    />
-                    <h1 className="text-6xl font-bold text-gray-800 mt-6">
-                        PETLAND F5
+                    <div className="w-16 h-16 mx-auto mb-4">
+                        <FaSpinner className="w-full h-full text-blue-500 animate-spin" />
+                    </div>
+                    <h1 className="text-2xl font-bold text-gray-800">
+                        Cargando...
                     </h1>
                 </div>
             </div>
@@ -180,11 +178,7 @@ const Home = () => {
                              'Tu mascota es importante para nosotros 🐾'}
                         </p>
                     </div>
-      <img
-        src="https://res.cloudinary.com/dxxc4p0ro/image/upload/v1700000000000/petland-logo-letra-azul.png"
-                        alt="PetLand Logo"
-                        className="w-32 h-12 object-contain"
-                    />
+     
                 </div>
             </div>
 

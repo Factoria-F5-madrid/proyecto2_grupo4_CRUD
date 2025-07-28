@@ -10,6 +10,7 @@ class ServiceBase(BaseModel):
     notes: Optional[str] = None
     base_price: float
     duration: Optional[time] = None
+    image_url: Optional[str] = None
 
 class ServiceCreate(ServiceBase):
     pass
@@ -21,6 +22,7 @@ class ServiceUpdate(BaseModel):
     notes: Optional[str]
     base_price: Optional[float]
     duration: Optional[time]
+    image_url: Optional[str]
 
 class ServiceOut(ServiceBase):
     service_id: int

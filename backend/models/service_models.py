@@ -15,6 +15,7 @@ class Service(Base):
     notes = Column(Text)
     base_price = Column(Numeric(10, 2), nullable=False)
     duration = Column(Time)
+    image_url = Column(Text)
     created_at = Column(TIMESTAMP, nullable=False, server_default=func.now())
 
    
