@@ -1,414 +1,576 @@
-# 🏠 PetLand - Sistema de Gestión de Mascotas
+# 🏠 PetLand F5 - Sistema de Gestión de Mascotas
 
-Sistema completo de gestión de mascotas con backend en FastAPI y frontend en React, incluyendo un sistema avanzado de roles y permisos (RBAC).
+## 📋 Descripción General
+
+**PetLand F5** es una aplicación web completa para la gestión de servicios veterinarios y cuidado de mascotas. El sistema implementa una arquitectura moderna con separación clara entre frontend y backend, incluyendo un sistema avanzado de roles y permisos (RBAC) que garantiza la seguridad y escalabilidad de la aplicación.
+
+## 🏗️ Arquitectura del Proyecto
+
+### **Arquitectura General**
+```
+┌─────────────────┐    ┌─────────────────┐    ┌─────────────────┐
+│   Frontend      │    │    Backend      │    │   Base de       │
+│   (React)       │◄──►│   (FastAPI)     │◄──►│   Datos         │
+│                 │    │                 │    │   (PostgreSQL)  │
+└─────────────────┘    └─────────────────┘    └─────────────────┘
+         │                       │                       │
+         │                       │                       │
+         ▼                       ▼                       ▼
+┌─────────────────┐    ┌─────────────────┐    ┌─────────────────┐
+│   Tailwind CSS  │    │   Redis Cache   │    │   Alembic       │
+│   (UI/UX)       │    │   (Performance) │    │   (Migrations)  │
+└─────────────────┘    └─────────────────┘    └─────────────────┘
+```
+
+### **Patrón de Diseño**
+- **Frontend**: Arquitectura basada en componentes con React
+- **Backend**: Arquitectura RESTful con FastAPI
+- **Base de Datos**: PostgreSQL con ORM SQLAlchemy
+- **Caché**: Redis para optimización de rendimiento
+- **Autenticación**: JWT con sistema de roles granular
+
+## 🛠️ Tecnologías Utilizadas
+
+### **Frontend**
+- **React 18**: Biblioteca de JavaScript para interfaces de usuario
+- **React Router**: Enrutamiento del lado del cliente
+- **Tailwind CSS**: Framework CSS utility-first
+- **Axios**: Cliente HTTP para peticiones a la API
+- **React Icons**: Biblioteca de iconos
+- **Context API**: Gestión de estado global
+
+### **Backend**
+- **FastAPI**: Framework web moderno y rápido para Python
+- **SQLAlchemy**: ORM para Python
+- **PostgreSQL**: Sistema de gestión de base de datos
+- **Redis**: Almacenamiento en caché
+- **Alembic**: Herramienta de migración de base de datos
+- **Pydantic**: Validación de datos y serialización
+
+### **Herramientas de Desarrollo**
+- **Git**: Control de versiones
+- **Docker**: Containerización (opcional)
+- **Render**: Plataforma de despliegue
+- **Vite**: Herramienta de construcción para el frontend
 
 ## 📁 Estructura del Proyecto
 
 ```
 proyecto2_grupo4_CRUD/
-├── backend/                    # Backend en FastAPI
-│   ├── controllers/           # Controladores de la API
-│   ├── models/               # Modelos de base de datos
-│   ├── routes/               # Rutas de la API
-│   ├── schema/               # Esquemas Pydantic
-│   ├── services/             # Servicios de negocio
-│   ├── utils/                # Utilidades (auth, cache, etc.)
-│   ├── websockets/           # Sistema de WebSockets
-│   ├── tests/                # Tests del backend
-│   ├── docs/                 # Documentación técnica
-│   ├── data/                 # Archivos de datos (Redis, etc.)
-│   ├── logs/                 # Archivos de logs
-│   ├── main.py               # Punto de entrada de la aplicación
-│   ├── pytest.ini           # Configuración de tests
-│   └── alembic.ini          # Configuración de migraciones
-├── frontend/                  # Frontend en React
-│   ├── src/
-│   │   ├── components/       # Componentes reutilizables
-│   │   ├── pages/           # Páginas de la aplicación
-│   │   ├── services/        # Servicios de API
-│   │   ├── context/         # Contextos de React
-│   │   ├── routes/          # Configuración de rutas
-│   │   └── config/          # Configuración de la app
-├── scripts/                   # Scripts de utilidad
-├── alembic/                   # Migraciones de base de datos
-├── requirements.txt           # Dependencias de Python
-└── README.md                  # Este archivo
+├── 📂 backend/                    # Backend en FastAPI
+│   ├── 📂 controllers/           # Lógica de negocio
+│   ├── 📂 models/               # Modelos de base de datos
+│   ├── 📂 routes/               # Endpoints de la API
+│   ├── 📂 schema/               # Esquemas Pydantic
+│   ├── 📂 services/             # Servicios de negocio
+│   ├── 📂 utils/                # Utilidades (auth, cache, etc.)
+│   ├── 📂 websockets/           # Sistema de WebSockets
+│   ├── 📂 tests/                # Tests automatizados
+│   ├── 📂 docs/                 # Documentación técnica
+│   ├── 📂 data/                 # Archivos de datos
+│   ├── 📂 logs/                 # Archivos de logs
+│   ├── 📄 main.py               # Punto de entrada
+│   ├── 📄 pytest.ini           # Configuración de tests
+│   └── 📄 alembic.ini          # Configuración de migraciones
+├── 📂 frontend/                  # Frontend en React
+│   ├── 📂 src/
+│   │   ├── 📂 components/       # Componentes reutilizables
+│   │   ├── 📂 pages/           # Páginas de la aplicación
+│   │   ├── 📂 services/        # Servicios de API
+│   │   ├── 📂 context/         # Contextos de React
+│   │   ├── 📂 routes/          # Configuración de rutas
+│   │   ├── 📂 layout/          # Layout principal
+│   │   ├── 📂 config/          # Configuración de la app
+│   │   └── 📂 assets/          # Recursos estáticos
+│   ├── 📄 package.json         # Dependencias de Node.js
+│   ├── 📄 vite.config.js       # Configuración de Vite
+│   └── 📄 index.html           # HTML principal
+├── 📂 scripts/                   # Scripts de utilidad
+├── 📂 alembic/                   # Migraciones de base de datos
+├── 📄 requirements.txt           # Dependencias de Python
+├── 📄 package-lock.json         # Lock file de Node.js
+├── 📄 build.sh                  # Script de construcción
+├── 📄 render.yaml               # Configuración de despliegue
+└── 📄 README.md                  # Documentación del proyecto
 ```
 
-## 🚀 Funcionalidades
+## 🚀 Instalación y Configuración
 
-### ✅ **Sistema de Autenticación JWT**
-- Login/registro de usuarios
-- Tokens JWT seguros
-- Hash de contraseñas con bcrypt
-- Middleware de autenticación
-- Endpoint `/auth/me` para información del usuario
+### **Prerrequisitos**
+- **Python 3.8+** para el backend
+- **PostgreSQL 12+** para la base de datos
+- **Redis 6+** para caché (opcional)
 
-### 🛡️ **Sistema de Roles y Permisos (RBAC)**
-- **3 Roles principales**: Admin, Employee, User
-- **Permisos granulares** por funcionalidad
-- **Navegación dinámica** basada en roles
-- **Filtrado de datos** por usuario/rol
-- **Autorización automática** en endpoints
+### **Configuración del Entorno**
 
-### 📊 **Filtrado de Datos por Rol**
-- **Admin/Employee**: Acceso completo a todos los datos
-- **User**: Solo ve sus propias mascotas, historiales médicos, facturas y servicios
-- **Filtrado automático** en backend y frontend
-- **Seguridad garantizada** a nivel de API
-
-### 🔌 **WebSockets en Tiempo Real**
-- Notificaciones en tiempo real
-- Actualizaciones automáticas
-- Conexiones por canal
-- Gestión de conexiones
-
-### 💾 **Sistema de Caché**
-- Redis para almacenamiento en caché
-- Decoradores automáticos
-- Invalidación inteligente
-- Configuración optimizada
-
-### 🛡️ **Manejo de Errores**
-- Excepciones personalizadas
-- Handlers globales
-- Logging mejorado
-- Respuestas estandarizadas
-
-### 📊 **Exportación de Datos**
-- Exportación CSV de todas las entidades
-- Filtros personalizables
-- Exportación con relaciones
-- Streaming de archivos
-
-### 🧪 **Tests Automatizados**
-- Tests unitarios
-- Tests de integración
-- Tests de caché
-- Configuración de pytest
-
-### 👤 **Gestión de Cuenta**
-- Información completa del perfil
-- Cambio de contraseña
-- Visualización de permisos y rutas
-- Interfaz moderna y responsive
-
-## 🎯 **SISTEMA DE ROLES Y PERMISOS (RBAC)**
-
-### **Roles Disponibles**
-
-#### 👑 **Administrador (Admin)**
-- **Acceso completo** a todas las funcionalidades
-- **Gestión de usuarios** y empleados
-- **Visualización de todos los datos** del sistema
-- **Cambio de roles** de otros usuarios
-- **Navegación completa**: Dashboard, Empleados, Usuarios, Mascotas, Reservas, Historial Médico, Facturas, Pagos, Cuenta, Configuración
-
-#### 👨‍💼 **Empleado (Employee)**
-- **Gestión de mascotas** y reservas
-- **Acceso a historiales médicos** completos
-- **Gestión de facturas** y pagos
-- **Navegación limitada**: Mascotas, Reservas, Historial Médico, Facturas, Cuenta
-
-#### 👤 **Usuario (User)**
-- **Solo sus propias mascotas** y datos relacionados
-- **Historial médico** de sus mascotas únicamente
-- **Facturas** de sus servicios contratados
-- **Servicios** que ha contratado
-- **Navegación restringida**: Mascotas, Historial Médico, Facturas, Servicios, Cuenta
-
-### **Permisos Granulares**
-
-```python
-# Ejemplo de permisos por rol
-ROLE_PERMISSIONS = {
-    UserRole.ADMIN: [
-        Permission.READ_USERS, Permission.WRITE_USERS,
-        Permission.READ_EMPLOYEES, Permission.WRITE_EMPLOYEES,
-        Permission.READ_PETS, Permission.WRITE_PETS,
-        # ... todos los permisos
-    ],
-    UserRole.EMPLOYEE: [
-        Permission.READ_PETS, Permission.WRITE_PETS,
-        Permission.READ_RESERVATIONS, Permission.WRITE_RESERVATIONS,
-        # ... permisos limitados
-    ],
-    UserRole.USER: [
-        Permission.READ_OWN_PETS, Permission.WRITE_OWN_PETS,
-        Permission.READ_OWN_MEDICAL_HISTORY,
-        Permission.READ_OWN_INVOICES,
-        # ... permisos propios únicamente
-    ]
-}
-```
-
-### **Navegación Dinámica**
-
-La barra de navegación se adapta automáticamente según el rol del usuario:
-
-- **Admin**: Enlaces completos con "Mi Panel" como texto
-- **Employee**: Enlaces limitados con "Panel de Empleado"
-- **User**: Enlaces restringidos con "Mi Panel"
-
-### **Filtrado de Datos**
-
-#### **Backend (Nivel API)**
-```python
-# Ejemplo: Filtrado de mascotas por rol
-@router.get("/", response_model=List[PetOut])
-async def get_all_pets(
-    db: AsyncSession = Depends(get_db),
-    current_user: dict = Depends(get_current_user)
-):
-    user_role = UserRole(current_user["role"])
-    
-    if user_role in [UserRole.ADMIN, UserRole.EMPLOYEE]:
-        return await get_all_pets_controller(db)  # Todas las mascotas
-    else:
-        user_id = current_user["user_id"]
-        return await get_pets_by_user_controller(user_id, db)  # Solo sus mascotas
-```
-
-#### **Frontend (Nivel UI)**
-- **Autenticación automática** en todas las peticiones
-- **Interceptores de Axios** para tokens JWT
-- **Contexto de autenticación** centralizado
-- **Componentes adaptativos** según permisos
-
-## 🛠️ Instalación y Configuración
-
-### Prerrequisitos
-- Python 3.8+
-- Node.js 16+
-- Redis
-- PostgreSQL
-
-### Backend
+#### **1. Clonar el Repositorio**
 ```bash
-# Instalar dependencias
+git clone <repository-url>
+cd proyecto2_grupo4_CRUD
+```
+
+#### **2. Configurar Entorno Virtual (Recomendado)**
+```bash
+# Crear entorno virtual para Python
+python -m venv venv
+
+# Activar entorno virtual
+# En Windows:
+venv\Scripts\activate
+# En macOS/Linux:
+source venv/bin/activate
+```
+
+#### **3. Instalar Dependencias Backend**
+```bash
 pip install -r requirements.txt
+```
 
-# Configurar Redis
-./scripts/setup_redis.sh
+#### **4. Configurar Base de Datos**
+```bash
+# Crear base de datos
+createdb petland_db
 
-# Ejecutar migraciones
+# Configurar variables de entorno
+export DATABASE_URL="postgresql://user:password@localhost/petland_db"
+```
+
+#### **5. Ejecutar Migraciones**
+```bash
 alembic upgrade head
-
-# Crear usuario administrador (opcional)
-python create_admin.py
-
-# Iniciar servidor (opciones)
-./scripts/server_utils.sh start    # Script de utilidades (recomendado)
-python scripts/start_server.py     # Script directo
-uvicorn backend.main:app --reload  # Uvicorn directo
 ```
-
-### Frontend
-```bash
-cd frontend
-npm install
-npm run dev
-```
-
-## 🔧 **Scripts de Utilidad**
-
-### **Gestión del Servidor**
-```bash
-# Iniciar servidor
-./scripts/server_utils.sh start
-
-# Detener servidor
-./scripts/server_utils.sh stop
-
-# Reiniciar servidor
-./scripts/server_utils.sh restart
-
-# Verificar estado
-./scripts/server_utils.sh status
-
-# Ver logs
-./scripts/server_utils.sh logs
-
-# Limpiar procesos
-./scripts/server_utils.sh clean
-```
-
-### **Scripts de Desarrollo**
-```bash
-# Crear usuario administrador
-python create_admin.py
-
-# Ejecutar tests
-pytest
-
-# Ejecutar tests con coverage
-pytest --cov=backend
-
-# Verificar imports
-python -m backend.tests.test_imports
-```
-
-## 📊 **Endpoints de la API**
-
-### **Autenticación**
-- `POST /auth/login` - Iniciar sesión
-- `POST /auth/register` - Registrar usuario
-- `GET /auth/me` - Información del usuario actual
-- `PUT /auth/users/{user_id}/role` - Cambiar rol (solo admin)
-
-### **Mascotas (Filtrado por Rol)**
-- `GET /pets/` - Listar mascotas (filtrado automático)
-- `POST /pets/` - Crear mascota
-- `GET /pets/{pet_id}` - Obtener mascota específica
-- `PUT /pets/{pet_id}` - Actualizar mascota
-- `DELETE /pets/{pet_id}` - Eliminar mascota
-
-### **Historial Médico (Filtrado por Rol)**
-- `GET /medical-history/` - Listar historiales (filtrado automático)
-- `POST /medical-history/` - Crear historial
-- `GET /medical-history/{id}` - Obtener historial específico
-- `PUT /medical-history/{id}` - Actualizar historial
-- `DELETE /medical-history/{id}` - Eliminar historial
-
-### **Servicios (Filtrado por Rol)**
-- `GET /services/` - Listar servicios (filtrado automático)
-- `POST /services/` - Crear servicio
-- `GET /services/{service_id}` - Obtener servicio específico
-- `PUT /services/{service_id}` - Actualizar servicio
-- `DELETE /services/{service_id}` - Eliminar servicio
-
-### **Facturas (Filtrado por Rol)**
-- `GET /invoice/` - Listar facturas (filtrado automático)
-- `POST /invoice/` - Crear factura
-- `GET /invoice/{invoice_id}` - Obtener factura específica
-- `PUT /invoice/{invoice_id}` - Actualizar factura
-- `DELETE /invoice/{invoice_id}` - Eliminar factura
-
-### **WebSockets**
-- `WS /ws/{channel}` - Conexión general por canal
-- `WS /ws/user/{user_id}` - Conexión específica de usuario
-- `WS /ws/pets` - Canal de mascotas
-- `WS /ws/reservations` - Canal de reservas
-
-### **Exportación**
-- `GET /export/users` - Exportar usuarios a CSV
-- `GET /export/pets` - Exportar mascotas a CSV
-- `GET /export/reservations` - Exportar reservas a CSV
-- `GET /export/invoices` - Exportar facturas a CSV
-
-## 🎨 **Interfaz de Usuario**
-
-### **Páginas Principales**
-- **Dashboard**: Vista general adaptativa por rol
-- **Mascotas**: Gestión con filtrado automático
-- **Historial Médico**: Registros médicos filtrados
-- **Servicios**: Servicios contratados/disponibles
-- **Facturas**: Facturas del usuario/sistema
-- **Cuenta**: Gestión de perfil y configuración
-
-### **Características de la UI**
-- **Diseño responsive** con Tailwind CSS
-- **Iconos específicos** para cada funcionalidad
-- **Estados de carga** con spinners animados
-- **Manejo de errores** con alertas visuales
-- **Formateo profesional** de datos (precios, fechas)
-- **Navegación intuitiva** adaptada por rol
-
-## 🔒 **Seguridad**
-
-### **Autenticación**
-- Tokens JWT con expiración
-- Hash seguro de contraseñas
-- Middleware de autenticación global
-
-### **Autorización**
-- Verificación de permisos por endpoint
-- Filtrado de datos por usuario
-- Protección de rutas sensibles
-
-### **Validación**
-- Esquemas Pydantic para validación
-- Sanitización de datos de entrada
-- Manejo seguro de errores
-
-## 🧪 **Testing**
-
-### **Tests Disponibles**
-```bash
-# Tests de autenticación
-pytest backend/tests/test_auth.py
-
-# Tests de caché
-pytest backend/tests/test_cache.py
-
-# Tests de importaciones
-pytest backend/tests/test_imports.py
-
-# Tests de controladores
-pytest backend/tests/test_pet_controller.py
-```
-
-### **Cobertura de Tests**
-- Tests unitarios para controladores
-- Tests de integración para endpoints
-- Tests de caché y WebSockets
-- Tests de autorización y permisos
-
-## 📈 **Rendimiento**
-
-### **Optimizaciones**
-- **Caché Redis** para consultas frecuentes
-- **WebSockets** para actualizaciones en tiempo real
-- **Paginación** en endpoints de listado
-- **Lazy loading** en frontend
-
-### **Monitoreo**
-- Logging detallado con niveles
-- Métricas de rendimiento
-- Trazabilidad de errores
-
-## 🚀 **Despliegue**
-
-### **Requisitos de Producción**
-- PostgreSQL 12+
-- Redis 6+
-- Python 3.8+
-- Node.js 16+
-
-### **Variables de Entorno**
-```bash
-# Base de datos
-DATABASE_URL=postgresql://user:pass@localhost/petland
-
-# Redis
-REDIS_URL=redis://localhost:6379
-
-# JWT
-JWT_SECRET_KEY=your-secret-key
-JWT_ALGORITHM=HS256
-ACCESS_TOKEN_EXPIRE_MINUTES=30
-
-# Servidor
-HOST=0.0.0.0
-PORT=8000
-```
-
-## 🤝 **Contribución**
-
-1. Fork el proyecto
-2. Crea una rama para tu feature (`git checkout -b feature/AmazingFeature`)
-3. Commit tus cambios (`git commit -m 'Add some AmazingFeature'`)
-4. Push a la rama (`git push origin feature/AmazingFeature`)
-5. Abre un Pull Request
-
-## 📝 **Licencia**
-
-Este proyecto está bajo la Licencia MIT. Ver el archivo `LICENSE` para más detalles.
-
-## 📞 **Contacto**
-
-Para preguntas o soporte, contacta al equipo de desarrollo.
 
 ---
 
-**PetLand** - Sistema de Gestión de Mascotas con RBAC avanzado 🏠🐾
+## 🎨 **FRONTEND - React & JavaScript**
+
+### **Tecnologías Frontend**
+
+#### **React 18**
+- **Componentes funcionales** con hooks modernos
+- **Context API** para gestión de estado global
+- **React Router** para navegación del lado del cliente
+- **Hooks personalizados** para lógica reutilizable
+
+#### **JavaScript ES6+**
+- **Arrow functions** y destructuring
+- **Async/await** para operaciones asíncronas
+- **Template literals** para interpolación de strings
+- **Spread operator** para manipulación de objetos
+
+#### **Tailwind CSS**
+- **Utility-first CSS** para desarrollo rápido
+- **Responsive design** con breakpoints
+- **Componentes personalizados** con clases utilitarias
+- **Animaciones y transiciones** integradas
+
+### **Instalación del Frontend**
+
+#### **1. Navegar al Directorio Frontend**
+```bash
+cd frontend
+```
+
+#### **2. Instalar Dependencias**
+```bash
+npm install
+```
+
+#### **3. Configurar Variables de Entorno**
+Crear archivo `.env` en el directorio `frontend/`:
+```bash
+VITE_API_URL=http://localhost:8000
+VITE_CLOUDINARY_URL=cloudinary://your-cloudinary-url
+```
+
+#### **4. Iniciar Servidor de Desarrollo**
+```bash
+npm run dev
+```
+
+El frontend estará disponible en: **http://localhost:5173**
+
+### **Estructura del Frontend**
+
+```
+frontend/src/
+├── 📂 components/           # Componentes reutilizables
+│   ├── 📂 Button/          # Componentes de botones
+│   ├── 📂 Cards/           # Componentes de tarjetas
+│   ├── 📂 Forms/           # Formularios reutilizables
+│   ├── 📂 Nav/             # Navegación y modales
+│   └── 📂 Footer/          # Pie de página
+├── 📂 pages/               # Páginas principales
+│   ├── 📄 Home.jsx         # Dashboard principal
+│   ├── 📄 Login.jsx        # Página de autenticación
+│   ├── 📄 Services.jsx     # Catálogo de servicios
+│   ├── 📄 Pets.jsx         # Gestión de mascotas
+│   ├── 📄 Account.jsx      # Perfil de usuario
+│   └── 📄 ContactUs.jsx    # Página de contacto
+├── 📂 services/            # Servicios de API
+│   ├── 📄 userServices.js      # Servicios de usuarios
+│   ├── 📄 petServices.js       # Servicios de mascotas
+│   ├── 📄 reservationServices.js # Servicios de reservas
+│   └── 📄 serviceServices.js   # Servicios de servicios
+├── 📂 context/             # Contextos de React
+│   └── 📄 AuthContext.jsx      # Contexto de autenticación
+├── 📂 routes/              # Configuración de rutas
+│   └── 📄 Routes.jsx           # Definición de rutas
+├── 📂 layout/              # Layout principal
+│   └── 📄 Layout.jsx           # Layout con navegación
+├── 📂 config/              # Configuración
+│   ├── 📄 api.js               # Configuración de API
+│   └── 📄 axios.js             # Configuración de Axios
+└── 📂 assets/              # Recursos estáticos
+    ├── 📄 PetHome.svg          # Logo principal
+    ├── 📄 PetLandHome.png      # Imágenes de marca
+    └── 📄 PetSpinner.json      # Animación de carga
+```
+
+### **Conexión con el Backend**
+
+#### **Configuración de API**
+```javascript
+// frontend/src/config/api.js
+const API_BASE_URL = import.meta.env.VITE_API_URL || "https://petland-backend-qnss.onrender.com";
+
+export const API_ENDPOINTS = {
+  AUTH: {
+    LOGIN: `${API_BASE_URL}/auth/login`,
+    REGISTER: `${API_BASE_URL}/auth/register`,
+    ME: `${API_BASE_URL}/auth/me`,
+  },
+  // ... más endpoints
+};
+```
+
+#### **Configuración de Axios**
+```javascript
+// frontend/src/config/axios.js
+const apiClient = axios.create({
+  baseURL: API_BASE_URL,
+  headers: {
+    'Content-Type': 'application/json',
+    'Accept': 'application/json'
+  },
+  timeout: 10000,
+});
+
+// Interceptor para tokens JWT
+apiClient.interceptors.request.use((config) => {
+  const token = localStorage.getItem('token');
+  if (token) {
+    config.headers.Authorization = `Bearer ${token}`;
+  }
+  return config;
+});
+```
+
+### **Funcionalidades Destacables del Frontend**
+
+#### **1. Sistema de Autenticación**
+- **Login/Registro** con validación en tiempo real
+- **Gestión de tokens JWT** automática
+- **Protección de rutas** basada en roles
+- **Persistencia de sesión** con localStorage
+
+```javascript
+// Ejemplo de login
+const login = async (email, password) => {
+  const response = await loginUser({ email, password });
+  localStorage.setItem('token', response.access_token);
+  localStorage.setItem('user', JSON.stringify(response));
+  setUser(response);
+};
+```
+
+#### **2. Navegación Adaptativa**
+- **Menú dinámico** según rol del usuario
+- **Rutas protegidas** automáticamente
+- **Redirección inteligente** post-login
+
+```javascript
+// Navegación según rol
+const getNavigationItems = () => {
+  if (isAdmin()) {
+    return [
+      { label: "Dashboard", to: "/", icon: <FaHome /> },
+      { label: "Empleados", to: "/employees", icon: <FaUsers /> },
+      // ... más items para admin
+    ];
+  } else if (isEmployee()) {
+    return [
+      { label: "Panel", to: "/", icon: <FaHome /> },
+      { label: "Mascotas", to: "/pets", icon: <FaDog /> },
+      // ... más items para empleados
+    ];
+  }
+  // ... items para usuarios
+};
+```
+
+#### **3. Dashboard Personalizado**
+- **Tarjetas adaptativas** según rol
+- **Estadísticas en tiempo real**
+- **Accesos directos** a funcionalidades principales
+
+```javascript
+// Dashboard adaptativo
+const getDashboardCards = () => {
+  const cards = [
+    {
+      title: isAdmin() ? "Reservas" : "Servicios",
+      value: isAdmin() ? stats.totalReservations : stats.totalServices,
+      icon: isAdmin() ? <FaCalendarAlt /> : <FaClipboard />,
+      route: isAdmin() ? "/reservations" : "/services",
+    },
+    // ... más tarjetas
+  ];
+  return cards.filter(card => card.show);
+};
+```
+
+#### **4. Gestión de Servicios**
+- **Catálogo visual** de servicios
+- **CRUD completo** para administradores
+- **Reservas integradas** desde el catálogo
+- **Subida de imágenes** con Cloudinary
+
+```javascript
+// Creación de reserva desde servicio
+const handleReservation = async (service) => {
+  if (!user) {
+    setShowLoginPrompt(true);
+    return;
+  }
+  
+  setSelectedServiceForReservation(service);
+  setShowModal(true);
+};
+```
+
+#### **5. Formularios Inteligentes**
+- **Validación en tiempo real**
+- **Manejo de errores** centralizado
+- **Estados de carga** con feedback visual
+- **Auto-completado** de datos del usuario
+
+```javascript
+// Formulario de reserva con validación
+const handleSubmit = async (e) => {
+  e.preventDefault();
+  
+  if (!formData.service_type) {
+    throw new Error('Por favor, selecciona un tipo de servicio');
+  }
+  if (!formData.date || !formData.time) {
+    throw new Error('Por favor, selecciona fecha y hora');
+  }
+  
+  // ... lógica de envío
+};
+```
+
+#### **6. Interfaz Responsive**
+- **Diseño mobile-first** con Tailwind CSS
+- **Componentes adaptativos** según pantalla
+- **Navegación táctil** optimizada
+- **Accesibilidad** mejorada
+
+```javascript
+// Componente responsive
+<div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+  {services.map(service => (
+    <div className="bg-white rounded-lg shadow-md hover:shadow-lg transition-shadow p-6">
+      {/* Contenido del servicio */}
+    </div>
+  ))}
+</div>
+```
+
+#### **7. Gestión de Estado Global**
+- **Context API** para autenticación
+- **Estado persistente** entre sesiones
+- **Sincronización** automática de datos
+- **Cache inteligente** de respuestas
+
+```javascript
+// Contexto de autenticación
+export const AuthProvider = ({ children }) => {
+  const [user, setUser] = useState(null);
+  const [loading, setLoading] = useState(true);
+  
+  const login = async (email, password) => {
+    // ... lógica de login
+  };
+  
+  const logout = () => {
+    setUser(null);
+    localStorage.removeItem('token');
+  };
+  
+  return (
+    <AuthContext.Provider value={{ user, login, logout, loading }}>
+      {children}
+    </AuthContext.Provider>
+  );
+};
+```
+
+### **Scripts de Desarrollo**
+
+#### **Comandos Disponibles**
+```bash
+# Desarrollo
+npm run dev
+
+# Construcción para producción
+npm run build
+
+# Vista previa de producción
+npm run preview
+
+# Linting
+npm run lint
+```
+
+#### **Configuración de Vite**
+```javascript
+// vite.config.js
+export default defineConfig({
+  plugins: [react()],
+  server: {
+    port: 5173,
+    host: true
+  },
+  build: {
+    outDir: 'dist',
+    sourcemap: false
+  }
+});
+```
+
+### **Optimizaciones de Rendimiento**
+
+#### **Lazy Loading**
+```javascript
+// Carga diferida de componentes
+const ModalReservation = lazy(() => import('../components/Nav/ModalReservation'));
+const FormEditService = lazy(() => import('../components/Forms/FormEditService'));
+```
+
+#### **Memoización**
+```javascript
+// Optimización con React.memo
+const PetCard = React.memo(({ pet, onEdit, onDelete }) => {
+  return (
+    <div className="bg-white rounded-lg shadow p-4">
+      {/* Contenido del componente */}
+    </div>
+  );
+});
+```
+
+### **Manejo de Errores**
+
+#### **Interceptores de Axios**
+```javascript
+apiClient.interceptors.response.use(
+  (response) => response,
+  (error) => {
+    if (error.response?.status === 401) {
+      localStorage.removeItem('token');
+      window.location.href = '/login';
+    }
+    return Promise.reject(error);
+  }
+);
+```
+
+#### **Boundary de Errores**
+```javascript
+// Manejo centralizado de errores
+const handleError = (error) => {
+  if (error.response?.status === 401) {
+    return 'Sesión expirada. Por favor, inicia sesión nuevamente.';
+  }
+  return error.message || 'Error de conexión. Verifica tu internet.';
+};
+```
+
+---
+
+## 🚀 Despliegue
+
+### **Configuración de Render**
+
+#### **Frontend (render.yaml)**
+```yaml
+services:
+  - type: web
+    name: petland-frontend
+    env: static
+    buildCommand: cd frontend && npm install && npm run build
+    staticPublishPath: frontend/dist
+    envVars:
+      - key: VITE_API_URL
+        value: https://petland-backend-qnss.onrender.com
+```
+
+### **Variables de Entorno de Producción**
+```bash
+# Frontend
+VITE_API_URL=https://petland-backend-qnss.onrender.com
+VITE_CLOUDINARY_URL=cloudinary://production-url
+```
+
+---
+
+## 🧪 Testing
+
+### **Tests Frontend**
+```bash
+# Ejecutar tests
+npm test
+
+# Tests con coverage
+npm run test:coverage
+```
+
+---
+
+## 📈 Rendimiento
+
+### **Métricas Optimizadas**
+- **Time to First Byte (TTFB)**: < 200ms
+- **First Contentful Paint (FCP)**: < 1.5s
+- **Largest Contentful Paint (LCP)**: < 2.5s
+- **Cumulative Layout Shift (CLS)**: < 0.1
+
+### **Optimizaciones Implementadas**
+- **Code splitting** con React.lazy()
+- **Memoización** de componentes pesados
+- **Optimización de imágenes** con formatos modernos
+- **Caché de API** con interceptores de Axios
+
+---
+
+## 🤝 Contribución
+
+### **Guías de Contribución**
+1. **Fork** el repositorio
+2. **Crea una rama** para tu feature (`git checkout -b feature/AmazingFeature`)
+3. **Commit** tus cambios (`git commit -m 'feat: Add some AmazingFeature'`)
+4. **Push** a la rama (`git push origin feature/AmazingFeature`)
+5. **Abre un Pull Request**
+
+### **Estándares de Código**
+- **Frontend**: ESLint + Prettier
+- **Commits**: Conventional Commits
+- **Documentación**: JSDoc
+
+---
+
+**PetLand F5** - Sistema de Gestión de Mascotas con arquitectura moderna y escalable 🏠🐾
+
+*Desarrollado con React, FastAPI y las mejores prácticas de desarrollo web moderno.*

@@ -38,8 +38,8 @@ export default function Nav() {
       show: true
     });
 
-    // Mis Reservas - Solo para usuarios logueados
-    if (user) {
+    // Mis Reservas - Solo para usuarios regulares (no admin ni employee)
+    if (isUser()) {
       items.push({
         icon: <FaListAlt />,
         label: "Mis Reservas",
