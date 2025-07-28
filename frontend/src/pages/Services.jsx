@@ -8,9 +8,11 @@ import walkServ from '../assets/walkServ.png';
 import vetServ from '../assets/vetServ.png';
 import petImage from '../assets/petland-logo-letra-azul.png';
 import { FaCalendarAlt, FaInfoCircle, FaClock, FaStar } from 'react-icons/fa';
+import ModalReservation from '../components/Nav/ModalReservation';
 
 const Services = () => {
   const [showModal, setShowModal] = useState(false);
+  const [selectedService, setSelectedService] = useState(null);
 
   const services = [
     {
@@ -63,6 +65,16 @@ const Services = () => {
     }
   ];
 
+  const handleReservation = (service) => {
+    setSelectedService(service);
+    setShowModal(true);
+  };
+
+  const handleCloseModal = () => {
+    setShowModal(false);
+    setSelectedService(null);
+  };
+
   return (
     <div className="flex-1 p-6 bg-gray-50">
       <div className="max-w-7xl mx-auto">
@@ -107,13 +119,13 @@ const Services = () => {
                 {/* Botones de acción */}
                 <div className="flex gap-3">
                   {service.available ? (
-                    <Link 
-                      to="/reservations" 
+                    <button 
+                      onClick={() => handleReservation(service)}
                       className="flex-1 bg-[#EEAD05] hover:bg-yellow-600 text-white px-4 py-2 rounded-lg font-medium transition-colors flex items-center justify-center gap-2"
                     >
                       <FaCalendarAlt />
                       Reservar
-                    </Link>
+                    </button>
                   ) : (
                     <button 
                       className="flex-1 bg-gray-300 text-gray-600 px-4 py-2 rounded-lg font-medium cursor-not-allowed flex items-center justify-center gap-2"
@@ -179,6 +191,14 @@ const Services = () => {
           </div>
         </div>
       </div>
+
+      {/* Modal de reserva */}
+      {showModal && selectedService && (
+        <ModalReservation 
+          onClose={handleCloseModal} 
+          serviceName={selectedService.name}
+        />
+      )}
     </div>
   );
 };

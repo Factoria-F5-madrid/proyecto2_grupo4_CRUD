@@ -74,10 +74,21 @@ export const getReservationByService = async (service_id) => {
 // Crear una nueva reserva
 export const createReservation = async (reservationData) => {
   try {
+    console.log('Token de autenticación:', getAuthToken());
+    console.log('URL de la petición:', `${BASE_URL}/`);
+    console.log('Datos a enviar:', reservationData);
+    
     const response = await apiClient.post("/", reservationData);
+    console.log('Respuesta exitosa:', response.data);
     return response.data;
   } catch (error) {
     console.error("Error al crear la reserva:", error);
+    console.error("Detalles del error:", {
+      message: error.message,
+      status: error.response?.status,
+      data: error.response?.data,
+      headers: error.response?.headers
+    });
     throw error;
   }
 };

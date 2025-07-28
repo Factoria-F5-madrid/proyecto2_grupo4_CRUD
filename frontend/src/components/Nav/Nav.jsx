@@ -20,11 +20,11 @@ export default function Nav() {
   const getNavigationItems = () => {
     const items = [];
 
-    // Dashboard/Home - Todos los usuarios
+    // Servicios - Todos los usuarios
     items.push({
-      icon: <FaHome />,
-      label: "Dashboard",
-      to: "/home",
+      icon: <FaClipboard />,
+      label: "Servicios",
+      to: "/services",
       show: true
     });
 
