@@ -20,13 +20,15 @@ export default function Nav() {
   const getNavigationItems = () => {
     const items = [];
 
-    // Dashboard - Todos los usuarios
-    items.push({
-      icon: <FaHome />,
-      label: "Dashboard",
-      to: "/",
-      show: true
-    });
+    // Dashboard - Solo para usuarios logueados
+    if (user) {
+      items.push({
+        icon: <FaHome />,
+        label: "Dashboard",
+        to: "/",
+        show: true
+      });
+    }
 
     // Servicios - Todos los usuarios
     items.push({
