@@ -20,6 +20,14 @@ export default function Nav() {
   const getNavigationItems = () => {
     const items = [];
 
+    // Dashboard - Todos los usuarios
+    items.push({
+      icon: <FaHome />,
+      label: "Dashboard",
+      to: "/",
+      show: true
+    });
+
     // Servicios - Todos los usuarios
     items.push({
       icon: <FaClipboard />,
@@ -149,12 +157,6 @@ export default function Nav() {
     // Enlaces específicos por rol
     if (!isAdmin() && !isEmployee()) {
       items.push(
-        {
-          icon: <FaClipboard />,
-          label: "Servicios",
-          to: "/services",
-          show: hasRouteAccess('services')
-        },
         {
           icon: <FaEnvelope />,
           label: "Contacto",

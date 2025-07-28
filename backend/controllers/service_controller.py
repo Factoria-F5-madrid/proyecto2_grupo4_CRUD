@@ -19,7 +19,7 @@ async def create_service_controller(service_data: ServiceCreate, db: AsyncSessio
     logger.info(f"Service created successfully with ID: {new_service.service_id}")
     return new_service
 
-@cache_response("services:all", ttl=600)  # 10 minutos para listas
+@cache_response("services:all", ttl=600)  
 async def get_all_services_controller(db: AsyncSession):
     logger.debug("Fetching all services")
     result = await db.execute(select(Service))
@@ -27,7 +27,7 @@ async def get_all_services_controller(db: AsyncSession):
     logger.info(f"Fetched {len(services)} services")
     return services
 
-@cache_response("services:by_user", ttl=600)  # 10 minutos para servicios por usuario
+@cache_response("services:by_user", ttl=600)  
 async def get_services_by_user_controller(user_id: int, db: AsyncSession):
     """
     Obtiene todos los servicios que un usuario ha contratado a través de sus reservas
