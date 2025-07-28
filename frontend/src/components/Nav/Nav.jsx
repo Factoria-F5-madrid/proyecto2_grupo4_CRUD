@@ -46,8 +46,8 @@ export default function Nav() {
       );
     }
 
-    // Enlaces para Admin y Employee
-    if (isAdmin() || isEmployee()) {
+    // Enlaces para Admin
+    if (isAdmin()) {
       items.push(
         {
           icon: <FaDog />,
@@ -72,6 +72,36 @@ export default function Nav() {
           label: "Pagos",
           to: "/payments",
           show: hasRouteAccess('payments')
+        },
+        {
+          icon: <FaFileInvoice />,
+          label: "Facturas",
+          to: "/invoices",
+          show: hasRouteAccess('invoices')
+        }
+      );
+    }
+
+    // Enlaces para Employee
+    if (isEmployee()) {
+      items.push(
+        {
+          icon: <FaDog />,
+          label: "Mascotas",
+          to: "/pets",
+          show: hasRouteAccess('pets')
+        },
+        {
+          icon: <FaCalendarAlt />,
+          label: "Reservas",
+          to: "/reservations",
+          show: hasRouteAccess('reservations')
+        },
+        {
+          icon: <FaStethoscope />,
+          label: "Historial Médico",
+          to: "/medicalhistory",
+          show: hasRouteAccess('medical_history')
         },
         {
           icon: <FaFileInvoice />,
@@ -109,12 +139,6 @@ export default function Nav() {
     // Enlaces comunes para todos
     items.push(
       {
-        icon: <FaClipboard />,
-        label: "Servicios",
-        to: "/services",
-        show: hasRouteAccess('services')
-      },
-      {
         icon: <FaUserAlt />,
         label: "Mi Cuenta",
         to: "/account",
@@ -123,13 +147,21 @@ export default function Nav() {
     );
 
     // Enlaces específicos por rol
-    if (!isAdmin()) {
-      items.push({
-        icon: <FaEnvelope />,
-        label: "Contacto",
-        to: "/contact",
-        show: true
-      });
+    if (!isAdmin() && !isEmployee()) {
+      items.push(
+        {
+          icon: <FaClipboard />,
+          label: "Servicios",
+          to: "/services",
+          show: hasRouteAccess('services')
+        },
+        {
+          icon: <FaEnvelope />,
+          label: "Contacto",
+          to: "/contact",
+          show: true
+        }
+      );
     }
 
     // Login solo si no hay usuario

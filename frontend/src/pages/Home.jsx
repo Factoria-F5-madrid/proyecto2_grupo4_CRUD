@@ -106,7 +106,7 @@ const Home = () => {
                 icon: <FaMoneyCheckAlt className="text-green-500" />,
                 color: "bg-green-50 border-green-200",
                 route: "/payments",
-                show: hasRouteAccess('payments') && (isAdmin() || isEmployee())
+                show: hasRouteAccess('payments') && isAdmin()
             }
         ];
 
