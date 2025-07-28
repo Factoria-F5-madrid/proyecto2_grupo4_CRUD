@@ -118,14 +118,7 @@ const Reservations = () => {
           />
         </div>
 
-        {hasPermission('create_reservation') && (
-          <button
-            onClick={() => navigate('/reservations/new')}
-            className="bg-[#edad06] hover:bg-yellow-400 text-white px-4 py-2 rounded-xl flex items-center gap-2 shadow"
-          >
-            <FaPlus /> Nueva Reserva
-          </button>
-        )}
+
       </div>
 
       {/* Mensaje de error */}
