@@ -119,20 +119,18 @@ export default function Nav() {
         label: "Mi Cuenta",
         to: "/account",
         show: user
-      },
-      {
-        icon: <FaCog />,
-        label: "Configuración",
-        to: "/settings",
-        show: user
-      },
-      {
+      }
+    );
+
+    // Enlaces específicos por rol
+    if (!isAdmin()) {
+      items.push({
         icon: <FaEnvelope />,
         label: "Contacto",
         to: "/contact",
         show: true
-      }
-    );
+      });
+    }
 
     // Login solo si no hay usuario
     if (!user) {
