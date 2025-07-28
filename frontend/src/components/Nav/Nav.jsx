@@ -3,7 +3,7 @@ import { useNavigate } from "react-router-dom";
 import {
   FaUserAlt, FaCog, FaCalendarAlt, FaBars, FaTimes, FaPlus,
   FaMoneyCheckAlt, FaStethoscope, FaFileInvoice, FaEnvelope,
-  FaDog, FaClipboardList, FaPaw
+  FaDog, FaClipboardList
 } from "react-icons/fa";
 import Modal from "./Modal"; 
 
@@ -46,7 +46,6 @@ export default function Nav() {
           <SidebarLink icon={<FaFileInvoice />} label="Invoices" to="/invoices" isOpen={isOpen} navigate={navigate} />
           <SidebarLink icon={<FaUserAlt />} label="Account" to="/account" isOpen={isOpen} navigate={navigate} />
           <SidebarLink icon={<FaCog />} label="Settings" to="/settings" isOpen={isOpen} navigate={navigate} />
-          <SidebarLink icon={<FaPaw />} label="Services" to="/serv" isOpen={isOpen} navigate={navigate} />
         </nav>
       </div>
 
