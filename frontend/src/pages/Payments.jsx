@@ -180,6 +180,17 @@ const Payments = () => {
         </div>
       </div>
 
+      {/* Botón Nuevo Pago */}
+      <div className="mb-4 flex justify-end">
+        <button
+          onClick={() => navigate('/payments/new')}
+          className="bg-[#edad06] hover:bg-yellow-400 text-white px-4 py-2 rounded-lg flex items-center gap-2"
+        >
+          <FaPlus />
+          Nuevo Pago
+        </button>
+      </div>
+
       {/* Mensaje de error */}
       {error && (
         <div className="mb-6 bg-red-50 border border-red-200 text-red-700 px-4 py-3 rounded-lg">

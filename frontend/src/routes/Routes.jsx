@@ -23,6 +23,7 @@ import Users from "../pages/Users";
 import Employees from "../pages/Employees";
 import Services from "../pages/Services";
 import ServiceEdit from "../pages/ServiceEdit";
+import PaymentCreate from "../pages/PaymentCreate";
 
 
 export const router = createBrowserRouter([
@@ -82,6 +83,10 @@ export const router = createBrowserRouter([
       {
         path: "payments", // /payments
         element: <Payments />,
+      },
+      {
+        path: "payments/new", // /payments/new
+        element: <PaymentCreate />,
       },
       {
         path: "invoices", // /invoice
