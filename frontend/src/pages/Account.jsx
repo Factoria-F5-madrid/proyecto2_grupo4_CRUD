@@ -69,7 +69,21 @@ const Account = () => {
     setMessage({ type: '', text: '' });
     
     try {
-      const userId = userData.user_id.replace('usr-', '');
+      // Manejar diferentes formatos de user_id
+      let userId;
+      if (typeof userData.user_id === 'string') {
+        userId = userData.user_id.replace('usr-', '');
+      } else if (typeof userData.user_id === 'number') {
+        userId = userData.user_id.toString();
+      } else {
+        // Si no tenemos userData, usar el ID del contexto
+        userId = user.user_id ? user.user_id.toString().replace('usr-', '') : null;
+      }
+
+      if (!userId) {
+        throw new Error('No se pudo obtener el ID del usuario');
+      }
+
       const cleanPayload = {
         first_name: formData.first_name,
         last_name: formData.last_name,
